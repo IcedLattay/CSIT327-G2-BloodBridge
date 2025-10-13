@@ -50,7 +50,7 @@ Other Tools/Services: GitHub
     pip install -r requirements.txt
     ```
 
-If you want to use a database that uses PostgreSQL like Supabase:
+### (Optional steps) If you want to use a database that uses PostgreSQL like Supabase:
 
 4.  **Setup PostgreSQL database connection**
     i. Create a .env file.
@@ -59,7 +59,10 @@ If you want to use a database that uses PostgreSQL like Supabase:
     # Replace it with your database credentials
     DATABASE_URL=postgresql://[user]:[password]@[host]:[port]/[dbname]
     ```   
-6.  **Migrate models in database**
+
+### Database configuration
+
+5.  **Migrate models in database**
     i. Navigate to the project (bloodbridge) directory.
     ```bash
     cd bloodbridge
@@ -68,7 +71,7 @@ If you want to use a database that uses PostgreSQL like Supabase:
     ```bash
     python manage.py migrate
     ```
-8. **Create a Superuser/Admin**
+6. **Create a Superuser/Admin**
    ```bash
    python manage.py createsuperuser
    ```
