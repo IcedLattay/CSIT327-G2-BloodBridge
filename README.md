@@ -52,7 +52,7 @@ Other Tools/Services: GitHub
     pip install -r requirements.txt
     ```
 
-### (Optional steps) If you want to use a database that uses PostgreSQL like Supabase:
+### (Optional step) If you want to use a database that uses PostgreSQL like Supabase:
 
 4.  **Setup PostgreSQL database connection**
     
