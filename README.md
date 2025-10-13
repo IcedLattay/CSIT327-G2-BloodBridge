@@ -20,15 +20,17 @@ Other Tools/Services: GitHub
     git clone https://github.com/your-username/your-repository.git](https://github.com/thatguyKire/CSIT327-G2-BloodBridge.git
     ```
 2.  **Setup the virtual environment.**
+    i. Navigate to project root directory.
     ```bash
-    # i. Navigate to project root directory.
     cd CSIT327-G2-BloodBridge
-    
-    # ii. Create a virtual env.
+    ```
+    ii. Create a virtual env.
+    ```bash
     # On macOS and Linux
     python3 -m venv venv
     # On Windows
     python -m venv venv
+    ```
     
     # iii. Activate the virtual env.
     # On macOS and Linux
