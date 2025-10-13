@@ -81,6 +81,7 @@ Other Tools/Services: GitHub
 ### Run
 
 7. **Start the server**
+
    ```bash
    python manage.py runserver
    ```
