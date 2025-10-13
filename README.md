@@ -55,6 +55,7 @@ Other Tools/Services: GitHub
 4.  **Setup PostgreSQL database connection**
     
     i. Create a .env file.
+
     ii. Copy and paste this into your file:
     ```bash
     # Replace it with your database credentials
