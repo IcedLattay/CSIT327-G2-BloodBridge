@@ -53,6 +53,7 @@ Other Tools/Services: GitHub
 ### (Optional steps) If you want to use a database that uses PostgreSQL like Supabase:
 
 4.  **Setup PostgreSQL database connection**
+    
     i. Create a .env file.
     ii. Copy and paste this into your file:
     ```bash
@@ -63,6 +64,7 @@ Other Tools/Services: GitHub
 ### Database configuration
 
 5.  **Migrate models in database**
+    
     i. Navigate to the project (bloodbridge) directory.
     ```bash
     cd bloodbridge
