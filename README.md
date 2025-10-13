@@ -45,7 +45,7 @@ Other Tools/Services: GitHub
     # On Windows (PowerShell)
     venv\Scripts\Activate.ps1
     ```
-4.  **Install dependencies.**
+3.  **Install dependencies.**
     ```bash
     pip install -r requirements.txt
     ```
@@ -53,19 +53,22 @@ Other Tools/Services: GitHub
 If you want to use a database that uses PostgreSQL like Supabase:
 
 4.  **Setup PostgreSQL database connection**
+    i. Create a .env file.
+    ii. Copy and paste this into your file:
     ```bash
-    # i. Create a .env file.
-    # ii. Copy and paste this into your file and replace it with your database credentials:
+    # Replace it with your database credentials
     DATABASE_URL=postgresql://[user]:[password]@[host]:[port]/[dbname]
     ```   
-5.  **Migrate models in database**
+6.  **Migrate models in database**
+    i. Navigate to the project (bloodbridge) directory.
     ```bash
-    # i. Navigate to the project (bloodbridge) directory.
     cd bloodbridge
-    # ii. Migrate models.
+    ```
+    ii. Migrate models.
+    ```bash
     python manage.py migrate
     ```
-6. **Create a Superuser/Admin**
+8. **Create a Superuser/Admin**
    ```bash
    python manage.py createsuperuser
    ```
