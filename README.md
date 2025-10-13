@@ -16,8 +16,9 @@ Other Tools/Services: GitHub
 ### Installation
 
 1.  **Clone the repository.**
+
     ```bash
-    git clone https://github.com/your-username/your-repository.git](https://github.com/thatguyKire/CSIT327-G2-BloodBridge.git
+    git clone https://github.com/thatguyKire/CSIT327-G2-BloodBridge.git
     ```
 2.  **Setup the virtual environment.**
 
@@ -29,15 +30,18 @@ Other Tools/Services: GitHub
     ```bash
     # On macOS and Linux
     python3 -m venv venv
+    
     # On Windows
     python -m venv venv
     ```
-    
-    # iii. Activate the virtual env.
+    iii. Activate the virtual env.
+    ```bash
     # On macOS and Linux
     source venv/bin/activate
+    
     # On Windows (Command Prompt)
     venv\Scripts\activate
+    
     # On Windows (PowerShell)
     venv\Scripts\Activate.ps1
     ```
