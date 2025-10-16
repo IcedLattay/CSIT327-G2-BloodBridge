@@ -6,7 +6,7 @@ body {
   margin-right: 50px;
   font-family: "Instrument Sans", sans-serif;
   background-color: #FFF8FC;
-  color: #000;
+  color: #3A3A3A;
 }
 
 
@@ -129,8 +129,9 @@ body {
 
 .modal-content {
   background: #fff;
-  padding: 100px 50px;
+  padding: 70px 50px;
   border-radius: 15px;
+  min-height: 350px;
   width: 350px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
   position: relative;
@@ -138,6 +139,8 @@ body {
 
 .modal-content h2 {
   text-align: center;
+  padding-top: 0px;
+  margin-top: 0px;
   padding-bottom: 30px;
   font-size: 30px;
 }
@@ -148,6 +151,7 @@ body {
 }
 
 .modal-content input {
+  font-family: inherit;
   padding: 10px 12px;
   border: none; /* remove full box border */
   border-bottom: 1px solid #ccc; /* only bottom visible */
@@ -183,6 +187,11 @@ body {
   outline: none;
 }
 
+input::placeholder {
+  color: #C2C2C2;
+  font-size: 14px;
+}
+
 /* focus state for the bottom border */
 .modal-content input:focus {
   border-bottom: 2px solid #F81A99;
@@ -202,7 +211,7 @@ body {
   transition: 50ms;
   width: 16px;
   height: 16px;
-  fill: #888;
+  fill: #C2C2C2;
   pointer-events: none;
 }
 
@@ -232,7 +241,14 @@ body {
   border-radius: 25px;
   cursor: pointer;
   font-weight: 600;
-  margin-top: 30px;
+}
+
+#signupModal .submit-btn {
+  margin-top: 45px;
+}
+
+#loginModal .submit-btn {
+  margin-top: 60px;
 }
 
 .submit-btn:hover {
@@ -278,10 +294,77 @@ body {
   color: red;
   font-size: 12px;
   margin: 0px;
-  margin-top: 10px;
+  margin-top: 5px;
   padding: 0px;
 }
 
+/* ROLE SELECTION STYLES */
+
+.role-selection-group {
+  font-size: 14px;
+  color: #C2C2C2;
+  margin-top: 20px;
+}
+
+.role-selection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-role {
+  cursor: pointer;
+  width: 100%;
+  color: #B3A4A7;
+  border-radius: 12px;
+  background: #F1F1F1;
+  border: none;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  transition:  0.4s ease;
+}
+
+.btn-role.active {
+  background: #F81A99;
+  font-size: 15px;
+  color: #fff;
+}
+
+.btn-role p{
+  padding: 12px 0px;
+  margin: 0px;
+}
+
+.btn-role .icon {
+  fill: #B3A4A7;
+  width: 15px;
+}
+
+.btn-role .icon.active{
+  width: 18px;
+  fill: #fff;
+}
+
+
+.role-desc {
+  color: #3A3A3A;
+  margin-top: 25px;
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.desc {
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+}
 
 /* REGISTRATION STYLES */
 /* Background Overlay */

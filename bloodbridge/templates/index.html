@@ -99,6 +99,31 @@
           {% endif %}
         </div>
 
+        <!-- User Role Selection Field -->
+        <div class="role-selection-group">
+          <p>Choose your account type</p>
+          <div class="role-selection">
+            <input type="hidden" name="role" id="selectedRole">
+            <div class="btn-role" id="selectUser">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="user-icon" data-name="Layer 1" viewBox="0 0 24 24">
+                <path d="M9.5,2.5c0-1.381,1.119-2.5,2.5-2.5s2.5,1.119,2.5,2.5-1.119,2.5-2.5,2.5-2.5-1.119-2.5-2.5Zm7.5,7.5v3c0,1.474-.81,2.75-2,3.444v6.556c0,.552-.447,1-1,1s-1-.448-1-1v-6h-2v6c0,.552-.447,1-1,1s-1-.448-1-1v-6.556c-1.19-.694-2-1.97-2-3.444v-3c0-2.206,1.794-4,4-4h2c2.206,0,4,1.794,4,4Z"/>
+              </svg>
+              <p>User</p>
+            </div>
+            <div class="btn-role" id="selectHospital">
+              <svg class="icon" id="hospital-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1">
+                <path d="m15.5 10c0 .551-.448 1-1 1h-1.5v1.5c0 .552-.449 1-1 1s-1-.448-1-1v-1.5h-1.5c-.551 0-1-.449-1-1s.449-1 1-1h1.5v-1.5c0-.551.449-1 1-1s1 .449 1 1v1.5h1.5c.552 0 1 .449 1 1zm6.554.054c0 2.537-1.934 6.49-5.747 11.751-.984 1.373-2.586 2.195-4.281 2.195-1.663.06-3.319-.781-4.341-2.204-3.808-5.254-5.741-9.206-5.741-11.742-.111-5.404 4.651-10.166 10.055-10.054 5.543 0 10.054 4.511 10.055 10.054zm-4.554-.054c0-1.497-1.102-2.74-2.536-2.964-.224-1.435-1.468-2.536-2.964-2.536s-2.74 1.101-2.964 2.536c-1.435.224-2.536 1.468-2.536 2.964s1.101 2.74 2.536 2.964c.224 1.434 1.468 2.536 2.964 2.536s2.74-1.102 2.964-2.536c1.435-.224 2.536-1.468 2.536-2.964z"/>
+              </svg>
+              <p>Hospital</p>
+            </div> 
+          </div>
+          <div class="role-desc">
+            <p class="desc" id="desc-one"></p>
+            <p class="desc" id="desc-two"></p>
+          </div>
+          
+        </div>
+
         <button type="submit" class="submit-btn">Sign up</button>
       </form>
     </div>
@@ -146,6 +171,7 @@
           {% endif %}
         </div>
 
+         
         <button type="submit" class="submit-btn">Log in</button>
 
         <!-- Forgot Password Link -->
