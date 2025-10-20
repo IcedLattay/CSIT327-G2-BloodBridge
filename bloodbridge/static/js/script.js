@@ -125,4 +125,39 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  const selectUser = document.getElementById("selectUser");
+  const selectHospital = document.getElementById("selectHospital");
+  const selectedRole = document.getElementById("selectedRole");
+  const hospitalIcon = document.getElementById("hospital-icon");
+  const userIcon = document.getElementById("user-icon");
+  const roleDescOne = document.getElementById("desc-one");
+  const roleDescTwo = document.getElementById("desc-two");
+
+  selectUser.classList.add('active');
+  userIcon.classList.add('active');
+  document.getElementById("selectedRole").value = "user";
+  roleDescOne.textContent = 'Each user may act as a donor or recipient.';
+  roleDescTwo.textContent = 'Together, we make every drop count.';
+
+  // Helper function to toggle each button's style
+  function selectRole(role) {
+    selectedRole.value = role;
+    if(role === 'user'){
+      
+      roleDescOne.textContent = 'Each user may act as a donor or recipient.';
+      roleDescTwo.textContent = 'Together, we make every drop count.';
+    } else {
+      roleDescOne.textContent = 'Hospitals can request blood during shortages and distribute it to patients in need.';
+      roleDescTwo.textContent = 'Together, we make life-saving care possible.';
+    }
+    selectUser.classList.toggle('active', role === 'user');
+    userIcon.classList.toggle('active', role === 'user');
+    selectHospital.classList.toggle('active', role === 'hospital');
+    hospitalIcon.classList.toggle('active', role === 'hospital');
+    console.log('Selected role: ', role);
+  }
+  
+  selectUser.addEventListener('click', () => selectRole('user'));
+  selectHospital.addEventListener('click', () => selectRole('hospital'));
 });
