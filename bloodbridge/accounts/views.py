@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from .forms import CustomUserCreationForm as CustomCreation
 from .forms import CustomAuthenticationForm as CustomAuthentication
-
+from django.contrib.auth.decorators import login_required
 
 # Index view
 def index_view(request):
@@ -70,8 +70,7 @@ def logout_view(request):
     return redirect("index")
 
 
-# Home view
+#Home view
+@login_required(login_url='/')
 def home_view(request):
-    if not request.user.is_authenticated:  # di maka access sa /home if not logged in
-        return redirect("index")
     return render(request, "home.html")
