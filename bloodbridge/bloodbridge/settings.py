@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'accounts.CustomUser' # tell django nga kani ang gamita nga user model
 
 # Application definition
 
