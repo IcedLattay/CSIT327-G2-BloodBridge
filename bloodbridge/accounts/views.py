@@ -70,13 +70,13 @@ def logout_view(request):
     return redirect("index")
 
 
-#Home view
+# Home view
 @login_required(login_url='/')
 def home_view(request):
     return render(request, "dashboard.html")
 
 
-#Profile view
+# Profile view
 @login_required(login_url='/')
 def profile_view(request):
     return render(request, "profile.html")
