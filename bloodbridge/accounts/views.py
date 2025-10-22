@@ -73,4 +73,4 @@ def logout_view(request):
 #Home view
 @login_required(login_url='/')
 def home_view(request):
-    return render(request, "home.html")
+    return render(request, "profile.html")
