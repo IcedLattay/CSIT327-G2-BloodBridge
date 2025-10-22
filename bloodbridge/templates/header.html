@@ -1,0 +1,28 @@
+{% load static %}
+
+<header class="site-header">
+  <div class="logo">
+    <img src="{% static 'images/logo.png' %}" alt="Blood Bridge" />
+  </div>
+
+  <nav class="nav-links">
+    <a class="nav-btn" href="{% url 'home' %}">Home</a>
+
+    <div class="dropdown">
+      <div class="nav-btn dropbtn" id="dropdown-btn">
+        <p>My Records</p>
+          <svg class="arrow-icon" id="dropdown-btn-arrow" xmlns="http://www.w3.org/2000/svg" id="Bold" viewBox="0 0 24 24">
+            <path d="M6.414,15.586H17.586a1,1,0,0,0,.707-1.707L12.707,8.293a1,1,0,0,0-1.414,0L5.707,13.879A1,1,0,0,0,6.414,15.586Z"/>
+          </svg>
+      </div>
+        <div class="dropdown-content" id="dropdown-content">
+          <a href="#">Donation History</a> <!--himoan pag html-->
+          <a href="#">Request History</a> <!--himoan pag html-->
+      </div>
+    </div>
+
+    <a href="{% url 'profile' %}" class="profile-icon">
+      <img src="{% static 'images/default-user-icon.jpg' %}" alt="Profile" />
+    </a>
+  </nav>
+</header>
