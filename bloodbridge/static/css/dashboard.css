@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+
+body {
+    margin: 0;
+    font-family: "Instrument Sans", sans-serif;
+    background-color: #FFF8FC;
+    color: #3A3A3A;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 25px 80px;
+    background-color: #FFF8FC;
+}
+
+.logo {
+    position: absolute;
+    left: 60px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-size: 20px;
+    color: #3A3A3A;
+}
+
+.logo img {
+    width: 100px;
+    height: auto;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #000;
+    font-weight: 500;
+    font-size: 15px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #F81A99;
+}
+
+.profile-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #E1AFCC;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.profile-icon:hover {
+    background-color: #F81A99;
+}
+
+/* MAIN CONTENT */
+.dashboard-content {
+    margin: 80px 100px;
+}
+
+.dashboard-content h1 {
+    font-size: 34px;
+    color: #3A3A3A;
+    text-align: left;
+    margin-bottom: 60px;
+}
+
+.highlight {
+    color: #F81A99;
+}
+
+/* CARDS */
+.cards {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.card {
+    background: #fff;
+    width: 350px;
+    height: 180px;
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #A7A7A7;
+    font-size: 15px;
+    padding: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .cards {
+        justify-content: center;
+    }
+
+    .card {
+        width: 80%;
+    }
+
+    .dashboard-content {
+        margin: 60px 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .logo {
+        position: relative;
+        margin-bottom: 15px;
+    }
+
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 90%;
+    }
+
+    .dashboard-content h1 {
+        text-align: center;
+    }
+}
