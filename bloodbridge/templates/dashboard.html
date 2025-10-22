@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+
+<body>
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="{% static 'images/logo.png' %}" alt="Logo">
+            <span>BloodBridge</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">My Records</a>
+            <a href="{% url 'logout' %}" class="profile-icon" title="Logout"></a>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-content">
+        <h1>Welcome back, <span class="highlight">User!</span></h1>
+        <div class="cards">
+            <div class="card">Your total donations will appear here once you have donations.</div>
+            <div class="card">Your total requests will appear here once you have requests.</div>
+            <div class="card">Your pending actions will appear here once available.</div>
+        </div>
+    </main>
+</body>
+
+</html>
