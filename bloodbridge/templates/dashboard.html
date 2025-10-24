@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <!-- NAVIGATION -->
+    <!-- NAVIGATION
     <nav class="navbar">
         <div class="logo">
             <img src="{% static 'images/logo.png' %}" alt="Logo">
@@ -22,7 +22,9 @@
             <a href="#">My Records</a>
             <a href="{% url 'logout' %}" class="profile-icon" title="Logout"></a>
         </div>
-    </nav>
+    </nav> -->
+
+    {% include 'header.html' %}
 
     <!-- MAIN CONTENT -->
     <main class="dashboard-content">
