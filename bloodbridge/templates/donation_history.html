@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donation History</title>
+    <link rel="stylesheet" href="{% static 'css/donation_history.css' %}">
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="{% static 'images/logo.png' %}" alt="Logo">
+            <span>BloodBridge</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <div class="dropdown">
+                <button class="dropbtn">My Records ▾</button>
+                <div class="dropdown-content">
+                    <a href="{% url 'donation_history' %}">Donation History</a>
+                    <a href="{% url 'request_history' %}">Request History</a>
+                </div>
+            </div>
+            <a href="{% url 'logout' %}" class="profile-icon" title="Logout"></a>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="donation-history">
+        <div class="card">
+            <h2>Donation History</h2>
+            <p class="empty-text">No donation history.</p>
+        </div>
+    </main>
+
+    <script>
+        // Dropdown toggle
+        const dropbtn = document.querySelector(".dropbtn");
+        const dropdownContent = document.querySelector(".dropdown-content");
+
+        dropbtn.addEventListener("click", () => {
+            dropdownContent.classList.toggle("show");
+        });
+
+        window.addEventListener("click", (e) => {
+            if (!dropbtn.contains(e.target)) {
+                dropdownContent.classList.remove("show");
+            }
+        });
+    </script>
+</body>
+</html>
