@@ -3,7 +3,7 @@
 
     .site-header {
         width: 100%;
-        /* border: 1px solid rgb(18, 42, 42); */
+        border: 1px solid rgb(18, 42, 42);
         display: flex;
         align-items: center;
         justify-content: space-between;

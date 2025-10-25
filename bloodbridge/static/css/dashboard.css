@@ -1,15 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
 
-body {
-    margin: 0;
-    font-family: "Instrument Sans", sans-serif;
-    background-color: #FFF8FC;
-    color: #3A3A3A;
-}
+
+
 
 /* MAIN CONTENT */
 .dashboard-content {
-    margin: 80px 100px;
+    margin: 80px 80px;
 }
 
 .dashboard-content h1 {
@@ -27,7 +22,6 @@ body {
 .cards {
     display: flex;
     justify-content: flex-start;
-    flex-wrap: wrap;
     gap: 40px;
 }
 
