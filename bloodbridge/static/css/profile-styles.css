@@ -1,8 +1,334 @@
-body{
-        color: #3A3A3A;
-        /*border: 1px solid slateblue;*/
-        font-family: 'Instrument Sans';
-        background-color: #FFF8FC;
-        padding: 1.5rem 7% 0px 7%;
-        margin: 0px;
-    }
+
+
+
+.card {
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 40px;
+    padding: 25px;
+}
+
+.profile-container{
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid seagreen;
+    align-items: center;
+    height: 91%;
+}
+
+.profile-card{
+    box-sizing: border-box;
+    max-width: 650px;
+    top: 15%;
+    position: absolute;
+    /* border: 1px solid #3A3A3A; */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.label{
+    font-size: 18px;
+    margin: 0px;
+}
+
+.profile-card .label {
+    /* border: 1px solid darkblue; */
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.spacing {
+    padding: 0px 30px 20px 30px;
+    /* border: 1px solid saddlebrown; */
+}
+
+.profile-name {
+    gap: 25px;
+    width: 100%;
+    align-items: center;
+    /* border: 1px solid skyblue; */
+    display: flex;
+    flex-direction: row;
+}
+
+.profile-pic{
+    position: relative;
+    /* border: 1px solid seagreen; */
+}
+
+
+
+
+.profile-pic img {
+    border-radius: 50%;
+    height: 90px;
+    width: 90px;
+    /* border: 1px solid seagreen; */
+    display: block;
+}
+
+
+.profile-pic span {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    /* border: 1px solid sandybrown; */
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    top: 55px;
+    left: 70%;
+}
+
+
+.profile-pic:hover span {
+    box-sizing: border-box;
+    background-color: #CB8FB1;
+    border: 2px solid #fff;
+}
+
+.profile-pic span .icon {
+    fill: #B3A3A7;
+    width: 17px;
+    height: 17px;
+    /* border: 1px solid saddlebrown; */
+}
+
+.profile-pic:hover span .icon {
+    fill: #ffff;
+}
+
+.profile-name .username {
+    /* border: 1px solid fuchsia; */
+}
+
+.username {
+    display: flex;
+    flex-direction: column;
+}
+
+.username h2 {
+    margin: 0px;
+    padding: 0px;
+}
+
+.username h3 {
+    font-weight: 400;
+    color: #B3A3A7;
+    margin: 0px;
+    padding: 0px;
+}
+
+.profile-name button {
+    margin-left: auto;
+    padding: 13px 30px;
+}
+
+.h-divider {
+    border-top: 1.5px solid #E3E3E3;
+}
+
+.profile-details {
+    margin-top: 15px;
+    /* border: 1px solid skyblue; */
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+}
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-details .detail p{
+    font-size: 14px;
+    font-weight: lighter;
+    color: #B3A3A7;
+    margin: 0px;
+    padding: 0px;
+}
+
+.profile-details .detail h3 {
+    /* border: 1px solid saddlebrown; */
+    margin: 0px;
+    padding: 0px;
+}
+
+/* Edit Profile Styles */
+
+
+/* Modal Styles */
+
+.modal {
+    position: fixed;
+    visibility: hidden;
+    box-sizing: border-box;
+    border: 1px solid saddlebrown;
+    display: flex;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+}
+
+.modal.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal .edit-details {
+    box-sizing: border-box;
+    display: flex;
+    margin-top: 30px;
+    flex-direction: column;
+    position: absolute;
+    max-width: 500px;
+}
+
+.edit-details .label {
+    border: 1px solid saddlebrown;
+    margin-top: 15px;
+    padding: 0;
+    width: 100%;
+}
+
+.form {
+    margin-top: 30px;
+    border: 1px solid green;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.form button {
+    box-sizing: border-box;
+    padding: 13px 40px;
+    margin-top: 30px;
+}
+
+.edit-name-section {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.input-field {
+    /* border: 1px solid saddlebrown; */
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.input-field p {
+    border: 1px solid paleturquoise;
+    font-size: 16px;
+}
+ 
+.input-field input {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 10px 0px 10px 10px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #B3A4A7;
+}
+
+.input-field input:focus {
+    outline: none;
+    border-bottom: 2px solid #F81A99;
+}
+
+
+/* Change Profile Modal Styles*/
+
+.modal .edit-pfp {
+    /* border: 1px solid darkblue; */
+    box-sizing: border-box;
+    display: flex;
+    margin-top: 30px;
+    flex-direction: row;
+    position: absolute;
+    max-width: 590px;
+    gap: 20px;
+}
+
+.edit-pfp .spacing {
+    padding: 20px;
+    border: 1px solid salmon;
+}
+
+.spacing:has(.select-pfp) {
+    width: 100%;
+}
+
+.preview-pfp {
+    border: 1px solid saddlebrown;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.preview-pfp img {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+}
+
+.preview-pfp button {
+    padding: 10px 30px;
+}
+
+.v-divider {
+    border-left: 1.5px solid #E3E3E3;
+}
+
+.select-pfp {
+    height: 100%;
+    width: 100%;
+    border: 1px solid darksalmon;
+    display: flex;
+    flex-direction: column;
+}
+
+.selection {
+    box-sizing: border-box;
+    margin-top: 10px;
+    height: 100%;
+    width: 100%;
+    border: 1px solid saddlebrown;
+    display: grid;
+    column-gap: 30px;
+    row-gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.pfp {
+    margin: 0;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.pfp:hover{
+    box-shadow: 0 0 15px #ffcce9;
+}
+
+.pfp.selected{
+    box-shadow: 0 0 15px #F81A99;
+}
