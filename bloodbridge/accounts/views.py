@@ -4,6 +4,7 @@ from .forms import CustomUserCreationForm as CustomCreation
 from .forms import CustomAuthenticationForm as CustomAuthentication
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from donations.models import BloodType
 
 # Index view
 def index_view(request):
@@ -80,7 +81,13 @@ def home_view(request):
 # Profile view
 @login_required(login_url='/')
 def profile_view(request):
-    return render(request, "profile.html")
+    user = request.user
+    
+    blood_types = BloodType.objects.all()
+    return render(request, "profile.html", {
+        "user": user,
+        "blood_types": blood_types,
+    })
 
 
 # Update Pfp view 
@@ -101,6 +108,37 @@ def update_pfp(request):
         profile.save()
 
         return JsonResponse({"success": True, "message": "Profile picture updated!"})
+
+    # if not a POST request
+    return JsonResponse({"success": False, "message": "Invalid request."})
+
+
+@login_required(login_url='/')
+def update_profile_details(request):
+    if request.method == "POST":
+        selected_bt_id = request.POST.get("selected-blood-type")
+        contact_number = request.POST.get("contact-number")
+        first_name = request.POST.get("first-name")
+        last_name = request.POST.get("last-name")
+
+        # assuming you have a field in your user model or related profile
+        user = request.user
+        profile = user.profile
+
+        profile.first_name = first_name
+        profile.last_name = last_name
+        profile.full_name = f"{first_name} {last_name}" 
+        profile.contact_number = contact_number
+        if selected_bt_id:
+            try:
+                blood_type = BloodType.objects.get(id=selected_bt_id)
+                profile.blood_type = blood_type
+            except BloodType.DoesNotExist:
+                pass  # Optionally handle invalid ID
+
+        profile.save()
+
+        return JsonResponse({"success": True, "message": "Profile details updated!"})
 
     # if not a POST request
     return JsonResponse({"success": False, "message": "Invalid request."})

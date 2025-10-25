@@ -242,7 +242,7 @@
 .input-field input {
     box-sizing: border-box;
     margin: 0;
-    padding: 10px 0px 10px 10px;
+    padding: 13px 0px 13px 10px;
     width: 100%;
     border: none;
     border-bottom: 1px solid #B3A4A7;
@@ -251,6 +251,105 @@
 .input-field input:focus {
     outline: none;
     border-bottom: 2px solid #F81A99;
+}
+
+.dropdown-bt {
+    cursor: default;
+    /* border: 1px solid rgb(17, 150, 232); */
+    position: relative;
+}
+
+.dropdown-bt-btn {
+    background-color: #F1F1F1;
+    border-radius: 5px;
+    margin: 0;
+    padding: 13px 0px 13px 10px;
+    font-size: 16px;
+    /* border: 1px solid saddlebrown; */
+    color: #333;
+    cursor: default;
+    z-index: 10px;
+}
+
+.dropdown-bt-btn:hover{
+    background-color: #e5e5e5;
+}
+
+
+.dropdown-bt-content-bg {
+    overflow: hidden;
+    width: 100%;
+    display: none;
+    background-color: #fff;
+    padding: 0px 7px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: absolute;
+    box-sizing: border-box;
+    left: 0;
+}
+
+.dropdown-bt-content-bg.show {
+    display: block;
+}
+
+.dropdown-bt-content {
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.dropdown-bt-content::-webkit-scrollbar {
+    width: 15px;
+    height: 50px;
+    overflow-y: hidden;
+}
+
+.dropdown-bt-content::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.dropdown-bt-content::-webkit-scrollbar-thumb {
+    background-color: #bcbcbc;
+    border-radius: 100px;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+}
+
+.dropdown-bt-content::-webkit-scrollbar-thumb:hover {
+    background-color: #a2a2a2;
+}
+
+.dropdown-bt-content::-webkit-scrollbar-button {
+    display: none;
+}
+
+.dropdown-bt-content.show {
+    display: block;
+}
+
+
+.dropdown-bt-content p {
+    margin: 0;
+    cursor: default;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    padding: 10px 15px;
+    color: #B3A3A7;
+    text-decoration: none;
+}
+
+.dropdown-bt-content .first {
+    margin-top: 15px;
+}
+
+.dropdown-bt-content .last {
+    margin-bottom: 15px;
+}
+
+.dropdown-bt-content p:hover {
+    background-color: #F2F3F3;
+    color: #3A3A3A;
 }
 
 

@@ -11,6 +11,7 @@
 </head>
 <body>
     {% include 'header.html' %}
+
     <main class="profile-container">
         <div class="card profile-card">
             <section class="spacing">
@@ -25,8 +26,8 @@
                         </span>
                     </div>
                     <div class="username">
-                        <h2>Username</h2>
-                        <h3>User</h3>
+                        <h2>{{ user.profile.full_name }}</h2>
+                        <h3>{{ user.get_role_display }}</h3>
                     </div>
                     <button id="edit-profile-btn">Edit Profile</button>
                 </div>
@@ -36,18 +37,19 @@
                 <div class="profile-details">
                     <div class="detail">
                         <p>Contact</p>
-                        <h3>None</h3>
+                        <h3>{{ user.profile.contact_number }}</h3>
                     </div>
                     <div class="detail">
                         <p>Blood Type</p>
-                        <h3>None</h3>
+                        <h3>{{ user.profile.blood_type.type }}</h3>
                     </div>
                 </div>
             </section>
         </div>
 
         <div class="modal" id="edit-profile-details-modal">
-            <form class="card edit-details">
+            <form class="card edit-details" id="edit-profile-details-form">
+                {% csrf_token %}
                 <div class="spacing">
                     <p class="label">Edit Profile</p>
                 </div>
@@ -57,20 +59,37 @@
                         <section class="edit-name-section">
                             <div class="input-field">
                                 <p>First Name</p>
-                                <input type="text" placeholder="Rfirst name">
+                                <input type="text" name="first-name" placeholder="first name" value="{{ user.profile.first_name|default:'' }}">
                             </div>
                             <div class="input-field">
                                 <p>Last Name</p>
-                                <input type="text" placeholder="last name">
+                                <input type="text" name="last-name" placeholder="last name" value="{{ user.profile.last_name|default:'' }}">
                             </div>
                         </section>
                         <div class="input-field">
                             <p>Contact Number</p>
-                            <input type="text" placeholder="(+63) xxx xxx xxxx">
+                            <input type="text" name="contact-number" placeholder="(+63) xxx xxx xxxx" value="{{ user.profile.contact_number|default:'' }}">
                         </div>
                         <div class="input-field">
                             <p>Blood Type</p>
-                            <input type="text" placeholder="A+ / B+ / O">
+                            <input type="hidden" name="selected-blood-type" id="selected-blood-type">
+                            <div class="dropdown-bt">
+                                <p class="dropdown-bt-btn" id="dropdown-bt-btn">
+                                    {{ user.profile.blood_type.type|default:"A+ / B+ / O" }}
+                                </p>
+                                <div class="dropdown-bt-content-bg">
+                                    <div class="dropdown-bt-content" id="dropdown-bt-content">
+                                        {% for bt in blood_types %}
+                                            <p class="dropdown-bt-option
+                                                {% if forloop.first %}first{% endif %}
+                                                {% if forloop.last %}last{% endif %}"
+                                            data-value="{{ bt.id }}">
+                                                {{ bt.type }}
+                                            </p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <button type="submit">Save</button>
                     </div>
