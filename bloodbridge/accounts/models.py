@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from donations.models import BloodType
 
 # Create your models here.
 
@@ -21,7 +20,7 @@ class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
     full_name = models.CharField(max_length=25, blank=True, default='New_User', null=True)
     contact_number = models.CharField(max_length=15, blank=True, default='None', null=True)
-    blood_type = models.ForeignKey(BloodType, on_delete=models.SET_NULL, null=True, blank=True)
+    blood_type = models.ForeignKey('donations.BloodType', on_delete=models.SET_NULL, null=True, blank=True)
     profile_picture = models.CharField(max_length=255, default='images/default-user-icon.jpg')
 
     def __str__(self):
