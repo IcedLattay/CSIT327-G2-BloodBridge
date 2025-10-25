@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+
+html {
+    height: 100%;
+}
+
+body{
+    box-sizing: border-box;
+    color: #3A3A3A;
+    /* border: 1px solid slateblue; */
+    font-family: 'Instrument Sans';
+    background-color: #FFF8FC;
+    padding: 1.5rem 7% 0px 7%;
+    margin: 0px;
+    height: 100%;
+}
+
+button {
+    font-size: 14px;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #fff;
+    background-color: #F81A99;
+}
+
+input {
+    color: #3A3A3A;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+input::placeholder {
+    color: #B3A4A7;
+    font-family: 'Instrument Sans';
+}
+
+button:hover {
+    background-color: #BD1676;
+}
