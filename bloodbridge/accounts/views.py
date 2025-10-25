@@ -80,3 +80,11 @@ def home_view(request):
 @login_required(login_url='/')
 def profile_view(request):
     return render(request, "profile.html")
+
+# Donation view
+def donation_history_view(request):
+    return render(request, 'donation_history.html')
+
+# Request view
+def request_history_view(request):
+    return render(request, 'request_history.html')
