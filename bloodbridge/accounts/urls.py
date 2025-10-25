@@ -8,4 +8,5 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout"),
     path("home/", views.home_view, name="home"),  # user homepage after login
     path("profile/", views.profile_view, name="profile"),
+    path("update-pfp/", views.update_pfp, name="update-pfp"),
 ]

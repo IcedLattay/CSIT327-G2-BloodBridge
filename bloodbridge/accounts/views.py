@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout
 from .forms import CustomUserCreationForm as CustomCreation
 from .forms import CustomAuthenticationForm as CustomAuthentication
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 # Index view
 def index_view(request):
@@ -80,4 +81,27 @@ def home_view(request):
 @login_required(login_url='/')
 def profile_view(request):
     return render(request, "profile.html")
+
+
+# Update Pfp view 
+@login_required(login_url='/')
+def update_pfp(request):
+    if request.method == "POST":
+        selected_pfp = request.POST.get("selected-pfp")
+
+        # make sure something was selected
+        if not selected_pfp:
+            return JsonResponse({"success": False, "message": "No profile picture selected."})
+
+        # assuming you have a field in your user model or related profile
+        user = request.user
+        profile = user.profile
+
+        profile.profile_picture = selected_pfp   # or user.profile.profile_picture depending on your setup
+        profile.save()
+
+        return JsonResponse({"success": True, "message": "Profile picture updated!"})
+
+    # if not a POST request
+    return JsonResponse({"success": False, "message": "Invalid request."})
 
