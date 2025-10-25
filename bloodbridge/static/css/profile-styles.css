@@ -14,7 +14,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    border: 1px solid seagreen;
+    /* border: 1px solid seagreen; */
     align-items: center;
     height: 91%;
 }
@@ -131,7 +131,7 @@
 }
 
 .h-divider {
-    border-top: 1.5px solid #E3E3E3;
+    border-top: 1.5px solid #D9D9D9;
 }
 
 .profile-details {
@@ -200,7 +200,7 @@
 }
 
 .edit-details .label {
-    border: 1px solid saddlebrown;
+    /* border: 1px solid saddlebrown; */
     margin-top: 15px;
     padding: 0;
     width: 100%;
@@ -208,7 +208,7 @@
 
 .form {
     margin-top: 30px;
-    border: 1px solid green;
+    /* border: 1px solid green; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -235,7 +235,7 @@
 }
 
 .input-field p {
-    border: 1px solid paleturquoise;
+    /* border: 1px solid paleturquoise; */
     font-size: 16px;
 }
  
@@ -269,7 +269,7 @@
 
 .edit-pfp .spacing {
     padding: 20px;
-    border: 1px solid salmon;
+    /* border: 1px solid salmon; */
 }
 
 .spacing:has(.select-pfp) {
@@ -277,7 +277,7 @@
 }
 
 .preview-pfp {
-    border: 1px solid saddlebrown;
+    /* border: 1px solid saddlebrown; */
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -294,13 +294,13 @@
 }
 
 .v-divider {
-    border-left: 1.5px solid #E3E3E3;
+    border-left: 1.5px solid #D9D9D9;
 }
 
 .select-pfp {
     height: 100%;
     width: 100%;
-    border: 1px solid darksalmon;
+    /* border: 1px solid darksalmon; */
     display: flex;
     flex-direction: column;
 }
@@ -310,7 +310,7 @@
     margin-top: 10px;
     height: 100%;
     width: 100%;
-    border: 1px solid saddlebrown;
+    /* border: 1px solid saddlebrown; */
     display: grid;
     column-gap: 30px;
     row-gap: 12px;
