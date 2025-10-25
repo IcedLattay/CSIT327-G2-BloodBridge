@@ -20,8 +20,40 @@
                 <h2>Donation History</h2>
             </div>
             <div class="v-divider"></div>
-            <p class="empty-text">No donation history.</p>
-            </div>
+            {% if donations %}
+                <!-- Scrollable donation list -->
+
+                <div class="history-list">
+                    <!-- Header row -->
+                    <div class="history-header">
+                        <span class="col date">Date Donated</span>
+                        <span class="col hospital">Hospital</span>
+                        <span class="col status">Status</span>
+                    </div>
+                
+                    {% for donation in donations %}
+                        <div class="history-row">
+                            <span class="col date">
+                                <p>{{ donation.date|date:"m/d/Y" }}</p>
+                            </span>
+                            <span class="col hospital">{{ donation.hospital }}</span>
+                            <span class="col status 
+                                {% if donation.status == 'Complete' %}complete
+                                {% elif donation.status == 'Pending' %}pending
+                                {% elif donation.status == 'Confirmed' %}confirmed
+                                {% elif donation.status == 'Cancelled' %}cancelled
+                                {% endif %}
+                            ">
+                                {{ donation.status }}
+                            </span>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            {% else %}
+                <p class="empty-text">No donation history.</p>
+            {% endif %}
+        </div>
     </main>
 
     <script src="{% static 'js/header-script.js' %}"></script>
