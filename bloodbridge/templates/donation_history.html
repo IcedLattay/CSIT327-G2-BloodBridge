@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donation History</title>
+    <link rel="stylesheet" href="{% static 'css/history.css' %}">
+</head>
+<body>
+    
+    {% include 'header.html' %}
+
+    <!-- MAIN CONTENT -->
+    <main class="history">
+        <div class="card">
+            <h2>Donation History</h2>
+            <p class="empty-text">No donation history.</p>
+        </div>
+    </main>
+
+    <script src="{% static 'js/history.js' %}"></script>
+
+</body>
+</html>
