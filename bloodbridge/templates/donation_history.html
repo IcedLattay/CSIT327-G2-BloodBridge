@@ -5,6 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Donation History</title>
+    <link rel="stylesheet" href="{% static 'css/global-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header-styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/history.css' %}">
 </head>
 <body>
@@ -14,11 +16,15 @@
     <!-- MAIN CONTENT -->
     <main class="history">
         <div class="card">
-            <h2>Donation History</h2>
+            <div class="spacing">
+                <h2>Donation History</h2>
+            </div>
+            <div class="v-divider"></div>
             <p class="empty-text">No donation history.</p>
-        </div>
+            </div>
     </main>
 
+    <script src="{% static 'js/header-script.js' %}"></script>
     <script src="{% static 'js/history.js' %}"></script>
 
 </body>
