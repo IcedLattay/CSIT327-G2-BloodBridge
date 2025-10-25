@@ -63,16 +63,6 @@
 }
 
 @media (max-width: 768px) {
-    .navbar {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .logo {
-        position: relative;
-        margin-bottom: 15px;
-    }
-
     .cards {
         flex-direction: column;
         align-items: center;

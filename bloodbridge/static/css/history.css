@@ -3,7 +3,7 @@
 
 /* MAIN CONTENT */
 .history {
-    border: 1px solid saddlebrown;
+    /* border: 1px solid saddlebrown; */
     margin: 20px 80px;
     display: flex;
     justify-content: center;
@@ -29,7 +29,7 @@
 }
 
 .card h2 {
-    border: 1px solid goldenrod;
+    /* border: 1px solid goldenrod; */
     margin: 15px 0px 0px 0px;
     font-size: 22px;
     color: #3A3A3A;
