@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from .forms import CustomUserCreationForm as CustomCreation
 from .forms import CustomAuthenticationForm as CustomAuthentication
 from django.contrib.auth.decorators import login_required
@@ -48,14 +48,23 @@ def register_view(request):
 # Login view
 def login_view(request):
     if request.user.is_authenticated:  # di na siya kabalik sa /login url if logged in
-        return redirect("home")
+        if request.user.role == 'user':
+            return redirect('home')
+        elif request.user.role == 'hospital':
+            return redirect('hospital-dashboard')
+        
     
     if request.method == "POST":
         form = CustomAuthentication(request, data=request.POST)  # bind submitted data
+        
         if form.is_valid():
             user = form.get_user()
             login(request, user)  # log in user
-            return redirect("home")  # go to home page
+
+            if user.role == 'user':
+                return redirect('home')   # go to home / user dashboard if role is user
+            elif user.role == 'hospital':
+                return redirect('hospital_dashboard') # go to hospital dashboard if role is hospital
         else:
             registration_form = CustomCreation()
             return render(request, "index.html", {
@@ -156,3 +165,9 @@ def update_profile_details(request):
     # if not a POST request
     return JsonResponse({"success": False, "message": "Invalid request."})
 
+
+# Hospital Dashboard view
+@login_required(login_url='/')
+def hospital_dashboard_view(request):
+
+    return render(request, 'hospital-dashboard.html') # wala pay hospital dashboard html 
