@@ -53,7 +53,7 @@
     padding: 20px;
 }
 
-.history-header span {
+span {
     /* border: 1px solid saddlebrown; */
 }
 
@@ -63,9 +63,20 @@
     width: 175px;
 }
 
+/* for donation-history */
 .hospital {
     /* border: 1px solid firebrick; */
     margin-left: 30px;
+}
+/*  */
+/* for request-history */
+.bt {
+    text-align: center;
+    width: 150px;
+}
+
+.compat-bt-s {
+    margin-left: 25px;
 }
 
 .status {
@@ -129,11 +140,23 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+
 .history-row .date {
     display: flex;
     justify-content: center;
     /* border: 1px solid saddlebrown; */
 }
+
+.history-row .bt {
+    display: flex;
+    justify-content: center;
+}
+
+.history-row .bt-s {
+    display: flex;
+    justify-content: center;
+}
+
 
 .history-row .col {
     display: flex;
@@ -149,6 +172,41 @@
     /* border: 1px solid saddlebrown; */
     border-radius: 12px;
 }
+
+/* for request-history */
+.history-row .bt p {
+    margin: 0;
+    width: 53px;
+    height: 27px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FF428B;
+    color: #fff;
+    /* border: 1px solid saddlebrown; */
+    border-radius: 12px;
+}
+
+.history-row .compat-bt-s {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+
+.history-row .compat-bt-s p {
+    margin: 0;
+    min-width: 53px;
+    height: 27px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #A0D666;
+    color: #fff;
+    /* border: 1px solid saddlebrown; */
+    border-radius: 12px;
+}
+/*  */
 
 .history-row .status {
     display: flex;

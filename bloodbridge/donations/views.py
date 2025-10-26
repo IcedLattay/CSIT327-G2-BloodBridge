@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .models import Donation
+from .models import Donation, Request
 
 
 # Create your views here.
@@ -18,5 +18,10 @@ def donation_history_view(request):
 # Request view
 @login_required(login_url='/')
 def request_history_view(request):
-    return render(request, 'request_history.html')
+
+    requests = Request.objects.filter(requester=request.user).order_by('-date')
+
+    return render(request, 'request_history.html', {
+        "requests": requests, 
+    })
 
