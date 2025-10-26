@@ -18,8 +18,10 @@ class CustomUser(AbstractUser):
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
+    first_name = models.CharField(max_length=15, blank=True, default='', null=True)
+    last_name = models.CharField(max_length=10, blank=True, default='', null=True)
     full_name = models.CharField(max_length=25, blank=True, default='New_User', null=True)
-    contact_number = models.CharField(max_length=15, blank=True, default='None', null=True)
+    contact_number = models.CharField(max_length=15, blank=True, default='', null=True)
     blood_type = models.ForeignKey('donations.BloodType', on_delete=models.SET_NULL, null=True, blank=True)
     profile_picture = models.CharField(max_length=255, default='images/default-user-icon.jpg')
 
