@@ -5,7 +5,7 @@ from .models import Donation, Request
 
 # Create your views here.
 
-# Donation view
+# Donation_history view
 @login_required(login_url='/')
 def donation_history_view(request):
     
@@ -15,7 +15,7 @@ def donation_history_view(request):
         "donations": donations,
     })
 
-# Request view
+# Request_history view
 @login_required(login_url='/')
 def request_history_view(request):
 
@@ -24,4 +24,6 @@ def request_history_view(request):
     return render(request, 'request_history.html', {
         "requests": requests, 
     })
+
+
 
