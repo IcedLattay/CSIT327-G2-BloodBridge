@@ -4,7 +4,7 @@ from .forms import CustomUserCreationForm as CustomCreation
 from .forms import CustomAuthenticationForm as CustomAuthentication
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from donations.models import BloodType
+from donations.models import BloodType, Donation, Request
 
 # Index view
 def index_view(request):
@@ -72,10 +72,23 @@ def logout_view(request):
     return redirect("index")
 
 
-# Home view
+# User Dashboard / Home view
 @login_required(login_url='/')
 def home_view(request):
-    return render(request, "dashboard.html")
+
+    user = request.user
+
+    total_donations = Donation.objects.filter(donor=user).count()
+    total_requests = Request.objects.filter(requester=user).count()
+    total_pending = Donation.objects.filter(donor=user, status="Pending").count() + Request.objects.filter(requester=user, status="Pending").count()
+
+    context = {
+        "total_donations": total_donations,
+        "total_requests": total_requests,
+        "total_pending": total_pending,
+    }
+
+    return render(request, 'dashboard.html', context)
 
 
 # Profile view

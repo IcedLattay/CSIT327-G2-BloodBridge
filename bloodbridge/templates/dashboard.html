@@ -32,9 +32,31 @@
     <main class="dashboard-content">
         <h1>Welcome back, <span class="highlight">{{ user.profile.full_name }}!</span></h1>
         <div class="cards">
-            <div class="card">Your total donations will appear here once you have donations.</div>
-            <div class="card">Your total requests will appear here once you have requests.</div>
-            <div class="card">Your pending actions will appear here once available.</div>
+            {% if total_donations %}
+                <div class="card">
+                    <p>Your total donations</p>
+                    <p class="total">{{ total_donations }}</p>
+                </div>
+            {% else %}
+                <div class="card">Your total donations will appear here once you have donations.</div>
+            {% endif %}
+            {% if total_requests %}
+                <div class="card">
+                    <p>Your total requests</p>
+                    <p class="total">{{ total_requests }}</p>
+                </div>
+            {% else %}
+                <div class="card">Your total requests will appear here once you have requests.</div>
+            {% endif %}
+            {% if total_pending %}
+                <div class="card">
+                    <p>Your total pending items</p>
+                    <p class="total">{{ total_pending }}</p>
+                </div>
+            {% else %}
+                <div class="card">Your total pending items will appear here once available.</div>
+            {% endif %}
+            
         </div>
     </main>
 
