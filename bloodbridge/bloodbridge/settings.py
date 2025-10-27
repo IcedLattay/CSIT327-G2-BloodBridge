@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-3u85475t##tnh&xf^p6yq$(6sluvrr^dekf@txucy3++*fqsqn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com',]
 
 AUTH_USER_MODEL = 'accounts.CustomUser' # tell django nga kani ang gamita nga user model
 
@@ -87,8 +87,8 @@ load_dotenv()
 DATABASES = {
     'default': dj_database_url.config(
         default="sqlite:///db.sqlite3",
-        conn_max_age=600,
-        # conn_max_age=0,
+        # conn_max_age=600,
+        conn_max_age=0,
     )
 }
 
