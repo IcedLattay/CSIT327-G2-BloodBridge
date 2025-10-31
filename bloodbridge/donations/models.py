@@ -29,8 +29,7 @@ class Request(models.Model):
         ('high', 'High'),
     ]
 
-    hospital = models.ForeignKey('accounts.Hospital', on_delete=models.CASCADE, blank=True, null=True)
-    user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
+    requester = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
     blood_type = models.ForeignKey(BloodType, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(blank=True, null=True)
     urgency = models.CharField(max_length=10, null=True)
