@@ -35,34 +35,3 @@ class Hospital(models.Model):
     def __str__(self):
         return self.name
     
-
-
-class Request(models.Model):
-    URGENCY_CHOICES = [
-        ('low', 'Low'),
-        ('medium', 'Medium'),
-        ('high', 'High'),
-    ]
-
-    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
-    blood_type = models.ForeignKey('donations.BloodType', on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
-    urgency = models.CharField(max_length=10)
-    notes = models.TextField(blank=True, null=True)
-    time_open = models.TimeField()
-    time_close = models.TimeField()
-    days_open = models.CharField(max_length=255)  # Could store as comma-separated, e.g. "Mon,Tue,Wed"
-
-    def __str__(self):
-        return f"{self.hospital.name} - {self.blood_type} ({self.urgency})"
-
-
-class Appointment(models.Model):
-    donor = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    request = models.ForeignKey(Request, on_delete=models.CASCADE)
-    date = models.DateField()
-    time_start = models.TimeField()
-    time_end = models.TimeField()
-
-    def __str__(self):
-        return f"{self.donor.username} - {self.request.blood_type.type_name} on {self.date}"
