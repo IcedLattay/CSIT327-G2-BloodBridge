@@ -205,18 +205,28 @@ def hospital_dashboard_view(request):
 
 # Admin Login
 def admin_login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            if user.is_staff:  # Only allow admin/staff users
-                login(request, user)
-                return redirect('dashboard')  # Redirect after login
-            else:
-                messages.error(request, "You are not an admin user.")
-        else:
-            messages.error(request, "Invalid username or password.")
-    else:
-        form = AuthenticationForm()
+    """Admin login view"""
+    error = None
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
 
-    return render(request, 'adminLogin.html', {'form': form})
+        if user is not None:
+            if user.is_staff:  # check if admin
+                login(request, user)
+                return redirect('admin-dashboard')
+            else:
+                error = "You are not an admin!"
+        else:
+            error = "Invalid credentials!"
+
+    return render(request, 'adminLogin.html', {'error': error})
+
+
+@login_required
+def admin_dashboard(request):
+    """Admin dashboard view"""
+    if not request.user.is_staff:
+        return redirect('login')  # block non-admin access
+    return render(request, 'adminDashboard.html')
