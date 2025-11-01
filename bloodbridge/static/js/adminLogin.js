@@ -1,4 +1,10 @@
 function togglePassword(el) {
-    const input = el.previousElementSibling;
-    input.type = input.type === "password" ? "text" : "password";
+    const input = el.parentElement.querySelector('input[type="password"], input[type="text"]');
+    if (input.type === "password") {
+        input.type = "text";
+        el.textContent = "";
+    } else {
+        input.type = "password";
+        el.textContent = "";
+    }
 }
