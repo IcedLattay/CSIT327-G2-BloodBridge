@@ -5,7 +5,8 @@ from .forms import CustomAuthenticationForm as CustomAuthentication
 from .forms import HospitalCreationForm as HospitalCreation
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from donations.models import BloodType, Donation, Request
+from accounts.models import CustomUser
+from donations.models import BloodType, Donation, Request, Appointment
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 
@@ -82,6 +83,8 @@ def logout_view(request):
     logout(request)
     return redirect("index")
 
+
+# USER-ONLY VIEWS!!!
 
 # User Dashboard / Home view
 @login_required(login_url='/')
@@ -168,11 +171,37 @@ def update_profile_details(request):
     return JsonResponse({"success": False, "message": "Invalid request."})
 
 
+# HOSPITAL-ONLY VIEWS!!!
+
+from datetime import date
+
 # Hospital Dashboard view
 @login_required(login_url='/')
 def hospital_dashboard_view(request):
+    user = request.user
 
-    return render(request, 'hospital-dashboard.html') # wala pay hospital dashboard html 
+    total_donations = Donation.objects.filter(hospital=user.profile.hospital_name).count()
+    total_requests = Request.objects.filter(hospital=user).count()
+    total_available_users = CustomUser.objects.filter(is_available=True).count()
+
+    appointments = Appointment.objects.filter(
+        request__hospital=request.user,  # only appointments for requests directed to this hospital
+        date__gte=date.today()           # only today or future appointments
+    ).order_by('date', 'time_start')
+
+    requests = Request.objects.filter(hospital=user, status="pending")
+
+    blood_types = BloodType.objects.all()
+
+
+    return render(request, 'hospital-dashboard.html', {
+        "total_donations" : total_donations,
+        "total_requests" : total_requests,
+        "total_available_users" : total_available_users,
+        "appointments" : appointments,
+        "requests" : requests,
+        "blood_types" : blood_types,
+    })
 
 # Admin Login
 def admin_login_view(request):
