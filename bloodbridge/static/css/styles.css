@@ -141,11 +141,38 @@ body {
   text-align: center;
   padding-top: 0px;
   margin-top: 0px;
-  padding-bottom: 30px;
+  padding-bottom: 5px;
   font-size: 30px;
 }
 
-.modal-content form {
+.modal-content .register-form-container {
+  position: relative;
+  /* border: 1px solid #ff0b0b; */
+  height: 370px;
+}
+
+.modal-content .register-form {
+  top: 0;
+  left: 0;
+  width: 100%;
+  position: absolute;
+  /* border: 1px solid #199bff; */
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content .login-form-container {
+  position: relative;
+  border: 1px solid #ff0b0b;
+  height: 300px;
+}
+
+.modal-content .login-form {
+  top: 0;
+  left: 0;
+  width: 100%;
+  position: absolute;
+  /* border: 1px solid #199bff; */
   display: flex;
   flex-direction: column;
 }
@@ -163,11 +190,13 @@ body {
 }
 
 .input-group {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 0px; /* reduced space between input and error */
-  margin-top: 15px;
-  margin-bottom: 0px;
+  /* border: 1px solid greenyellow; */
+  margin-top: 35px;
+  margin-bottom: px;
   align-items: stretch;
 }
 
@@ -243,12 +272,16 @@ input::placeholder {
   font-weight: 600;
 }
 
-#signupModal .submit-btn {
+#signupModal #register-user-form .submit-btn {
+  margin-top: 100px;
+}
+
+#signupModal #register-hospital-form .submit-btn {
   margin-top: 45px;
 }
 
 #loginModal .submit-btn {
-  margin-top: 60px;
+  margin-top: 70px;
 }
 
 .submit-btn:hover {
@@ -290,7 +323,13 @@ input::placeholder {
 
 /* ERROR MESSAGES */
 
+.error-message {
+  position: relative;
+  /* border: 1px solid saddlebrown; */
+}
+
 .custom-error, .non-field-error {
+  position: absolute;
   color: red;
   font-size: 12px;
   margin: 0px;
@@ -298,73 +337,82 @@ input::placeholder {
   padding: 0px;
 }
 
-/* ROLE SELECTION STYLES */
+/* TOGGLE USER / HOSPITAL FORM */
 
-.role-selection-group {
-  font-size: 14px;
-  color: #C2C2C2;
-  margin-top: 20px;
+
+.toggle-container {
+    border-radius: 50px;
+    background-color: #F1F1F1;
+    color: #B3A3A7;
+    box-sizing: border-box;
+    position: relative;
+    /* border: 1px solid blue; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+    height: 40px;
+    padding: 5px;
 }
 
-.role-selection {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+.slider {
+    transition: 0.3s ease;
+    border-radius: 100px;
+    position: absolute;
+    background-color: #F81A99;
+    width: 171px;
+    top: 5px;
+    left: 5px;
+    bottom: 5px;
+    z-index: 0;
 }
 
-.btn-role {
-  cursor: pointer;
-  width: 100%;
-  color: #B3A4A7;
-  border-radius: 12px;
-  background: #F1F1F1;
-  border: none;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  transition:  0.4s ease;
+.toggle-btn {
+    transition: 0.3s ease;
+    padding: 0;
+    width: 170px;
+    /* border: 1px solid rebeccapurple; */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
 }
 
-.btn-role.active {
-  background: #F81A99;
-  font-size: 15px;
-  color: #fff;
+.toggle-btn.active {
+    color: #fff;
 }
 
-.btn-role p{
-  padding: 12px 0px;
-  margin: 0px;
+.toggle-btn .icon {
+    transition: 0.3s ease;
+    /* border: 1px solid firebrick; */
+    width: 15px;
+    height: auto;
+    fill: #B3A3A7;
 }
 
-.btn-role .icon {
-  fill: #B3A4A7;
-  width: 15px;
+.toggle-btn .icon.active {
+    fill: #fff;
 }
 
-.btn-role .icon.active{
-  width: 18px;
-  fill: #fff;
+.toggle-btn p {
+    /* border: 1px solid firebrick; */
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
 }
 
 
-.role-desc {
-  color: #3A3A3A;
-  margin-top: 25px;
-  display: flex;
-  gap: 15px;
-  flex-direction: column;
-  align-items: center;
-}
 
-.desc {
-  padding: 0px;
-  margin: 0px;
-  text-align: center;
-}
+
+
+
+
+
+
+
+
 
 /* REGISTRATION STYLES */
 /* Background Overlay */
@@ -375,7 +423,7 @@ input::placeholder {
   width: 100%;
   height: 100%;
   backdrop-filter: blur(10px);
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 1000;

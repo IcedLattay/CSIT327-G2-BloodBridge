@@ -67,6 +67,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   openSignup?.addEventListener("click", () => {
+    userBtn.classList.add("active");
+    hospitalBtn.classList.remove("active");
+    userBtnIcon.classList.add("active");
+    hospitalBtnIcon.classList.remove("active");
+    userRegistrationForm.style.visibility = "visible";
+    hospitalRegistrationForm.style.visibility = "hidden";
+    moveSlider(userBtn);
     signupModal.classList.add("show")
     window.history.pushState({}, "", "/register");
   });
@@ -93,11 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
       clearModalForm(signupModal);
     }
   });
-
-  // Open modal based on server-side hint
-  const openModal = document.getElementById("openModalHint")?.value;
-  if (openModal === "login") loginModal.classList.add("show");
-  if (openModal === "register") signupModal.classList.add("show");
 
   // Handle "Go to Login" in success overlay
   if (goToLoginBtn) {
@@ -126,38 +128,126 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const selectUser = document.getElementById("selectUser");
-  const selectHospital = document.getElementById("selectHospital");
-  const selectedRole = document.getElementById("selectedRole");
-  const hospitalIcon = document.getElementById("hospital-icon");
-  const userIcon = document.getElementById("user-icon");
-  const roleDescOne = document.getElementById("desc-one");
-  const roleDescTwo = document.getElementById("desc-two");
-
-  selectUser.classList.add('active');
-  userIcon.classList.add('active');
-  document.getElementById("selectedRole").value = "user";
-  roleDescOne.textContent = 'Each user may act as a donor or recipient.';
-  roleDescTwo.textContent = 'Together, we make every drop count.';
-
-  // Helper function to toggle each button's style
-  function selectRole(role) {
-    selectedRole.value = role;
-    if(role === 'user'){
-      
-      roleDescOne.textContent = 'Each user may act as a donor or recipient.';
-      roleDescTwo.textContent = 'Together, we make every drop count.';
-    } else {
-      roleDescOne.textContent = 'Hospitals can request blood during shortages and distribute it to patients in need.';
-      roleDescTwo.textContent = 'Together, we make life-saving care possible.';
-    }
-    selectUser.classList.toggle('active', role === 'user');
-    userIcon.classList.toggle('active', role === 'user');
-    selectHospital.classList.toggle('active', role === 'hospital');
-    hospitalIcon.classList.toggle('active', role === 'hospital');
-    console.log('Selected role: ', role);
-  }
   
-  selectUser.addEventListener('click', () => selectRole('user'));
-  selectHospital.addEventListener('click', () => selectRole('hospital'));
+  // SHIFT/TOGGLE between user and hospital registration
+
+  const userBtn = document.getElementById("userBtn")
+  const userBtnIcon = document.querySelector("#userBtn .icon")
+  const hospitalBtn = document.getElementById("hospitalBtn")
+  const hospitalBtnIcon = document.querySelector("#hospitalBtn .icon")
+  const slider = document.querySelector(".slider")
+  const toggleContainer = document.querySelector(".toggle-container")
+  const userRegistrationForm = document.getElementById("register-user-form")
+  const hospitalRegistrationForm = document.getElementById("register-hospital-form") 
+
+  function moveSlider(button) {
+      const containerRect = toggleContainer.getBoundingClientRect();
+      const buttonRect = button.getBoundingClientRect();
+
+      // Calculate left position only
+      const leftPos = buttonRect.left - containerRect.left - 1; 
+
+      // Apply styles
+      slider.style.left = `${leftPos}px`;
+  }
+
+
+  userBtn.addEventListener("click", () => {
+      hospitalRegistrationForm.querySelectorAll(".custom-error, .errorlist").forEach((e) => e.remove());
+      userRegistrationForm.style.visibility = "visible";
+      hospitalRegistrationForm.style.visibility = "hidden";
+      hospitalBtn.classList.remove("active");
+      hospitalBtnIcon.classList.remove("active");
+      userBtn.classList.add("active");
+      userBtnIcon.classList.add("active");
+      moveSlider(userBtn);
+  });
+
+  hospitalBtn.addEventListener("click", () => {
+      userRegistrationForm.querySelectorAll(".custom-error, .errorlist").forEach((e) => e.remove());
+      userRegistrationForm.style.visibility = "hidden";
+      hospitalRegistrationForm.style.visibility = "visible";
+      hospitalBtn.classList.add("active");
+      hospitalBtnIcon.classList.add("active");
+      userBtn.classList.remove("active");
+      userBtnIcon.classList.remove("active");
+      moveSlider(hospitalBtn);
+  });
+
+
+
+
+
+
+  // submit registration form data for user
+  document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault(); // stop normal submission
+
+      const submitButton = form.querySelector('button');
+      submitButton.disabled = true;
+      
+      // Create FormData (works for inputs and file uploads)
+      const formData = new FormData(form);
+
+      const url = form.dataset.url;
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            "X-Requested-With": "XMLHttpRequest" // optional, sometimes useful
+          },
+          body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.status === "success") {
+          if (form.classList.contains('register-form')){
+              // show overlay
+            signupModal.classList.remove("show");
+            overlay.style.display = 'flex'; // or add a class to show it
+            userRegistrationForm.reset(); // optionally clear the form fields
+          } else if (form.classList.contains('login-form')) {
+            window.location.href = data.redirect_url;
+          }
+        } else  if (data.status === "error") {
+          for (const field in data.errors) {
+            const messages = data.errors[field];
+
+            if (field === "__all__" && messages.length > 0) {
+              const p = document.createElement('p');
+              p.classList.add('non-field-error');
+              p.textContent = messages[0]; // first error only
+              nonFieldContainer.appendChild(p);
+
+
+            } else if (messages.length > 0) {
+              const inputGroup = form.querySelector(`[name="${field}"]`)?.closest('.input-group');
+              if (inputGroup) {
+
+                const errorContainer = inputGroup.querySelector('.error-message');
+                if (errorContainer) {
+                    errorContainer.innerHTML = ''; // ← THIS IS KEY
+                    
+                    const p = document.createElement('p');
+                    p.classList.add('custom-error');
+                    p.textContent = messages[0]; // first error only
+                    errorContainer.appendChild(p);
+                }
+                
+              }
+            }
+          }
+        }
+      } catch (err) {
+      console.error("Error submitting form:", err);
+      } finally {
+        submitButton.disabled = false;
+      }
+    })
+  })
+  
 });
