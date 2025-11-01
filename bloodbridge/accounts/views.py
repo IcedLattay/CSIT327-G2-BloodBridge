@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from accounts.models import CustomUser
 from donations.models import BloodType, Donation, Request, Appointment
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
 
 # Index view
 def index_view(request):
@@ -200,3 +202,21 @@ def hospital_dashboard_view(request):
         "requests" : requests,
         "blood_types" : blood_types,
     })
+
+# Admin Login
+def admin_login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            if user.is_staff:  # Only allow admin/staff users
+                login(request, user)
+                return redirect('dashboard')  # Redirect after login
+            else:
+                messages.error(request, "You are not an admin user.")
+        else:
+            messages.error(request, "Invalid username or password.")
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'adminLogin.html', {'form': form})
