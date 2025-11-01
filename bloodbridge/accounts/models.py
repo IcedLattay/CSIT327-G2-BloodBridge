@@ -23,7 +23,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=10, blank=True, default='', null=True)
     full_name = models.CharField(max_length=25, blank=True, default='New_User', null=True)
     contact_number = models.CharField(max_length=15, blank=True, default='', null=True)
-    blood_type = models.ForeignKey('donations.BloodType', on_delete=models.SET_NULL, null=True, blank=True)
+    blood_type = models.ForeignKey('donations.BloodType', on_delete=models.SET_NULL, null=True, blank=True, related_name="profiles_present_in")
     profile_picture = models.CharField(max_length=255, default='images/default-user-icon.jpg')
 
     def __str__(self):  
