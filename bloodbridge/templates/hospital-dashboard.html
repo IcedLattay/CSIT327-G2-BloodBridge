@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/global-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hospital-header-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hospital-dashboard-styles.css' %}">
+</head>
+
+<body>
+    {% include 'hospital-header.html' %}
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-content">
+
+
+
+        <!-- SUMMARY CARDS -->
+
+        <div class="summary-cards">
+                <div class="card">
+                    <p>Total donations</p>
+                    {% if total_donations %}
+                        <p class="total">{{ total_donations }}</p>
+                    {% else %}
+                        <p class="total zero">0</p>
+                    {% endif %}
+                </div>
+                <div class="card">
+                    <p>Pending requests</p>
+                    {% if total_requests %}
+                        <p class="total">{{ total_requests }}</p>
+                    {% else %}
+                        <p class="total zero">0</p>
+                    {% endif %}
+                </div>
+                <div class="card">
+                    <p>Available donors</p>
+                    {% if total_available_users %}
+                        <p class="total">{{ total_available_users }}</p>
+                    {% else %}
+                        <p class="total zero">0</p>
+                    {% endif %}
+                </div>
+        </div>
+
+
+        <!-- MANAGING CARDS -->
+        
+        <div class="managing-cards">
+
+            <!-- DONORS LIST -->
+
+            <div class="donors card">
+                <div class="spacing">
+                    <h2>Donor List</h2>
+                </div>
+                <div class="v-divider"></div>
+                <!-- Filter row -->
+                    <div class="filters">
+                        <p>Filters:</p>
+
+                        <!-- Filter for blood types -->
+
+                        <input type="hidden" name="filter-donor-blood-type" id="filter-donor-blood-type" value="All">
+                        <div class="filter-dropdown bt-filter">
+                            <p class="filter-choice" id="donor-bt-filter">Blood Type | All</p>
+                            <div class="filter-dropdown-container">
+                                <div class="filter-dropdown-content">
+                                    <p class="filter-opt first" data-value="All">All</p>
+                                    {% for bt in blood_types %}
+                                        <p class="filter-opt
+                                            {% if forloop.last %}last{% endif %}"
+                                        data-value="{{ bt.id }}">
+                                            {{ bt.type }}
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="list">
+                {% if appointments %}
+                    <div class="list-header">
+                        <span class="col donor-name">Name</span>
+                        <span class="col bt">Blood Type</span>
+                        <span class="col appointment-date">Appointment Date</span>
+                    </div>
+                
+                    {% for appointment in appointments %}
+                        <div class="row" data-blood-type="{{ request.blood_type.id }}">
+                            <span class="col donor-name">
+                                <p>{{ appointment.donor.profile.full_name }}</p>
+                            </span>
+                            <span class="col bt">
+                                <p>{{ appointment.request.blood_type.type }}</p>
+                            </span>
+                            <span class="col appointment-date">
+                                <p>{{ appointment.date }}</p>
+                            </span>
+                        </div>
+                    {% endfor %}
+                
+                {% else %}
+                    <div class="empty-text">
+                        <p>No donors yet.</p>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+
+            <!-- USER REQUESTS LIST -->
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+            <div class="requests card">
+                <div class="spacing">
+                    <h2>Pending User Requests</h2>
+                </div>
+                <div class="v-divider"></div>
+
+                
+                    <!-- Filter row -->
+
+                    <div class="filters">
+                        <p>Filters:</p>
+
+                        <!-- filter for blood type -->
+                        <input type="hidden" name="filter-request-blood-type" id="filter-request-blood-type" value="All">
+                        <div class="filter-dropdown bt-filter">
+                            <p class="filter-choice" id="request-bt-filter">Blood Type | All</p>
+                            <div class="filter-dropdown-container">
+                                <div class="filter-dropdown-content">
+                                    <p class="filter-opt first" data-value="All">All</p>
+                                    {% for bt in blood_types %}
+                                        <p class="filter-opt
+                                            {% if forloop.last %}last{% endif %}"
+                                        data-value="{{ bt.id }}">
+                                            {{ bt.type }}
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- filter for urgency -->
+                        <input type="hidden" name="filter-request-urgency" id="filter-request-urgency" value="All">
+                        <div class="filter-dropdown urgency-filter">
+                            <p class="filter-choice" id="request-urgency-filter">Urgency | All</p>
+                            <div class="filter-dropdown-container">
+                                <div class="filter-dropdown-content">
+                                    <p class="filter-opt first" data-value="All">All</p>
+                                    <p class="filter-opt" data-value="low">Low</p>
+                                    <p class="filter-opt" data-value="medium">Medium</p>
+                                    <p class="filter-opt last" data-value="high">High</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="list">
+                    {% if requests %}
+                        <div class="list-header">
+                            <span class="col requester-name">Name</span>
+                            <span class="col requested-bt">Blood Type</span>
+                            <span class="col quantity">Quantity</span>
+                            <span class="col urgency">Urgency</span>
+                        </div>
+                        
+                        {% for request in requests %}
+                            <div class="row" data-request-id="{{ request.id }}" data-urgency="{{ request.urgency }}" data-blood-type="{{ request.blood_type.id }}">
+                                <div class="compressed">
+                                    <span class="col requester-name">
+                                        <p>{{ request.requester.profile.full_name }}</p>
+                                    </span>
+                                    <span class="col requested-bt">
+                                        <p>{{ request.blood_type.type }}</p>
+                                    </span>
+                                    <span class="col quantity">
+                                        <p>{{ request.quantity }} units</p>
+                                    </span>
+                                    <span class="col urgency">
+                                        <p>{{ request.urgency|capfirst }}</p>
+                                    </span>
+                                </div>
+                                <div class="uncompressed">
+                                    <p class="label">Note</p>
+                                    <p class="description">{{ request.notes }}</p>
+                                    <div class="buttons">
+                                        <button class="negative">Cancel</button>
+                                        <button class="positive">Approve</button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-text">
+                            <p>No pending requests from users yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'js/hospital-dashboard-script.js' %}"></script>
+    <script src="{% static 'js/hospital-header-script.js' %}"></script>
+</body>
+
+</html>
