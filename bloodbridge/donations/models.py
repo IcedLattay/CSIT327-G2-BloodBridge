@@ -13,13 +13,12 @@ class Donation(models.Model):
     donor = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='donations')
     date = models.DateField()
     hospital = models.CharField(max_length=100, null=True)
-    status = models.CharField(max_length=20)
     
     class Meta:
         ordering = ['-date']
 
     def __str__(self):
-        return f"{self.donor.username} donated to {self.hospital.name} on ({self.date})"
+        return f"{self.donor.username} donated to {self.hospital} on ({self.date})"
     
 
 class Request(models.Model):
@@ -38,6 +37,7 @@ class Request(models.Model):
     time_close = models.TimeField(null=True)
     days_open = models.CharField(max_length=255, blank=True, null=True)  # Could store as comma-separated, e.g. "Mon,Tue,Wed"
     date_requested = models.DateField(null=True)
+    status = models.CharField(max_length=25, default='pending')
 
     def __str__(self):
         requester = self.hospital.name if self.hospital else self.user.username
