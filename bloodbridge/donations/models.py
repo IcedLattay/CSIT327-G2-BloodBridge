@@ -10,7 +10,7 @@ class BloodType(models.Model):
 
 
 class Donation(models.Model):
-    donor = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='donations')
+    donor = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='donations_made')
     date = models.DateField()
     hospital = models.CharField(max_length=100, null=True)
     
@@ -28,16 +28,23 @@ class Request(models.Model):
         ('high', 'High'),
     ]
 
-    requester = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
-    blood_type = models.ForeignKey(BloodType, on_delete=models.CASCADE)
+    requester = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, blank=True, null=True, related_name="requests_made")
+    blood_type = models.ForeignKey(BloodType, on_delete=models.CASCADE, related_name="requests_present_in")
     quantity = models.PositiveIntegerField(blank=True, null=True)
     urgency = models.CharField(max_length=10, null=True)
-    notes = models.TextField(blank=True, null=True)
+    date_requested = models.DateField(null=True)
+    status = models.CharField(max_length=25, default='pending')
+
+    # for hospitals to fill up
+
     time_open = models.TimeField(null=True)
     time_close = models.TimeField(null=True)
     days_open = models.CharField(max_length=255, blank=True, null=True)  # Could store as comma-separated, e.g. "Mon,Tue,Wed"
-    date_requested = models.DateField(null=True)
-    status = models.CharField(max_length=25, default='pending')
+
+    # for users to fill up
+
+    notes = models.TextField(blank=True, null=True)
+    hospital = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, blank=True, null=True, related_name="requests_received")
 
     def __str__(self):
         requester = self.hospital.name if self.hospital else self.user.username
@@ -45,8 +52,8 @@ class Request(models.Model):
 
 
 class Appointment(models.Model):
-    donor = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
-    request = models.ForeignKey(Request, on_delete=models.CASCADE)
+    donor = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name="appointments_made")
+    request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name="appointments_active")
     date = models.DateField(null=True)
     time_start = models.TimeField(null=True)
     time_end = models.TimeField(null=True)
