@@ -12,4 +12,5 @@ urlpatterns = [
     path("update-pfp/", views.update_pfp, name="update-pfp"),
     path("update-profile-details/", views.update_profile_details, name="update-profile-details"),
     path("hospital-dashboard/", views.hospital_dashboard_view, name="hospital-dashboard"),
+    path('admin-login/', views.admin_login_view, name='admin_login'),
 ]
