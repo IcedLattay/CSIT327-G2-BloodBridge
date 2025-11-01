@@ -3,6 +3,9 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 from django.contrib.auth.forms import AuthenticationForm
 
+
+
+
 class CustomUserCreationForm(UserCreationForm):
     username = forms.EmailField(
         error_messages={
@@ -28,7 +31,44 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'password1', 'password2', 'role']
+        fields = ['username', 'password1', 'password2']
+
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = 'user'
+
+        if (commit):
+            user.save()
+
+        return user
+
+
+class HospitalCreationForm(CustomUserCreationForm):
+    name = forms.CharField(
+        max_length=255,
+        error_messages={'required': "Hospital name is required."}
+    )
+
+    class Meta(CustomUserCreationForm.Meta):
+        fields = CustomUserCreationForm.Meta.fields + ['name']
+
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = 'hospital'
+        user.save()
+
+        if commit:
+            user.save()
+            # ✅ Update the profile that was auto-created by the signal
+            profile = user.profile  # thanks to OneToOne relation
+            profile.hospital_name = self.cleaned_data['name']
+            profile.save()
+
+
+        return user
+
 
 
 class CustomAuthenticationForm(AuthenticationForm):

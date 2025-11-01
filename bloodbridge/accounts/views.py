@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from .forms import CustomUserCreationForm as CustomCreation
 from .forms import CustomAuthenticationForm as CustomAuthentication
+from .forms import HospitalCreationForm as HospitalCreation
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from donations.models import BloodType, Donation, Request
@@ -20,29 +21,32 @@ def index_view(request):
     })
 
 
-# Registration view
+# User Registration view
 def register_view(request):
-    if request.user.is_authenticated:  # di na siya kabalik sa /register url if logged in
-        return redirect("home")
-    
-    if request.method == "POST":
-        form = CustomCreation(request.POST)
+    if request.method == 'POST':
+        form = CustomCreation(request.POST, request.FILES)
+
         if form.is_valid():
             form.save()
-
-            # ✅ Instead of redirecting to another page,
-            # re-render index.html with a success message
-            return render(request, "index.html", {
-                "registration_success": True,  # flag to show success popup
-            })
+            return JsonResponse({'status': 'success'})
         else:
-            login_form = CustomAuthentication()
-            return render(request, "index.html", {
-                "login_form": login_form,
-                "registration_form": form,
-                "open_modal": "register"
-            })
-    return redirect("index")
+            # Return errors as JSON
+            return JsonResponse({
+                'status': 'error', 'errors': form.errors}, status=400)
+    return redirect('index')
+
+
+# Hospital Registration view
+def register_hospital_view(request):
+    if request.method == 'POST':
+        form = HospitalCreation(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error','errors': form.errors,}, status=400)
+    return redirect('index')
 
 
 # Login view
@@ -61,17 +65,13 @@ def login_view(request):
             user = form.get_user()
             login(request, user)  # log in user
 
+            # ✅ Return JSON instead of redirect
             if user.role == 'user':
-                return redirect('home')   # go to home / user dashboard if role is user
+                return JsonResponse({'status': 'success', 'redirect_url': '/home/'})
             elif user.role == 'hospital':
-                return redirect('hospital_dashboard') # go to hospital dashboard if role is hospital
+                return JsonResponse({'status': 'success', 'redirect_url': '/hospital-dashboard/'})
         else:
-            registration_form = CustomCreation()
-            return render(request, "index.html", {
-                "login_form": form,
-                "registration_form": registration_form,
-                "open_modal": "login"
-            })
+            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
     return redirect("index")
 
 
@@ -89,7 +89,7 @@ def home_view(request):
 
     total_donations = Donation.objects.filter(donor=user).count()
     total_requests = Request.objects.filter(requester=user).count()
-    total_pending = Donation.objects.filter(donor=user, status="Pending").count() + Request.objects.filter(requester=user, status="Pending").count()
+    total_pending = Request.objects.filter(requester=user, status="Pending").count()
 
     context = {
         "total_donations": total_donations,
