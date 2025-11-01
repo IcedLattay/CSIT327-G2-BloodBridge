@@ -1,0 +1,44 @@
+
+
+
+    .site-header {
+        width: 100%;
+        /* border: 1px solid rgb(18, 42, 42); */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo img {
+        /*border: 1px solid black;*/
+        height: 70px;
+    }
+
+    .nav-links {
+        /*border: 1px solid blue;*/
+        display: flex;
+        align-items: center;
+        gap: 23px;
+    }
+
+    .nav-btn{
+        cursor: default;
+        padding: 5px;
+        /*border: 1px solid rgb(230, 0, 255);*/
+        border-radius: 5px;
+        font-size: 16px;
+        font-family: 'Instrument Sans';
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+    }
+
+    .nav-btn:hover {
+        background-color: #F5E8F0;
+    }
