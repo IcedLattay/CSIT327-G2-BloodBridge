@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="{% static 'css/global-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hospital-header-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hospital-manage-requests-styles.css' %}">
+</head>
+
+<body>
+    {% include 'hospital-header.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- MAIN CONTENT -->
+    <main class="manage-requests">
+        <div class="card manage">
+            <div class="spacing">
+                <h2>Manage Requests</h2>
+            </div>
+            <div class="h-divider"></div>
+            
+            <div class="button-container">
+                <button type="button">Make a request</button>
+            </div>
+            <div class="row label">
+                <span>Active Requests</span>
+            </div>
+
+                <!-- Scrollable donation list -->
+
+                {% if requests_made %}
+                <div class="requests-list">
+                    <!-- Header row -->
+                    <div class="row header">
+                        <span class="col urgency">Urgency</span>
+                        <span class="col units">Units needed</span>
+                        <span class="col donors">No. of donors</span>
+                        <span class="col emergency">Emergency</span>
+                    </div>
+                    {% for request in requests_made %}
+                        <div class="row instance" data-id="{{ request.id }}">
+                            <div class="col urgency {% if request.urgency == 'low' %} low 
+                                                    {% elif request.urgency == 'medium' %} medium
+                                                    {% elif request.urgency == 'high' %} high
+                                                    {% endif %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" class="icon {% if request.urgency == 'low' %} low 
+                                                                                                                                        {% elif request.urgency == 'medium' %} medium
+                                                                                                                                        {% elif request.urgency == 'high' %} high
+                                                                                                                                        {% endif %}">
+                                    <path d="m21.5,6.5c-.254,0-.508-.096-.703-.289-.393-.388-.396-1.021-.008-1.414l1.5-1.517c.388-.393,1.021-.396,1.414-.008s.396,1.021.008,1.414l-1.5,1.517c-.195.198-.453.297-.711.297Zm-3.255-3.265l.92-1.775c.254-.49.063-1.094-.427-1.348-.492-.254-1.095-.063-1.348.427l-.92,1.775c-.254.49-.063,1.094.427,1.348.147.076.305.112.459.112.362,0,.711-.197.889-.54ZM3.203,6.211c.393-.388.396-1.021.008-1.414l-1.5-1.517c-.388-.393-1.021-.396-1.414-.008s-.396,1.021-.008,1.414l1.5,1.517c.195.198.453.297.711.297.254,0,.508-.096.703-.289Zm3.9-2.548c.49-.254.682-.858.427-1.348l-.92-1.775c-.253-.489-.855-.681-1.348-.427-.49.254-.682.858-.427,1.348l.92,1.775c.178.343.527.54.889.54.155,0,.312-.036.459-.112Zm13.237,14.008c-.189.209-.458.329-.741.329H4.401c-.283,0-.552-.12-.741-.329-.19-.209-.282-.489-.254-.771l.66-6.598c.245-2.453,2.289-4.302,4.754-4.302h6.361c2.465,0,4.509,1.85,4.754,4.302l.66,6.598c.028.281-.064.561-.254.771Zm-8.34-6.671c0-.552-.448-1-1-1h-1.979c-.514,0-.944.389-.995.9l-.2,2c-.055.549.346,1.04.896,1.095.034.003.067.005.101.005.508,0,.942-.385.994-.9l.11-1.1h1.075c.552,0,1-.448,1-1Zm12,12h0c0,.552-.448,1-1,1H1c-.552,0-1-.448-1-1h0c0-1.657,1.343-3,3-3h18c1.657,0,3,1.343,3,3Z"/>
+                                </svg>
+                                <p>{{ request.urgency|capfirst }}</p>
+                            </div>
+                            <div class="col units">
+                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24">
+                                    <path d="m5.5,10.489l-3.889,4.122c-1.039,1.039-1.611,2.42-1.611,3.889s.572,2.851,1.611,3.889c1.039,1.039,2.42,1.611,3.889,1.611s2.85-.572,3.889-1.611c2.145-2.145,2.145-5.634.02-7.758l-3.909-4.142Zm17.028-1.033l-3.528-3.45-3.535,3.458c-1.95,1.95-1.95,5.122,0,7.071.944.944,2.2,1.464,3.535,1.464s2.591-.52,3.536-1.464c1.949-1.95,1.949-5.122-.008-7.079ZM10,.405l-2.828,2.767c-.756.755-1.172,1.76-1.172,2.828s.416,2.073,1.171,2.828c.755.756,1.76,1.172,2.829,1.172s2.073-.416,2.829-1.172c1.56-1.56,1.56-4.097-.008-5.664L10,.405Z"/>
+                                </svg>
+                                <p><span>{{ request.current_quantity }}</span> / {{ request.quantity }} units</p>
+                            </div>
+                            <div class="col donors">
+                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24">
+                                    <path d="M12,16a4,4,0,1,1,4-4A4,4,0,0,1,12,16Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,12,10Zm6,13A6,6,0,0,0,6,23a1,1,0,0,0,2,0,4,4,0,0,1,8,0,1,1,0,0,0,2,0ZM18,8a4,4,0,1,1,4-4A4,4,0,0,1,18,8Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,18,2Zm6,13a6.006,6.006,0,0,0-6-6,1,1,0,0,0,0,2,4,4,0,0,1,4,4,1,1,0,0,0,2,0ZM6,8a4,4,0,1,1,4-4A4,4,0,0,1,6,8ZM6,2A2,2,0,1,0,8,4,2,2,0,0,0,6,2ZM2,15a4,4,0,0,1,4-4A1,1,0,0,0,6,9a6.006,6.006,0,0,0-6,6,1,1,0,0,0,2,0Z"/>
+                                </svg>
+                                <p><span>{{ request.current_quantity }}</span> donors</p>
+                            </div>
+                            <div class="col emergency">
+                                <div class="checkbox {% if request.is_emergency %}checked{% endif %}" data-value="{{ request.is_emergency|yesno:'true,false' }}">
+                                    <svg class="icon {% if request.is_emergency %}checked{% endif %}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 507.506 507.506" style="enable-background:new 0 0 507.506 507.506;" xml:space="preserve">
+                                        <g>
+                                            <path d="M163.865,436.934c-14.406,0.006-28.222-5.72-38.4-15.915L9.369,304.966c-12.492-12.496-12.492-32.752,0-45.248l0,0   c12.496-12.492,32.752-12.492,45.248,0l109.248,109.248L452.889,79.942c12.496-12.492,32.752-12.492,45.248,0l0,0   c12.492,12.496,12.492,32.752,0,45.248L202.265,421.019C192.087,431.214,178.271,436.94,163.865,436.934z"/>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty-text">You haven't made any requests yet.</div>
+            {% endif %}
+        </div>
+
+        <div class="modal" id="" >
+            <form class="card form" id="">
+                {% csrf_token %}
+                
+                <p class="label">Blood Request Form</p>
+
+                <div class="fields-group">
+                    <div class="section blood">
+                        <div class="field bt">
+                            <p>Blood Type</p>
+                            <input type="hidden" name="blood_type" id="selected-blood-type" value="">
+                            <div class="dropdown-bt">
+                                <p class="dropdown-bt-btn" id="dropdown-bt-btn">A+ / B+ / O</p>
+                                <div class="dropdown-bt-content-bg">
+                                    <div class="dropdown-bt-content" id="dropdown-bt-content">
+                                        {% for bt in blood_types %}
+                                        <p data-value="{{ bt.id }}" class="dropdown-bt-option 
+                                                                            {% if forloop.first %}first{% endif %}
+                                                                            {% if forloop.last %}last{% endif %}">{{ bt.type }}</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="error-message">
+                                <p class="custom-error"></p>
+                            </div>
+                        </div>
+
+                        <div class="field quantity">
+                            <p>Quantity</p>
+                            <div class="quantity-field">
+                                <input type="number" min="1" step="1" oninput="if(this.value < 1) this.value = 1;" value="1" name="quantity" id="quantity-field">
+                                <p>units</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section urgencies">
+                        <div class="field urgencies">
+                            <p>Urgency</p>
+                            <input type="hidden" name="urgency" id="selected-urgency">
+                            <div class="urgency-selection">
+                                <button type="button" data-value="low">Low</button>
+                                <button type="button" data-value="medium">Medium</button>
+                                <button type="button" data-value="high">High</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section availability">
+                        <div class="field availability">
+                            <p>Availability</p>
+                            <div class="set hours">
+                                <input type="text" name="time_open" id="time-open" placeholder="Select Time">
+
+                                <script>
+                                    flatpickr("#time-open", {
+                                        enableTime: true,
+                                        noCalendar: true,           // 24-hour format for data (e.g., "08:00")
+                                        altFormat: "h:i K",          // 12-hour format for display (e.g., "8:00 AM")
+                                        altInput: true,              // Show altFormat to users
+                                        time_24hr: false,            // Show AM/PM to users
+                                        defaultDate: "08:00"
+                                    });
+                                </script>
+                                <p>to</p>
+                                <input type="text" name="time_close" id="time-close" placeholder="Select Time">
+
+                                <script>
+                                    flatpickr("#time-close", {
+                                        enableTime: true,
+                                        noCalendar: true,           // 24-hour format for data (e.g., "08:00")
+                                        altFormat: "h:i K",          // 12-hour format for display (e.g., "8:00 AM")
+                                        altInput: true,              // Show altFormat to users
+                                        time_24hr: false,            // Show AM/PM to users
+                                        defaultDate: "18:00"
+                                    });
+                                </script>
+                            </div>
+                            <div class="error-message" data-for="time_fields">
+                                <p class="custom-error"></p>
+                            </div>
+                            <input type="hidden" name="days_open" id="available-days" value="">
+                            <div class="set days">
+                                <button type="button" data-value="Mon">M</button>
+                                <button type="button" data-value="Tue">T</button>
+                                <button type="button" data-value="Wed">W</button>
+                                <button type="button" data-value="Thur">Th</button>
+                                <button type="button" data-value="Fri">F</button>
+                                <button type="button" data-value="Sat">S</button>
+                                <button type="button" data-value="Sun">Sn</button>
+                            </div>
+                            <div class="error-message" data-for="days_open">
+                                <p class="custom-error"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="negative">Cancel</button>
+                    <button type="submit" class="positive">Create Request</button>
+                </div>
+                
+            </form>
+        </div>
+    </main>
+
+    <script src="{% static 'js/hospital-manage-requests-script.js' %}"></script>
+    <script src="{% static 'js/hospital-header-script.js' %}"></script>
+</body>
+
+</html>
