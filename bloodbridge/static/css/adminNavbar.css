@@ -4,16 +4,17 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    /* slightly smaller side padding */
-    background-color: #fff;
+    background-color: #F81A99;
+    /* vibrant pink */
     width: 100%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* softer shadow for depth */
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
-    /* higher z-index for overlapping elements */
     box-sizing: border-box;
+    transition: background 0.3s ease;
 }
 
 /* Logo section */
@@ -23,19 +24,30 @@
     gap: 12px;
 }
 
+/* Logo image with white circle background */
 .logo img {
     width: 50px;
-    height: auto;
-    /* keeps the image aspect ratio */
+    height: 50px;
+    /* make it square */
+    border-radius: 50%;
+    /* makes it circular */
+    background-color: white;
+    /* white circle background */
+    padding: 5px;
+    /* optional: gives spacing inside the circle */
+    object-fit: contain;
+    /* ensures logo scales inside circle */
 }
 
+/* Logo text */
 .logo h1 {
     font-size: 22px;
-    color: #F81A99;
+    color: white;
     margin: 0;
     font-weight: 700;
-    /* makes the title stand out */
+    letter-spacing: 1px;
 }
+
 
 /* Navigation links */
 .nav-links {
@@ -45,10 +57,13 @@
 
 .nav-links a {
     text-decoration: none;
-    color: #3A3A3A;
+    color: white;
+    /* better contrast on pink background */
     font-weight: 500;
-    transition: all 0.3s ease;
+    font-size: 16px;
     position: relative;
+    transition: all 0.3s ease;
+    padding: 5px 0;
 }
 
 .nav-links a::after {
@@ -56,19 +71,26 @@
     display: block;
     width: 0;
     height: 2px;
-    background: #F81A99;
-    transition: width 0.3s;
+    background: white;
+    /* underline matches text for clean look */
+    transition: width 0.3s ease;
     position: absolute;
     bottom: -4px;
     left: 0;
 }
 
 .nav-links a:hover {
-    color: #F81A99;
+    color: #ffe6f0;
+    /* lighter pink on hover for subtle effect */
 }
 
 .nav-links a:hover::after {
     width: 100%;
+}
+
+/* Add slight hover scale effect for better interactivity */
+.nav-links a:hover {
+    transform: scale(1.05);
 }
 
 /* Responsive adjustments */

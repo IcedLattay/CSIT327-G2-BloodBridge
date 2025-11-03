@@ -2,13 +2,61 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/adminDashboard.css' %}">
 </head>
+
 <body>
     <!-- Header -->
-     {% include 'components/adminNavbar.html' %}
+    {% include 'components/adminNavbar.html' %}
+
+    <!-- adminHospitals.html -->
+    <div class="hospital-table-container">
+        <h2>Manage Hospitals</h2>
+        <div class="tabs">
+            <button class="tab active">Hospital accounts</button>
+            <button class="tab">Hospital account requests</button>
+        </div>
+        <table class="hospital-table">
+            <thead>
+                <tr>
+                    <th>Hospital Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Cebu City Medical Center</td>
+                    <td><button class="delete-btn">delete</button></td>
+                </tr>
+                <tr>
+                    <td>Ace Medical Hospital</td>
+                    <td><button class="delete-btn">delete</button></td>
+                </tr>
+                <tr>
+                    <td>Vicente Sotto Memorial Medical Center</td>
+                    <td><button class="delete-btn">delete</button></td>
+                </tr>
+                <tr>
+                    <td>Chong Hua Hospital</td>
+                    <td><button class="delete-btn">delete</button></td>
+                </tr>
+                <tr>
+                    <td>Adventist Hospital Cebu (Miller Hospital)</td>
+                    <td><button class="delete-btn">delete</button></td>
+                </tr>
+                <tr>
+                    <td>Cebu Doctors’ University Hospital</td>
+                    <td><button class="delete-btn">delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </body>
+
 </html>

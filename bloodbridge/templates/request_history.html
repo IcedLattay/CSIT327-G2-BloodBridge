@@ -1,75 +1,73 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Donation History</title>
-    <link rel="stylesheet" href="{% static 'css/global-styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/header-styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/history.css' %}">
-</head>
-<body>
-    
-    {% include 'header.html' %}
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Request History</title>
+        <link rel="stylesheet" href="{% static 'css/global-styles.css' %}">
+        <link rel="stylesheet" href="{% static 'css/history.css' %}">
+    </head>
+    <body>
+        
+        {% include 'header.html' %}
 
-    <!-- MAIN CONTENT -->
-    <main class="history">
-        <div class="card">
-            <div class="spacing">
-                <h2>Request History</h2>
-            </div>
-            <div class="v-divider"></div>
-            {% if requests %}
-                <!-- Scrollable donation list -->
-
-                <div class="history-list">
-                    <!-- Header row -->
-                    <div class="history-header">
-                        <span class="col date">Date Donated</span>
-                        <span class="col bt">Blood Type</span>
-                        <span class="col compat-bt-s">Compatible Blood Types</span>
-                        <span class="col status">Status</span>
-                    </div>
-                
-                    {% for request in requests %}
-                        <div class="history-row">
-                            <span class="col date">
-                                <p>{{ request.date|date:"m/d/Y" }}</p>
-                            </span>
-                            <span class="col bt">
-                                <p>{{ request.blood_type.type }}</p>
-                            </span>
-                            <span class="col compat-bt-s">
-                                {% if request.blood_type.type == 'AB+' %}
-                                    <p>Any</p>
-                                {% else %}
-                                    {% for bt in request.blood_type.compatible_with.all %}
-                                        <p>{{ bt.type }}</p>
-                                    {% endfor %}
-                                {% endif %}
-                            </span>
-                            <span class="col status 
-                                {% if request.status == 'Complete' %}complete
-                                {% elif request.status == 'Pending' %}pending
-                                {% elif request.status == 'Confirmed' %}confirmed
-                                {% elif request.status == 'Cancelled' %}cancelled
-                                {% endif %}
-                            ">
-                                {{ request.status }}
-                            </span>
-                        </div>
-                    {% endfor %}
+        <!-- MAIN CONTENT -->
+        <main class="history">
+            <div class="card">
+                <div class="spacing">
+                    <h2>Request History</h2>
                 </div>
+                <div class="v-divider"></div>
+                {% if requests %}
+                    <!-- Scrollable donation list -->
 
-            {% else %}
-                <p class="empty-text">No Request history.</p>
-            {% endif %}
-        </div>
-    </main>
+                    <div class="history-list">
+                        <!-- Header row -->
+                        <div class="history-header">
+                            <span class="col date">Date Donated</span>
+                            <span class="col bt">Blood Type</span>
+                            <span class="col compat-bt-s">Compatible Blood Types</span>
+                            <span class="col status">Status</span>
+                        </div>
+                    
+                        {% for request in requests %}
+                            <div class="history-row">
+                                <span class="col date">
+                                    <p>{{ request.date|date:"m/d/Y" }}</p>
+                                </span>
+                                <span class="col bt">
+                                    <p>{{ request.blood_type.type }}</p>
+                                </span>
+                                <span class="col compat-bt-s">
+                                    {% if request.blood_type.type == 'AB+' %}
+                                        <p>Any</p>
+                                    {% else %}
+                                        {% for bt in request.blood_type.compatible_with.all %}
+                                            <p>{{ bt.type }}</p>
+                                        {% endfor %}  
+                                    {% endif %}
+                                </span>
+                                <span class="col status 
+                                    {% if request.status == 'Complete' %}complete
+                                    {% elif request.status == 'Pending' %}pending
+                                    {% elif request.status == 'Confirmed' %}confirmed
+                                    {% elif request.status == 'Cancelled' %}cancelled
+                                    {% endif %}
+                                ">
+                                    {{ request.status }}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
 
-    <script src="{% static 'js/header-script.js' %}"></script>
-    <script src="{% static 'js/history.js' %}"></script>
+                {% else %}
+                    <p class="empty-text">No Request history.</p>
+                {% endif %}
+            </div>
+        </main>
 
-</body>
-</html>
+        <script src="{% static 'js/history.js' %}"></script>
+
+    </body>
+    </html>
