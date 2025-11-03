@@ -10,52 +10,6 @@
      background-color: #FF428B;
  }
 
- /* HEADER NAVBAR */
- .navbar {
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     padding: 15px 60px;
-     background-color: #fff;
-     width: 100%;
-     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-     position: fixed;
-     top: 0;
-     z-index: 100;
- }
-
- .logo {
-     display: flex;
-     align-items: center;
-     gap: 10px;
- }
-
- .logo img {
-     width: 50px;
- }
-
- .logo h1 {
-     font-size: 20px;
-     color: #F81A99;
-     margin: 0;
- }
-
- .nav-links {
-     display: flex;
-     gap: 25px;
- }
-
- .nav-links a {
-     text-decoration: none;
-     color: #3A3A3A;
-     font-weight: 500;
-     transition: color 0.3s;
- }
-
- .nav-links a:hover {
-     color: #F81A99;
- }
-
  /* LOGIN FORM */
  .login-container {
      max-width: 380px;
