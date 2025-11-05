@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="{% static 'css/global-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hospital-header-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hospital-record-donation-styles.css' %}">
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    {% include 'hospital-header.html' %}
+
+
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <div class="card">
+            <div class="red section form">
+                <h2 class="orange">Record Donation</h2>
+                <div class="orange sub-section">
+                    <form class="yellow">
+                        <div class="green field">
+                            <p class="blue">Donor</p>
+                            <input type="hidden" name="donor" id="selected-donor" value="">
+                            <div class="blue input donor-search">
+                                <div class="indigo dropdown-btn">
+                                    <img class="magenta" src="{% static 'images/default-user-icon.jpg' %}" id="selected-donor-img">
+                                    <div class="magenta v-divider"></div>
+                                    <input class="magenta" type="text" placeholder="Search a user" id="user-search-input" value="">
+                                </div>
+                                <div class="indigo dropdown" id="user-search-dropdown">
+                                    <div class="magenta dropdown-content">
+                                        <!-- populated by users -->
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="blue custom-error" data-id="donor-field-error"></p>
+                        </div>
+                        <div class="green field compounded">
+                            <div class="blue sub-field bt">
+                                <p class="indigo">Blood Type</p>
+                                <input type="hidden" name="blood_type" id="selected-blood-type" value="">
+                                <div class="indigo btn-container">
+                                    <p class="magenta dropdown-btn" id="bt-dropdown-btn">A+ / B+ / O</p>
+                                    <div class="magenta dropdown" id="bt-dropdown">
+                                        <div class="brown dropdown-content">
+                                            {% for bt in blood_types %}
+                                                <p class="pink option{% if forloop.first %} first{% endif %}{% if forloop.last %} last{% endif %}"
+                                                data-value="{{ bt.id }}">
+                                                    {{ bt.type }}
+                                                </p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="indigo custom-error" data-id="blood_type-field-error"></p>
+                            </div>
+                            <div class="blue sub-field date">
+                                <p class="indigo">Date donated</p>
+                                <div class="indigo btn-container">
+                                    <input class="magenta" type="text" name="date" id="selected-date" placeholder="Select date" />
+                                    <svg class="magenta" xmlns="http://www.w3.org/2000/svg" id="calendar-icon" viewBox="0 0 26 24">
+                                        <path d="M19,2H18V1a1,1,0,0,0-2,0V2H8V1A1,1,0,0,0,6,1V2H5A5.006,5.006,0,0,0,0,7V19a5.006,5.006,0,0,0,5,5H19a5.006,5.006,0,0,0,5-5V7A5.006,5.006,0,0,0,19,2ZM2,7A3,3,0,0,1,5,4H19a3,3,0,0,1,3,3V8H2ZM19,22H5a3,3,0,0,1-3-3V10H22v9A3,3,0,0,1,19,22Z"/><circle cx="12" cy="15" r="1.5"/><circle cx="7" cy="15" r="1.5"/><circle cx="17" cy="15" r="1.5"/>
+                                    </svg>
+                                </div>
+                                
+                                <script>
+                                    // Initialize Flatpickr on the actual input
+                                    const picker = flatpickr("#selected-date", {
+                                        dateFormat: "Y-m-d",
+                                    });
+
+                                    document.getElementById("calendar-icon").addEventListener("click", () => {
+                                        picker.open();
+                                    });
+                                </script>
+                                <p class="indigo custom-error" data-id="date-field-error"></p>
+                            </div>
+                        </div>
+                        <div class="green field">
+                            <p class="blue">Notes</p>
+                            <textarea class="blue input notes" maxlength="225" name="notes" placeholder="Start typing here..."></textarea>
+                        </div>
+                        <button class="green" type="submit" id="record-donation-btn">Record Donation</button>
+                    </form>
+                </div>
+            </div>
+            <div class="red section list">
+                <h2 class="orange">Donations List</h2>
+                <div class="orange sub-section">
+                    {% if donations_received %}
+
+                    <div class="yellow row header">
+                        <p class="green col date-col">Date</p>
+                        <p class="green col name-col">Name</p>
+                        <p class="green col bt-col">Blood Type</p>
+                    </div>
+
+                    {% for donation in donations_received %}
+
+                    <div class="yellow row donation-record">
+                        <div class="green info">
+                            <div class="blue col date-col">
+                                <p class="indigo">{{ donation.date|date:"m/d/Y" }}</p>
+                            </div>
+                            <div class="blue col name-col">
+                                <p class="indigo">{{ donation.donor.profile.full_name }}</p>
+                            </div>
+                            <div class="blue col bt-col">
+                                <p class="indigo">{{ donation.blood_type.type }}</p>
+                            </div>
+                        </div>
+                        <div class="green info additional">
+                            <p class="blue">Note</p>
+                            <p class="blue content">{{ donation.notes }}</p>
+                        </div> 
+                    </div>
+
+                    {% endfor %}
+
+                    {% else %}
+
+                    <div class="yellow row empty">
+                        <p class="green col">No donations recorded.</p>
+                    </div>
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'js/hospital-record-donation-script.js' %}"></script>
+    <script src="{% static 'js/hospital-header-script.js' %}"></script>
+</body>
+
+</html>

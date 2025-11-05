@@ -1,10 +1,12 @@
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Donation, Request
+from .models import Donation, Request, BloodType
+from accounts.models import Profile, CustomUser
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .forms import BloodRequestForm as RequestForm
+from .forms import DonationForm 
 
 # Create your views here.
 
@@ -47,6 +49,20 @@ def approve_appointment(request, request_id):
     
     return JsonResponse({"success": True})
 
+
+
+# Hospital Manage Requests view
+@login_required(login_url='/')
+def hospital_manage_requests_view(request):
+    user = request.user
+    blood_types = BloodType.objects.all()
+
+    requests_made = user.requests_made.filter(status="pending").all()
+
+    return render(request, "hospital-manage-requests.html", {
+        "requests_made" : requests_made,
+        "blood_types" : blood_types,
+    })
 
 # Toggle Request Emergency view
 @login_required
@@ -106,13 +122,74 @@ def hospital_submit_request(request):
             
             request_instance.save()
 
-            # If there are m2m fields, save them after instance.save()
-            # form.save_m2m()
             return JsonResponse({'success': True})
         
         return JsonResponse({'success': False, 'errors': form.errors}, status=400)
 
-    return redirect('accounts:hospital-manage-requests')
+    return redirect('hospital-manage-requests')
 
 
 
+# Hospital Record Donations view
+@login_required(login_url='/')
+def hospital_record_donations_view(request):
+
+    user = request.user
+    blood_types = BloodType.objects.all()
+    donations_received = user.donations_received.all()
+
+    return render(request, "hospital-record-donation.html", {
+        "blood_types" : blood_types,
+        "donations_received" : donations_received,
+    })
+
+
+# Search for users view
+@login_required
+def search_users(request):
+    query = request.GET.get('q', '').strip()
+
+    if query:
+        profiles = Profile.objects.filter(full_name__icontains=query)[:10]
+    else:
+        profiles = Profile.objects.all()[:10]
+
+    data = [
+        {
+            "id": p.user.id,
+            "name": p.full_name,
+            "image": p.profile_picture,
+        }
+        for p in profiles
+    ]
+
+    return JsonResponse({"users": data})
+
+
+
+@login_required
+def create_donation_record(request):
+    if request.method == "POST":
+        form = DonationForm(request.POST)
+
+        if form.is_valid():
+            donor = CustomUser.objects.get(id=form.cleaned_data['donor'])
+            blood_type = BloodType.objects.get(id=form.cleaned_data['blood_type'])
+            date = form.cleaned_data['date']
+            notes = form.cleaned_data['notes']
+
+            donation_instance = Donation(
+                donor=donor,
+                date=date,
+                hospital=request.user,
+                blood_type=blood_type,
+                notes=notes
+            )
+
+            donation_instance.save()
+
+            return JsonResponse({'success' : True})
+        
+        return JsonResponse({'success' : False, 'errors' : form.errors}, status=400)
+    
+    return redirect('create-donation-record')
