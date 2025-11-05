@@ -35,7 +35,7 @@
                     {% for request in requests %}
                         <div class="history-row">
                             <span class="col date">
-                                <p>{{ request.date|date:"m/d/Y" }}</p>
+                                <p>{{ request.date_requested|date:"m/d/Y" }}</p>
                             </span>
                             <span class="col bt">
                                 <p>{{ request.blood_type.type }}</p>
@@ -50,13 +50,13 @@
                                 {% endif %}
                             </span>
                             <span class="col status 
-                                {% if request.status == 'Complete' %}complete
-                                {% elif request.status == 'Pending' %}pending
-                                {% elif request.status == 'Confirmed' %}confirmed
-                                {% elif request.status == 'Cancelled' %}cancelled
+                                {% if request.status == 'complete' %}complete
+                                {% elif request.status == 'pending' %}pending
+                                {% elif request.status == 'confirmed' %}confirmed
+                                {% elif request.status == 'cancelled' %}cancelled
                                 {% endif %}
                             ">
-                                {{ request.status }}
+                                {{ request.status|capfirst }}
                             </span>
                         </div>
                     {% endfor %}

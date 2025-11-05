@@ -14,7 +14,7 @@ from .forms import DonationForm
 @login_required(login_url='/')
 def donation_history_view(request):
     
-    donations = Donation.objects.filter(donor=request.user).order_by('-date')
+    donations = Donation.objects.filter(donor=request.user).order_by('-date_requested')
 
     return render(request, 'donation_history.html', {
         "donations": donations,
@@ -24,7 +24,7 @@ def donation_history_view(request):
 @login_required(login_url='/')
 def request_history_view(request):
 
-    requests = Request.objects.filter(requester=request.user).order_by('-date')
+    requests = Request.objects.filter(requester=request.user).order_by('-date_requested')
 
     return render(request, 'request_history.html', {
         "requests": requests, 
