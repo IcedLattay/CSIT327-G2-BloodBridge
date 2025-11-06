@@ -7,25 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/global-styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/header-styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 </head>
 
 <body>
-    <!-- NAVIGATION
-    <nav class="navbar">
-        <div class="logo">
-            <img src="{% static 'images/logo.png' %}" alt="Logo">
-            <span>BloodBridge</span>
-        </div>
 
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">My Records</a>
-            <a href="{% url 'logout' %}" class="profile-icon" title="Logout"></a>
-        </div>
-    </nav> -->
-
+    <!-- NAVIGATION -->
     {% include 'header.html' %}
 
     <!-- MAIN CONTENT -->
@@ -55,13 +42,10 @@
                 </div>
             {% else %}
                 <div class="card">Your total pending items will appear here once available.</div>
-            {% endif %}
-            
+            {% endif %}    
         </div>
     </main>
 
-    
-    <script src="{% static 'js/header-script.js' %}"></script>
 </body>
 
 </html>

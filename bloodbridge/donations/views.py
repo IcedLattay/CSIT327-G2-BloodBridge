@@ -8,8 +8,6 @@ from django.views.decorators.http import require_POST
 from .forms import BloodRequestForm as RequestForm
 from .forms import DonationForm 
 
-# Create your views here.
-
 # Donation_history view
 @login_required(login_url='/')
 def donation_history_view(request):
@@ -19,6 +17,7 @@ def donation_history_view(request):
     return render(request, 'donation_history.html', {
         "donations": donations,
     })
+
 
 # Request_history view
 @login_required(login_url='/')
@@ -36,17 +35,13 @@ def cancel_appointment(request, request_id):
     req = Request.objects.get(id=request_id)
     req.status = "cancelled"
     req.save()
-
     return JsonResponse({"success": True})
-
-
 
 @require_POST
 def approve_appointment(request, request_id):
     req = Request.objects.get(id=request_id)
     req.status = "confirmed"
     req.save()
-    
     return JsonResponse({"success": True})
 
 

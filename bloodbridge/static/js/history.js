@@ -1,19 +1,14 @@
-const historyList = document.querySelector('.history-list');
-const maxHeight = 565; // Corresponds to the max-height in CSS
+document.addEventListener('DOMContentLoaded', () => {
+  const historyList = document.querySelector('.history-list');
+  if (!historyList) return; // exit if not found
 
-const resizeObserver = new ResizeObserver(entries => {
-  for (const entry of entries) {
-    // Get the current height of the content box
-    const currentHeight = entry.contentRect.height;
-    
-    // Check if the current height equals the max-height
-    // You can also use a small tolerance for greater accuracy
-    if (currentHeight >= maxHeight) {
-      historyList.classList.add('tallest');
-    } else {
-      historyList.classList.remove('tallest');
+  const maxHeight = 565;
+  const resizeObserver = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const currentHeight = entry.contentRect.height;
+      historyList.classList.toggle('tallest', currentHeight >= maxHeight);
     }
-  }
-});
+  });
 
-resizeObserver.observe(historyList);
+  resizeObserver.observe(historyList);
+});
