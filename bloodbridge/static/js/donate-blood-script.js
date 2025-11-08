@@ -237,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.reload();
             } else {
                 
+                
                 console.log('❌ Errors found:', data.errors);
 
                 
@@ -258,16 +259,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         errorMessage.textContent = messages[0];
                     }
                 }
+                const form = document.querySelector("form");
                 const dateEl = scheduleDisplay.querySelector('.magenta.date');
                 const timeEl = scheduleDisplay.querySelector('.magenta.time');
 
+                form.classList.remove("shake");
                 dateEl.classList.remove("shake");
                 timeEl.classList.remove("shake");
 
                 // force reflow
+                void form.offsetWidth;
                 void dateEl.offsetWidth;
                 void timeEl.offsetWidth;
 
+                form.classList.add("shake");
                 dateEl.classList.add("shake");
                 timeEl.classList.add("shake");
             }

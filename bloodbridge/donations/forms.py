@@ -17,18 +17,26 @@ def calculate_duration(open_time, close_time):
 
 
 class BloodRequestForm(forms.Form):
-    blood_type = forms.ModelChoiceField(
-        queryset=BloodType.objects.all(),
+    blood_type = forms.IntegerField(
         required=True,
         error_messages={
             'required': 'Please select a blood type.',
         }
     )
 
-    quantity = forms.IntegerField()
-    urgency = forms.CharField()
-    time_open = forms.TimeField()
-    time_close = forms.TimeField()
+    quantity = forms.IntegerField(
+        required=False,
+    )
+    urgency = forms.CharField(
+        required=False,
+    )
+    time_open = forms.TimeField(
+        required=False,
+    )
+    time_close = forms.TimeField(
+        required=False,
+    )
+
     days_open = forms.CharField(
         required=True,
         error_messages={
@@ -77,7 +85,9 @@ class DonationForm(forms.Form):
         }
     )
 
-    notes = forms.CharField()
+    notes = forms.CharField(
+        required=False,
+    )
 
 
 

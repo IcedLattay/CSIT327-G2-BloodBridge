@@ -189,6 +189,7 @@ body {
 }
 
 .input-group {
+  position: relative;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -198,6 +199,7 @@ body {
   margin-bottom: px;
   align-items: stretch;
 }
+
 
 .input-field {
   position: relative;
@@ -226,8 +228,8 @@ input::placeholder {
   box-shadow: none;
 }
 
-.input-group:has(.custom-error) input,
-.modal-content:has(.non-field-error) input{
+.input-group:has(.icon.show) input,
+.modal-content:has(.error-container.non-field .icon.show) input{
   border-bottom: 2px solid red;
 }
 
@@ -247,8 +249,8 @@ input::placeholder {
   fill: #F81A99;
 }
 
-.input-group:has(.custom-error) .icon,
-.modal-content:has(.non-field-error) .icon {
+.input-group:has(.icon.show) .icon,
+.modal-content:has(.error-container.non-field .icon.show) .icon {
   fill: red;
 }
 
@@ -322,18 +324,56 @@ input::placeholder {
 
 /* ERROR MESSAGES */
 
-.error-message {
-  position: relative;
-  /* border: 1px solid saddlebrown; */
+.error-container {
+  top: 46px;
+  width: 100%;
+  align-items: center;
+  gap: 3px;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  /* border: 1px solid brown; */
+}
+
+.error-container.non-field {
+  top: 60px;
+}
+
+.login-form .error-container.non-field {
+  word-break: break-word;
+  align-items: baseline;
+}
+
+.login-form .error-container.non-field .custom-error {
+  margin-bottom: auto;
+}
+
+.error-container .icon {
+  max-height: 15px;
+  max-width: 15px;
+  min-height: 15px;
+  min-width: 15px;
+  visibility: hidden;
+}
+
+.error-container .icon.show {
+  visibility: visible;
 }
 
 .custom-error, .non-field-error {
-  position: absolute;
   color: red;
   font-size: 12px;
   margin: 0px;
-  margin-top: 5px;
-  padding: 0px;
+}
+
+.shake {
+    animation: shake 0.2s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); } /* Start and end at original position */
+    10% { transform: translateX(-5px); } /* Move left */
+    20% { transform: translateX(5px); } /* Move right */
 }
 
 /* TOGGLE USER / HOSPITAL FORM */

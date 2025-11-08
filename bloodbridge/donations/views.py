@@ -163,7 +163,7 @@ def hospital_manage_requests_view(request):
     user = request.user
     blood_types = BloodType.objects.all()
 
-    requests_made = user.requests_made.filter(status="pending").all()
+    requests_made = user.requests_made.all()
 
     return render(request, "hospital-manage-requests.html", {
         "requests_made" : requests_made,
@@ -208,7 +208,7 @@ def hospital_submit_request(request):
             # )
             # request_instance.save()
             
-            blood_type = form.cleaned_data['blood_type'] 
+            blood_type = BloodType.objects.get(id=form.cleaned_data['blood_type'])
             quantity = form.cleaned_data['quantity']
             urgency = form.cleaned_data['urgency']
             time_open = form.cleaned_data['time_open']

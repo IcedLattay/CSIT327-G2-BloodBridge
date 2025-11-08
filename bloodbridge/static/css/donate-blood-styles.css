@@ -605,7 +605,7 @@ button.blue {
     gap: 5px;
 }
 
-.magenta.date.shake, .magenta.time.shake {
+.shake {
     animation: shake 0.2s ease-in-out;
 }
 
