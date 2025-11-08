@@ -27,7 +27,6 @@
                     <div class="history-header">
                         <span class="col date">Date Donated</span>
                         <span class="col hospital">Hospital</span>
-                        <span class="col status">Status</span>
                     </div>
                 
                     {% for donation in donations %}
@@ -35,16 +34,7 @@
                             <span class="col date">
                                 <p>{{ donation.date|date:"m/d/Y" }}</p>
                             </span>
-                            <span class="col hospital">{{ donation.hospital }}</span>
-                            <span class="col status 
-                                {% if donation.status == 'Complete' %}complete
-                                {% elif donation.status == 'Pending' %}pending
-                                {% elif donation.status == 'Confirmed' %}confirmed
-                                {% elif donation.status == 'Cancelled' %}cancelled
-                                {% endif %}
-                            ">
-                                {{ donation.status }}
-                            </span>
+                            <span class="col hospital">donated at {{ donation.hospital.profile.hospital_name }}</span>
                         </div>
                     {% endfor %}
                 </div>
