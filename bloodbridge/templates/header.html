@@ -1,5 +1,17 @@
 {% load static %}
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>header</title>
+  <link rel="stylesheet" href="{% static 'css/header-styles.css' %}">
+</head>
+
+<body>
+
   <header class="site-header">
     <div class="logo">
       <img src="{% static 'images/logo.png' %}" alt="Blood Bridge" />
@@ -7,6 +19,7 @@
 
     <nav class="nav-links">
       <a class="nav-btn" href="{% url 'home' %}">Home</a>
+      <a class="nav-btn" href="{% url 'donate-blood' %}">Donate</a>
 
       <div class="dropdown">
         <div class="nav-btn dropbtn" id="dropdown-btn">
@@ -19,7 +32,7 @@
         </div>
         <div class="dropdown-content" id="dropdown-content">
           <a href="{% url 'donation_history' %}">Donation History</a>
-          <a href="{% url 'request_history' %}">Request History</a> <!--himoan pag html-->
+          <a href="{% url 'request_history' %}">Request History</a>
         </div>
       </div>
 

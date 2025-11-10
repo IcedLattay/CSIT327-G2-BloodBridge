@@ -78,3 +78,27 @@ class DonationForm(forms.Form):
     )
 
     notes = forms.CharField()
+
+
+
+class AppointmentForm(forms.Form):
+
+    request = forms.IntegerField()
+
+    date = forms.DateField(
+        required=True,
+        error_messages = {
+            'required' : 'Pick a date', 
+        }
+    )
+
+    time_start = forms.TimeField(
+        required=True,
+        error_messages={
+            'required' : 'Pick a time slot',
+        }
+    ) 
+
+    time_end = forms.TimeField(
+        required=False
+    ) 
