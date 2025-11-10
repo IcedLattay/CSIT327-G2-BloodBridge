@@ -179,19 +179,6 @@ input {
     font-size: 16px;
 }
 
-.green .custom-error {
-    position: absolute;
-    color: red;
-    top: 90px;
-    left: 0;
-    font-size: 12px;
-    margin: 0px;
-    margin-top: 5px;
-    padding: 0px;
-    z-index: 1;
-}
-
-
 .section.form .sub-section form .field {
     position: relative;
     flex-direction: column;
@@ -279,8 +266,21 @@ button.green {
     display: flex;
 }
 
-.blue .custom-error {
-    top: 88px;
+.error-container {
+    position: absolute;
+    align-items: center;
+    top: 94px;
+    gap: 5px;
+}
+
+.shake {
+    animation: shake 0.2s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); } /* Start and end at original position */
+    10% { transform: translateX(-5px); } /* Move left */
+    20% { transform: translateX(5px); } /* Move right */
 }
 
 .blue .dropdown-btn {
@@ -456,6 +456,26 @@ button.green {
 .indigo {
     /* border: 1px solid rgb(42, 0, 211); */
     display: flex;
+}
+
+svg.indigo, svg.brown {
+    width: 15px;
+    height: 15px;
+    fill: red;
+    visibility: hidden;
+}
+
+svg.indigo.show, svg.brown.show {
+    visibility: visible;
+}
+
+.indigo.custom-error, .brown.custom-error {
+    color: red;
+    left: 0;
+    font-size: 12px;
+    margin: 0px;
+    padding: 0px;
+    z-index: 1;
 }
 
 .section.form .sub-section form .field .donor-search .dropdown-btn {

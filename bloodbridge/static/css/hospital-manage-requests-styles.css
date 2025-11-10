@@ -333,6 +333,7 @@
 }
 
 .modal .field {
+    position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -447,7 +448,7 @@
 }
 
 .field.availability .set.days {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .field.availability .set.days button.selected {
@@ -616,21 +617,72 @@
 }
 
 
-.error-message {
-  position: relative;
-  /* border: 1px solid saddlebrown; */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.error-container {
+    /* border: 1px solid brown; */
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    align-items: center;
+}
+
+.shake {
+    animation: shake 0.2s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); } /* Start and end at original position */
+    10% { transform: translateX(-5px); } /* Move left */
+    20% { transform: translateX(5px); } /* Move right */
+}
+
+.field.bt .error-container{
+    top: 92.5px;
+}
+
+.field.availability .time.error-container{
+    top: 86px;
+}
+
+.field.availability .days.error-container{
+    top: 168px;
+}
+
+.error-container .icon {
+    fill: red;
+    width: 15px;
+    height: 15px;
+    visibility: hidden;
+}
+
+.error-container .icon.show {
+    visibility: visible;
 }
 
 .custom-error, .non-field-error {
-  position: absolute;
-  color: red;
-  top: -10px;
-  left: 0;
-  font-size: 12px;
-  margin: 0px;
-  margin-top: 5px;
-  padding: 0px;
-  z-index: 1;
+    color: red;
+    top: -10px;
+    left: 0;
+    font-size: 12px;
+    margin: 0px;
+    margin-top: 5px;
+    padding: 0px;
+    z-index: 1;
 }
 
 /* RESPONSIVE */

@@ -78,13 +78,14 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     function clearFormErrors(form) {
-        form.querySelectorAll(".custom-error, .errorlist").forEach((e) => e.remove());
+        form.querySelectorAll(".custom-error").forEach((e) => e.textContent = '');
+        form.querySelectorAll(".icon").forEach((e) => e.classList.remove("show"));
     }
 
     function resetForm(form) {
         // Reset Blood Type Dropdown
         dropdownBt_Btn.textContent = 'A+ / B+ / O';
-        selectedBt.value = 'none';
+        selectedBt.value = '';
         
         // Reset Quantity Field
         const quantityField = document.getElementById('quantity-field');
@@ -225,8 +226,6 @@ document.addEventListener("DOMContentLoaded", () => {
     requestForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        requestForm.querySelectorAll('.custom-error').forEach(el => el.textContent='');
-
         const submitButton = requestForm.querySelector('button');
         submitButton.disabled = true;
       
@@ -257,25 +256,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
             } else {
 
-                for (const [fieldName, messages] of Object.entries(data.errors)) {
-                    const field = requestForm.querySelector(`[name="${fieldName}"]`);
+                console.log("Errors po naten ayy: ", data.errors)
+
+                document.querySelectorAll(".error-container").forEach( errCont => {
+                    errCont.querySelector(".custom-error").textContent = '';
+                    errCont.querySelector(".icon").classList.remove("show");
+                })
+
+                for (const [field, messages] of Object.entries(data.errors)) {
+                    const cardForm = document.querySelector(".card.form");
+                    const errorContainer = document.querySelector(`[data-id="${field}-error-container"]`);
+                    const errorMessage = errorContainer.querySelector(".custom-error");
+                    const errorIcon = errorContainer.querySelector(".icon");
+
+                    errorMessage.textContent = messages[0];
+                    errorIcon.classList.add("show");
                     
-                    if (field) {
-                        let errorDiv;
-                        
-                        if (fieldName === 'time_open' || fieldName === 'time_close') {
-                            errorDiv = requestForm.querySelector('.error-message[data-for="time_fields"]');
-                        } else if (fieldName === 'days_open') {
-                            errorDiv = requestForm.querySelector('.error-message[data-for="days_open"]');
-                        } else {
-                            errorDiv = field.closest('.field')?.querySelector('.error-message');
-                        }
-                        
-                        if (errorDiv) {
-                            const p = errorDiv.querySelector(".custom-error");
-                            p.textContent = messages[0];
-                        }
-                    }
+                    
+                    cardForm.classList.remove("shake");
+                    errorContainer.classList.remove("shake");
+
+                    void cardForm.offsetWidth;
+                    void errorContainer.offsetWidth;
+
+                    cardForm.classList.add("shake");
+                    errorContainer.classList.add("shake");
+                    
                 }
             }
         } catch (err) {

@@ -154,8 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('Form submitted!');
 
-        donationForm.querySelectorAll('.custom-error').forEach(el => el.textContent='');
-
         const createDonationButton = document.getElementById("record-donation-btn");
         createDonationButton.disabled = true;
 
@@ -186,15 +184,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('✅ Success! Reloading page...');
                 window.location.reload();
             } else {
+
+                document.querySelectorAll(".error-container").forEach( errContainer => {
+                    errContainer.querySelector(".icon").classList.remove("show");
+                    errContainer.querySelector(".custom-error").textContent = '';
+                })
+
                 console.log('❌ Errors found:', data.errors);
+
                 for (const field in data.errors) {
                     const messages = data.errors[field];
 
-                    const errorMessage = donationForm.querySelector(`.custom-error[data-id="${field}-field-error"]`);
+                    const form = document.querySelector("form");
+                    const errorContainer = donationForm.querySelector(`[data-id="${field}-error-container"]`);
+                    const errorMessage = errorContainer.querySelector(`[data-id="${field}-field-error"]`);
+                    const errorIcon = errorContainer.querySelector(`[data-id="${field}-error-icon"]`);
+
+                    
+                    console.log(`Error container found:`, errorContainer);
+
+                    if (errorContainer) {
+                        form.classList.remove("shake");
+                        errorContainer.classList.remove("shake");
+
+
+                        void form.offsetWidth;
+                        void errorContainer.offsetWidth;
+
+                        form.classList.add("shake");
+                        errorContainer.classList.add("shake");
+                    }
+                    
                     
                     console.log(`Error element found:`, errorMessage);
+                    console.log(`Error icon found:`, errorIcon);
 
-                    if (errorMessage) {
+                    if (errorMessage && errorIcon) {
+                        errorIcon.classList.add("show");
                         errorMessage.textContent = messages[0];
                     }
                 }
