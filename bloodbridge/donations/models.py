@@ -40,6 +40,7 @@ class Request(models.Model):
     time_open = models.TimeField(null=True)
     time_close = models.TimeField(null=True)
     days_open = models.CharField(max_length=255, blank=True, null=True)  # Could store as comma-separated, e.g. "Mon,Tue,Wed"
+    is_emergency = models.BooleanField(default=False)
 
     # for users to fill up
 
