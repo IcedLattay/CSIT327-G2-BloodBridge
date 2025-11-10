@@ -1,0 +1,109 @@
+/* HEADER NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #F81A99;
+    /* vibrant pink */
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* softer shadow for depth */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+    transition: background 0.3s ease;
+}
+
+/* Logo section */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Logo image with white circle background */
+.logo img {
+    width: 50px;
+    height: 50px;
+    /* make it square */
+    border-radius: 50%;
+    /* makes it circular */
+    background-color: white;
+    /* white circle background */
+    padding: 5px;
+    /* optional: gives spacing inside the circle */
+    object-fit: contain;
+    /* ensures logo scales inside circle */
+}
+
+/* Logo text */
+.logo h1 {
+    font-size: 22px;
+    color: white;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+
+/* Navigation links */
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    /* better contrast on pink background */
+    font-weight: 500;
+    font-size: 16px;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: 5px 0;
+}
+
+.nav-links a::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: white;
+    /* underline matches text for clean look */
+    transition: width 0.3s ease;
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+}
+
+.nav-links a:hover {
+    color: #ffe6f0;
+    /* lighter pink on hover for subtle effect */
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Add slight hover scale effect for better interactivity */
+.nav-links a:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 20px;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .logo h1 {
+        font-size: 18px;
+    }
+}
