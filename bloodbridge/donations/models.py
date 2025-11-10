@@ -31,6 +31,7 @@ class Request(models.Model):
     requester = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, blank=True, null=True, related_name="requests_made")
     blood_type = models.ForeignKey(BloodType, on_delete=models.CASCADE, related_name="requests_present_in")
     quantity = models.PositiveIntegerField(blank=True, null=True)
+    current_quantity = models.PositiveIntegerField(default=0)
     urgency = models.CharField(max_length=10, null=True)
     date_requested = models.DateField(null=True)
     status = models.CharField(max_length=25, default='pending')
