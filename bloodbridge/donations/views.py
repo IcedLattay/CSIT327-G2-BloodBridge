@@ -11,7 +11,8 @@ from .forms import DonationForm
 # Donation_history view
 @login_required(login_url='/')
 def donation_history_view(request):
-    donations = Donation.objects.filter(donor=request.user).order_by('-date')
+    
+    donations = Donation.objects.filter(donor=request.user).order_by('-date_requested')
 
     return render(request, 'donation_history.html', {
         "donations": donations,
@@ -21,8 +22,13 @@ def donation_history_view(request):
 # Request_history view
 @login_required(login_url='/')
 def request_history_view(request):
+
     requests = Request.objects.filter(requester=request.user).order_by('-date_requested')
-    return render(request, 'request_history.html', {"requests": requests})
+
+    return render(request, 'request_history.html', {
+        "requests": requests, 
+    })
+
 
 @require_POST
 def cancel_appointment(request, request_id):

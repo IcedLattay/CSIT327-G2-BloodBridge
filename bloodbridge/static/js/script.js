@@ -208,8 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
           if (form.classList.contains('register-form')){
               // show overlay
             signupModal.classList.remove("show");
-            overlay.style.display = 'flex'; // or add a class to show it
-            userRegistrationForm.reset(); // optionally clear the form fields
+            overlay.style.display = 'flex'; 
+            userRegistrationForm.reset();
           } else if (form.classList.contains('login-form')) {
             window.location.href = data.redirect_url;
           }
