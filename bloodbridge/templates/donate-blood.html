@@ -9,6 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link rel="stylesheet" href="{% static 'css/global-styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/donate-blood-styles.css' %}">
@@ -112,6 +113,21 @@
                 </div>
                 
             </form>
+        </div>
+
+        <div class="modal" id="success-modal">
+            <div class="red success card">
+                <lottie-player 
+                    class="orange"
+                    id="success-animation"
+                    src="{% static 'animations/appointment-set.json' %}"
+                    background="transparent"
+                    speed="1"
+                    style="width: 250px; height: 250px;"
+                    autoplay>
+                </lottie-player>
+                <p class="orange">Appointment set!</p>
+            </div>
         </div>
     </main>
 
