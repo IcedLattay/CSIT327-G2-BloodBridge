@@ -1,6 +1,7 @@
 from django import forms
 from datetime import datetime, timedelta
 from .models import BloodType
+from accounts.models import CustomUser
 
 def calculate_duration(open_time, close_time):
     open_dt = datetime.combine(datetime.today(), open_time)
@@ -51,3 +52,29 @@ class BloodRequestForm(forms.Form):
 
         return cleaned_data
     
+
+
+class DonationForm(forms.Form):
+
+    donor = forms.IntegerField(
+        required=True,
+        error_messages={
+            'required': 'Select a user.',
+        }
+    )
+
+    blood_type = forms.IntegerField(
+        required=True,
+        error_messages={
+            'required': 'Select a blood type.',
+        }
+    )
+
+    date = forms.DateField(
+        required=True,
+        error_messages={
+            'required': 'Pick a date.',
+        }
+    )
+
+    notes = forms.CharField()
