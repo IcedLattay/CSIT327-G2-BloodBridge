@@ -22,41 +22,13 @@
             {% if requests %}
                 <!-- Scrollable donation list -->
 
-                <div class="history-list">
-                    <!-- Header row -->
-                    <div class="history-header">
-                        <span class="col date">Date Donated</span>
-                        <span class="col bt">Blood Type</span>
-                        <span class="col compat-bt-s">Compatible Blood Types</span>
-                        <span class="col status">Status</span>
-                    </div>
-                
-                    {% for request in requests %}
-                        <div class="history-row">
-                            <span class="col date">
-                                <p>{{ request.date_requested|date:"m/d/Y" }}</p>
-                            </span>
-                            <span class="col bt">
-                                <p>{{ request.blood_type.type }}</p>
-                            </span>
-                            <span class="col compat-bt-s">
-                                {% if request.blood_type.type == 'AB+' %}
-                                    <p>Any</p>
-                                {% else %}
-                                    {% for bt in request.blood_type.compatible_with.all %}
-                                        <p>{{ bt.type }}</p>
-                                    {% endfor %}
-                                {% endif %}
-                            </span>
-                            <span class="col status 
-                                {% if request.status == 'complete' %}complete
-                                {% elif request.status == 'pending' %}pending
-                                {% elif request.status == 'confirmed' %}confirmed
-                                {% elif request.status == 'cancelled' %}cancelled
-                                {% endif %}
-                            ">
-                                {{ request.status|capfirst }}
-                            </span>
+                    <div class="history-list">
+                        <!-- Header row -->
+                        <div class="history-header">
+                            <span class="col date">Date Donated</span>
+                            <span class="col bt">Blood Type</span>
+                            <span class="col compat-bt-s">Compatible Blood Types</span>
+                            <span class="col status">Status</span>
                         </div>
                     {% endfor %}
                 </div>
