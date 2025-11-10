@@ -1,0 +1,652 @@
+
+
+
+/* MAIN CONTENT */
+.manage-requests {
+    border: 1px solid saddlebrown;
+    margin: 20px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    /* border: 1px solid violet; */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card.manage {
+    width: 80%;
+    min-height: 660px;
+    max-height: 660px;
+    border-radius: 25px;
+}
+
+
+.spacing {
+    /* border: 1px solid darksalmon; */
+    padding: 25px;
+}
+
+.h-divider{
+    border-top: 2px solid #D9D9D9;
+}
+
+.card h2 {
+    font-weight: lighter;
+    /* border: 1px solid goldenrod; */
+    margin: 15px 0px 0px 0px;
+    font-size: 22px;  
+    color: #3A3A3A;
+}
+
+
+.button-container {
+    display: flex;
+    border: 1px solid greenyellow;
+    align-items: center;
+    justify-content: center;
+    height: 90px;
+}
+
+.button-container button {
+    padding: 15px 150px;
+}
+
+.empty-text {
+    padding: 33px 0px;
+    margin: 0;
+    /* border: 1px solid blue; */
+    text-align: center;
+    color: #A7A7A7;
+    font-size: 15px;
+}
+
+.row {
+    /* border: 1px solid blue; */
+    border-bottom: 1px solid #D9D9D9;
+}
+
+.row.label {
+    padding: 15px 0;
+}
+
+.row.label span {
+    margin-left: 27px;
+}
+
+/* Header Row */
+.row.header {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    padding: 25px 0;
+}
+
+
+.row .icon {
+    width: 20px;
+    height: 20px;
+}
+
+.row p {
+    /* border: 1px solid saddlebrown; */
+}
+
+.col {
+    /* border: 1px solid saddlebrown; */
+}
+
+.urgency {
+    /* border: 1px solid navy; */
+    width: 20%;
+    margin-left: 27px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-self: center;
+}
+
+.urgency.low {
+    color: #B3A3A7;
+}
+.urgency .icon.low {
+    fill: #B3A3A7;
+}
+
+
+.urgency.medium {
+    color: #FF8F0E;
+}
+.urgency .icon.medium {
+    fill: #FF8F0E;
+}
+
+
+.urgency.high {
+    color: #FF3870;
+}
+.urgency .icon.high {
+    fill: #FF3870;
+}
+
+
+.units {
+    /* border: 1px solid rgb(25, 13, 255); */
+    width: 30%;
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.units .icon {
+    fill: #FF0E77;
+}
+
+.units p {
+    color: #B3A3A7;
+}
+
+.units span {
+    color: #3A3A3A;
+}
+
+.donors {
+    width: 30%;
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.donors .icon {
+    fill: #B3A3A7;
+}
+
+.emergency {
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.emergency .checkbox {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    background-color: #D9D9D9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s ease-in;
+}
+
+.emergency .checkbox:hover {
+    cursor: pointer;
+    background-color: #c2c2c2;
+}
+
+
+.emergency .checkbox .icon {
+    transition: 0.2s ease-in;
+    visibility: hidden;
+    fill: #fff;
+    width: 15px;
+    height: 15px;
+}
+
+.emergency .checkbox.checked {
+    cursor: default;
+    background-color: #F81A99;
+}
+
+.emergency .checkbox.checked:hover {
+    cursor: default;
+}
+
+.emergency .checkbox .icon.checked {
+    visibility: visible;
+}
+
+
+
+
+/* Scrollable List */
+.requests-list {
+    border: 1px solid rgb(255, 0, 153);
+    height: 500px;
+    max-height: 100%;
+    overflow-y: auto;
+    border-radius: 0 0 25px 25px;
+}
+
+.requests-list::-webkit-scrollbar {
+    overflow: hidden;
+    width: 15px;
+    height: 10px;
+}
+
+.requests-list::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.requests-list::-webkit-scrollbar-thumb {
+    background-color: #bcbcbc;
+    border-radius: 100px;
+}
+
+.requests-list::-webkit-scrollbar-thumb:hover {
+    background-color: #a2a2a2;
+}
+
+.requests-list::-webkit-scrollbar-button:vertical:decrement {
+    height: 1px;
+}
+
+.requests-list::-webkit-scrollbar-button:vertical:increment {
+    height: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* REQUEST FORM */
+
+.modal {
+    position: fixed;
+    visibility: hidden;
+    box-sizing: border-box;
+    border: 1px solid rgb(255, 0, 119);
+    display: flex;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+}
+
+.modal.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+.card.form {
+    min-width: 450px;
+    max-width: 450px;
+    min-height: 630px;
+    max-height: 630px;
+    border-radius: 25px;
+}
+
+.modal .label{
+    margin: 30px 17px 0px 17px;
+    padding-left: 15px;
+    padding-bottom: 7px;
+    font-size: 18px;
+    border-bottom: 1.5px solid #D9D9D9;
+}
+
+.modal .fields-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 16px;
+    margin: 0 17px 0 17px;
+    padding: 0 15px 0 15px;
+}
+
+.modal .section {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    /* border: 1px solid greenyellow; */
+}
+
+.modal .field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    /* border: 1px solid saddlebrown; */
+}
+
+.section.blood {
+    gap: 15px;
+}
+
+.field.bt {
+    width: 45%;
+}
+
+.field p {
+    margin: 0;
+    /* border: 1px solid goldenrod; */
+}
+
+.field.quantity {
+    width: 55%;
+}
+
+
+.section.blood .quantity-field {
+    /* border: 1px solid goldenrod; */
+    box-sizing: border-box;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-field input {
+    font-size: 16px;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 13px 0px 13px 10px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-bottom: 1px solid #B3A4A7;
+}
+
+.quantity-field p {
+    color: #B3A3A7;
+}
+
+.quantity-field input:focus {
+    outline: none;
+    border-bottom: 2px solid #F81A99;
+}
+
+
+.field .urgency-selection {
+    /* border: 1px solid violet; */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.field button {
+    width: 100%;
+    background-color: #F1F1F1;
+    color: #B3A3A7;
+    font-size: 16px;
+    padding: 13px 0 13px 0;
+}
+.field button:hover {
+    background-color: #dfdfdf;
+}
+
+.field button.low {
+    background-color: #bebebe;
+    color: #ffffff;
+}
+.field button.medium {
+    background-color: #FFD038;
+    color: #ffffff;
+}
+.field button.high {
+    background-color: #FF3870;
+    color: #ffffff;
+}
+
+.field .set {
+    /* border: 1px solid blue; */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.field.availability .set.hours p {
+    display: flex;
+    align-items: center;
+}
+.field.availability .set.hours input {
+    user-select: none;
+    text-align: center;
+    width: 100%;
+    font-family: inherit;
+    padding: 13px 5px 13px 10px;
+    background-color: #F1F1F1;
+    border: transparent;
+    border-radius: 13px;
+}
+.field.availability .set.hours input:hover {
+    background-color: #dfdfdf;
+    outline: none;
+}
+
+.field.availability .set.days {
+    margin-top: 10px;
+}
+
+.field.availability .set.days button.selected {
+    background-color: #F81E9B;
+    color: #fff;
+}
+.field.availability .set.days button.selected:hover {
+    background-color: #BD1676;
+}
+
+.flatpickr-time input {
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    cursor: default !important; /* Change this from pointer to default */
+}
+
+/* But allow the wrapper to handle clicks for the arrows */
+.flatpickr-time .numInputWrapper {
+    cursor: default !important;
+    pointer-events: all !important; /* Allow wrapper to receive events */
+}
+
+.flatpickr-time .numInputWrapper span {
+    border: none !important;
+    cursor: pointer !important; /* Keep arrows clickable */
+    pointer-events: all !important; /* Ensure arrows work */
+}
+
+
+
+
+/* BLOODTYPE DROPDOWN STYLES */
+
+.dropdown-bt {
+    cursor: default;
+    /* border: 1px solid rgb(17, 150, 232); */
+    position: relative;
+}
+
+.dropdown-bt-btn {
+    background-color: #F1F1F1;
+    border-radius: 5px;
+    margin: 0;
+    padding: 13px 0px 13px 10px;
+    font-size: 16px;
+    /* border: 1px solid saddlebrown; */
+    color: #333;
+    cursor: default;
+    z-index: 10px;
+}
+
+.dropdown-bt-btn:hover {
+    background-color: #e5e5e5;
+}
+
+
+.dropdown-bt-content-bg {
+    overflow: hidden;
+    width: 100%;
+    display: none;
+    background-color: #fff;
+    padding: 0px 7px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: absolute;
+    box-sizing: border-box;
+    left: 0;
+    z-index: 100;
+}
+
+.dropdown-bt-content-bg.show {
+    display: block;
+}
+
+.dropdown-bt-content {
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.dropdown-bt-content::-webkit-scrollbar {
+    width: 15px;
+    height: 50px;
+    overflow-y: hidden;
+}
+
+.dropdown-bt-content::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.dropdown-bt-content::-webkit-scrollbar-thumb {
+    background-color: #bcbcbc;
+    border-radius: 100px;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+}
+
+.dropdown-bt-content::-webkit-scrollbar-thumb:hover {
+    background-color: #a2a2a2;
+}
+
+.dropdown-bt-content::-webkit-scrollbar-button {
+    display: none;
+}
+
+.dropdown-bt-content.show {
+    display: block;
+}
+
+
+.dropdown-bt-content p {
+    margin: 0;
+    cursor: default;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    padding: 10px 15px;
+    color: #B3A3A7;
+    text-decoration: none;
+}
+
+.dropdown-bt-content .first {
+    margin-top: 15px;
+}
+
+.dropdown-bt-content .last {
+    margin-bottom: 15px;
+}
+
+.dropdown-bt-content p:hover {
+    background-color: #F2F3F3;
+    color: #3A3A3A;
+}
+
+
+
+
+
+/* DAYS SELECTION */
+
+
+.form-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    font-size: 16px;
+    margin: 40px 17px 0 17px;
+    padding: 0 15px 0 15px;
+}
+
+.form-buttons button {
+    width: 100%;
+}
+
+.form-buttons .negative {
+    background-color: #F1F1F1;
+    color: #B3A3A7;
+    font-size: 16px;
+    padding: 13px 0 13px 0;
+}
+
+
+.form-buttons .negative:hover {
+    background-color: #dfdfdf;
+}
+
+
+.error-message {
+  position: relative;
+  /* border: 1px solid saddlebrown; */
+}
+
+.custom-error, .non-field-error {
+  position: absolute;
+  color: red;
+  top: -10px;
+  left: 0;
+  font-size: 12px;
+  margin: 0px;
+  margin-top: 5px;
+  padding: 0px;
+  z-index: 1;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .donation-history {
+        margin: 20px 40px;
+    }
+
+    .card {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .donation-history {
+        margin: 20px 20px;
+    }
+}

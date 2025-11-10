@@ -181,7 +181,7 @@ def hospital_dashboard_view(request):
     user = request.user
 
     total_donations = Donation.objects.filter(hospital=user.profile.hospital_name).count()
-    total_requests = Request.objects.filter(hospital=user).count()
+    total_requests = Request.objects.filter(hospital=user, status='pending').count()
     total_available_users = CustomUser.objects.filter(is_available=True).count()
 
     appointments = Appointment.objects.filter(
@@ -202,6 +202,25 @@ def hospital_dashboard_view(request):
         "requests" : requests,
         "blood_types" : blood_types,
     })
+
+
+# Hospital Manage Requests view
+@login_required(login_url='/')
+def hospital_manage_requests_view(request):
+    user = request.user
+    blood_types = BloodType.objects.all()
+
+    requests_made = user.requests_made.filter(status="pending").all()
+
+    return render(request, "hospital-manage-requests.html", {
+        "requests_made" : requests_made,
+        "blood_types" : blood_types,
+    })
+
+
+
+
+# ADMIN-ONLY VIEWS!!!
 
 # Admin Login
 def admin_login_view(request):
@@ -224,9 +243,12 @@ def admin_login_view(request):
     return render(request, 'adminLogin.html', {'error': error})
 
 
+
 @login_required
 def admin_dashboard(request):
     """Admin dashboard view"""
     if not request.user.is_staff:
         return redirect('login')  # block non-admin access
     return render(request, 'adminDashboard.html')
+
+
