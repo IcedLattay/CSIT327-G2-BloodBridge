@@ -228,9 +228,10 @@ p.green {
     align-items: center;
     width: 100vw;
     height: 100vh;
-    z-index: 1000;
+    z-index: 100;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(6px);
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
 .modal.show {
@@ -652,4 +653,88 @@ p.brown {
     20% { transform: translateX(5px); } /* Move right */
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* FOR THE SUCCESS OVERLAY */
+
+.modal.fade-out {
+    visibility: hidden;
+    opacity: 0;
+}
+
+
+
+
+
+
+/* RED LEVEL ELEMENTS */
+
+
+
+
+
+
+.red.success.card {
+    position: relative;
+}
+
+
+
+
+
+
+/* ORANGE LEVEL ELEMENTS */
+
+
+
+
+
+
+#success-animation {
+    margin: 0 45px 40px 45px;
+}
+
+.red.success.card p.orange {
+    font-size: 18px;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    top: 220px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* FOR THE LOADING OVERLAY */
+
+#loading-modal {
+    z-index: 1000px;
+}
 
