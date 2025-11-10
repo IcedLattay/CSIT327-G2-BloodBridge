@@ -20,7 +20,7 @@ class BloodRequestForm(forms.Form):
     blood_type = forms.IntegerField(
         required=True,
         error_messages={
-            'required': 'Please select a blood type.',
+            'required': 'Select a blood type.',
         }
     )
 
@@ -59,7 +59,26 @@ class BloodRequestForm(forms.Form):
                 self.add_error('time_open', 'The duration cannot exceed 24 hours.')
 
         return cleaned_data
-    
+
+
+
+class UserBloodRequestForm(forms.Form):
+    blood_type = forms.IntegerField(
+        required=True,
+        error_messages={
+            'required': 'Select a blood type.',
+        }
+    )
+
+    quantity = forms.IntegerField(
+        required=False,
+    )
+    urgency = forms.CharField(
+        required=False,
+    )
+    notes = forms.CharField(
+        required=False,
+    )
 
 
 class DonationForm(forms.Form):

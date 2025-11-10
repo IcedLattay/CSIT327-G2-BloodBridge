@@ -7,8 +7,7 @@ from .models import Donation, Request, BloodType, Appointment
 from accounts.models import Profile, CustomUser
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from .forms import BloodRequestForm as RequestForm
-from .forms import DonationForm 
+from .forms import BloodRequestForm as RequestForm, DonationForm, UserBloodRequestForm as UserRequestForm
 from .forms import AppointmentForm
 
 # FOR USERS END
@@ -128,6 +127,47 @@ def set_appointment(request):
     
     return redirect('donate-blood')
 
+# Donate blood view
+@login_required(login_url='/')
+def request_blood_view(request):
+
+    blood_types = BloodType.objects.all()
+    hospitals = CustomUser.objects.filter(role='hospital')
+
+    return render (request, 'request-blood.html', {
+        "blood_types" : blood_types,
+        "hospitals" : hospitals,
+    })
+
+# User Submit Request view 
+@login_required(login_url='/')
+def submit_request(request):
+    if request.method == "POST":
+        
+        form = UserRequestForm(request.POST)
+
+        if form.is_valid():
+            blood_type = BloodType.objects.get(id=form.cleaned_data['blood_type'])
+            quantity = form.cleaned_data['quantity']
+            urgency = form.cleaned_data['urgency']
+            notes = form.cleaned_data['notes']
+
+            request_instance = Request(
+                requester = request.user,
+                blood_type = blood_type,
+                quantity = quantity,
+                urgency = urgency,
+                notes = notes,
+                date_requested=timezone.now()
+            )
+
+            request_instance.save()
+
+            return JsonResponse({'success': True})
+        
+        return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+
+    return redirect('request_blood')
 
 
 
@@ -154,8 +194,6 @@ def approve_appointment(request, request_id):
     req.status = "confirmed"
     req.save()
     return JsonResponse({"success": True})
-
-
 
 # Hospital Manage Requests view
 @login_required(login_url='/')
@@ -195,18 +233,6 @@ def hospital_submit_request(request):
 
 
         if form.is_valid():
-
-            # request_instance = Request(
-            #     blood_type=blood_type,
-            #     quantity=quantity,
-            #     urgency=urgency,
-            #     time_open=time_open,
-            #     time_close=time_close,
-            #     days_open=days_open,
-            #     requester=request.user,
-            #     date_requested=timezone.now()
-            # )
-            # request_instance.save()
             
             blood_type = BloodType.objects.get(id=form.cleaned_data['blood_type'])
             quantity = form.cleaned_data['quantity']
