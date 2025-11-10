@@ -12,16 +12,16 @@ from django.contrib import messages
 
 # Index view
 def index_view(request):
-    login_form = CustomAuthentication()
-    registration_form = CustomCreation()
 
     if request.user.is_authenticated:  # di na siya kabalik sa /index url if logged in
-        return redirect("home")
+        if request.user.role == 'hospital':
 
-    return render(request, "index.html", {
-        "login_form": login_form,
-        "registration_form": registration_form
-    })
+            return redirect('hospital-dashboard')
+        elif request.user.role == 'user':
+
+            return redirect('home')
+
+    return render(request, "index.html")
 
 
 # User Registration view
@@ -82,6 +82,15 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("index")
+
+
+
+
+
+
+
+
+
 
 
 # USER-ONLY VIEWS!!!
@@ -171,6 +180,16 @@ def update_profile_details(request):
     return JsonResponse({"success": False, "message": "Invalid request."})
 
 
+
+
+
+
+
+
+
+
+
+
 # HOSPITAL-ONLY VIEWS!!!
 
 from datetime import date
@@ -180,7 +199,7 @@ from datetime import date
 def hospital_dashboard_view(request):
     user = request.user
 
-    total_donations = Donation.objects.filter(hospital=user.profile.hospital_name).count()
+    total_donations = Donation.objects.filter(hospital=user).count()
     total_requests = Request.objects.filter(hospital=user, status='pending').count()
     total_available_users = CustomUser.objects.filter(is_available=True).count()
 
@@ -204,18 +223,11 @@ def hospital_dashboard_view(request):
     })
 
 
-# Hospital Manage Requests view
-@login_required(login_url='/')
-def hospital_manage_requests_view(request):
-    user = request.user
-    blood_types = BloodType.objects.all()
 
-    requests_made = user.requests_made.filter(status="pending").all()
 
-    return render(request, "hospital-manage-requests.html", {
-        "requests_made" : requests_made,
-        "blood_types" : blood_types,
-    })
+
+
+
 
 
 

@@ -3,7 +3,7 @@
 
 /* MAIN CONTENT */
 .manage-requests {
-    border: 1px solid saddlebrown;
+    /* border: 1px solid saddlebrown; */
     margin: 20px 0px;
     display: flex;
     justify-content: center;
@@ -46,7 +46,7 @@
 
 .button-container {
     display: flex;
-    border: 1px solid greenyellow;
+    /* border: 1px solid greenyellow; */
     align-items: center;
     justify-content: center;
     height: 90px;
@@ -224,7 +224,7 @@
 
 /* Scrollable List */
 .requests-list {
-    border: 1px solid rgb(255, 0, 153);
+    /* border: 1px solid #0037ff; */
     height: 500px;
     max-height: 100%;
     overflow-y: auto;
