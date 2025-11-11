@@ -9,6 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script> 
     <link rel="stylesheet" href="{% static 'css/global-styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/hospital-header-styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/hospital-record-donation-styles.css' %}">
@@ -23,7 +24,7 @@
 
     <!-- MAIN CONTENT -->
     <main class="container">
-        <div class="card">
+        <div class="card form">
             <div class="red section form">
                 <h2 class="orange">Record Donation</h2>
                 <div class="orange sub-section">
@@ -150,6 +151,23 @@
 
                     {% endif %}
                 </div>
+            </div>
+        </div>
+
+
+
+        <div class="modal" id="success-modal">
+            <div class="red success card">
+                <lottie-player
+                    class="orange"
+                    id="success-animation"
+                    src="{% static 'animations/success.json' %}"
+                    background="transparent"
+                    speed="1"
+                    style="width: 250px; height: 250px;"
+                    autoplay>
+                </lottie-player>
+                <p class="orange">Donation recorded!</p>
             </div>
         </div>
     </main>

@@ -250,13 +250,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = JSON.parse(responseText); // This is where it fails
 
             if (data.success) {
-                requestFormModal.classList.remove("show");
-                resetForm(requestForm)
+                console.log('✅ Success! Reloading page...');
+                
+                localStorage.setItem("showSuccessModal", "true");
                 window.location.reload();
 
             } else {
-
-                console.log("Errors po naten ayy: ", data.errors)
+                console.log("❌ Errors po naten ayy: ", data.errors)
 
                 document.querySelectorAll(".error-container").forEach( errCont => {
                     errCont.querySelector(".custom-error").textContent = '';
@@ -295,6 +295,75 @@ document.addEventListener("DOMContentLoaded", () => {
             submitButton.disabled = false;
         }
     })
+
+
+
+
+
+
+
+
+    
+
+    // LOGIC for Success Overlay !!!
+
+    let modalTimeout;
+    const successModal = document.getElementById("success-modal");
+    const successAnimation = document.getElementById("success-animation");
+
+    const shouldShow = localStorage.getItem("showSuccessModal");
+
+    if (shouldShow === "true") {
+        // Show your success overlay/modal
+        showSuccessModal();
+
+        // Reset the flag so it doesn’t show again on next reload
+        localStorage.removeItem("showSuccessModal");
+    }
+
+
+    function showSuccessModal() {
+
+        successModal.classList.add("show");
+
+        successAnimation.loop = false;
+
+        // Restart the animation fresh
+        successAnimation.stop();
+        successAnimation.play();
+
+        // Clear any old timer so it doesn't auto-close too soon
+        if (modalTimeout) {
+            clearTimeout(modalTimeout);
+        }
+
+        // Auto-hide after 3 seconds
+        modalTimeout = setTimeout(() => {
+            console.log("Hiding success overlay...");
+
+            hideOverlay(successModal);
+        }, 4000);
+    }
+
+    function hideOverlay(modal) {
+        modal.classList.add("fade-out");
+
+        modal.addEventListener("transitionend", function end() {
+            modal.classList.remove("show", "fade-out");
+            modal.removeEventListener("transitionend", end);
+        });
+    }
+
+    window.addEventListener("click", function(event) {
+        if (event.target === successModal) {
+            successModal.classList.remove("show");
+
+            // Also clear any pending timer when manually closed
+            if (modalTimeout) {
+                clearTimeout(modalTimeout);
+            }
+        }
+    });
 
 
 });

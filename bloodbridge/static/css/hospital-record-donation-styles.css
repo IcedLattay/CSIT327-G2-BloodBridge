@@ -25,11 +25,62 @@ input {
     background: #fff;
     /* border: 1px solid violet; */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+}
+
+.card.form {
     width: 80%;
     height: 660px;
     min-height: 660px;
     max-height: 660px;
-    border-radius: 25px;
+}   
+
+.red {
+    /* border: 1px solid red; */
+    display: flex;
+}
+
+.orange {
+    /* border: 1px solid orange; */
+    display: flex;
+}
+
+.yellow {
+    /* border: 1px solid gold; */
+    display: flex;
+    width: 100%;
+}
+
+.green {
+    /* border: 1px solid greenyellow; */
+    display: flex;
+    font-size: 16px;
+}
+
+.blue {
+    /* border: 1px solid rgb(49, 197, 255); */
+    display: flex;
+}
+
+.indigo {
+    /* border: 1px solid rgb(42, 0, 211); */
+    display: flex;
+}
+
+.magenta {
+    display: flex;
+    /* border: 1px solid magenta; */
+}
+
+.brown {
+    display: flex;
+    /* border: 1px solid brown; */
+    gap: 13px;
+}
+
+.pink {
+    display: flex;
+    /* border: 1px solid pink; */
 }
 
 
@@ -39,11 +90,6 @@ input {
 
 
 
-
-.red {
-    /* border: 1px solid red; */
-    display: flex;
-}
 
 .section {
     height: 100%;
@@ -66,10 +112,6 @@ input {
 
 
 
-.orange {
-    /* border: 1px solid orange; */
-    display: flex;
-}
 
 .section h2 {
     height: 8%;
@@ -115,12 +157,6 @@ input {
 
 
 
-
-.yellow {
-    /* border: 1px solid gold; */
-    display: flex;
-    width: 100%;
-}
 
 .yellow p {
     margin: 0;
@@ -172,12 +208,6 @@ input {
 
 
 
-
-.green {
-    /* border: 1px solid greenyellow; */
-    display: flex;
-    font-size: 16px;
-}
 
 .section.form .sub-section form .field {
     position: relative;
@@ -260,11 +290,6 @@ button.green {
 
 
 
-
-.blue {
-    /* border: 1px solid rgb(49, 197, 255); */
-    display: flex;
-}
 
 .error-container {
     position: absolute;
@@ -453,11 +478,6 @@ button.green {
 
 
 
-.indigo {
-    /* border: 1px solid rgb(42, 0, 211); */
-    display: flex;
-}
-
 svg.indigo, svg.brown {
     width: 15px;
     height: 15px;
@@ -538,11 +558,6 @@ svg.indigo.show, svg.brown.show {
 
 
 
-.magenta {
-    display: flex;
-    /* border: 1px solid magenta; */
-}
-
 .section.form .sub-section form .field .donor-search .dropdown-btn img {
     width: 35px;
     height: 35px;
@@ -620,13 +635,6 @@ svg.indigo.show, svg.brown.show {
 
 
 
-.brown {
-    display: flex;
-    /* border: 1px solid brown; */
-    gap: 13px;
-}
-
-
 .section.form .sub-section form .field .sub-field.bt .btn-container .dropdown .dropdown-content {
     padding-left: 5px;
     max-height: 175px;
@@ -658,11 +666,6 @@ svg.indigo.show, svg.brown.show {
 
 
 
-.pink {
-    display: flex;
-    /* border: 1px solid pink; */
-}
-
 .section.form .sub-section form .field .donor-search .dropdown .dropdown-content .option img {
     width: 35px;
     height: 35px;
@@ -692,6 +695,101 @@ svg.indigo.show, svg.brown.show {
     background-color: #F1F1F1;
     border: none;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* FOR Success Overlay */
+
+.modal {
+    border: 1px solid goldenrod;
+    visibility: hidden;
+    opacity: 0;
+    position: fixed;
+    box-sizing: border-box;
+    border: 1px solid rgb(255, 0, 119);
+    display: flex;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.modal.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal.fade-out {
+    visibility: hidden;
+    opacity: 0;
+}
+
+
+
+
+
+
+/* RED LEVEL ELEMENTS */
+
+
+
+
+
+
+.red.success.card {
+    position: relative;
+}
+
+
+
+
+
+
+/* ORANGE LEVEL ELEMENTS */
+
+
+
+
+
+
+#success-animation {
+    margin: 5px 50px 45px 50px;
+}
+
+.red.success.card p.orange {
+    font-size: 18px;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    top: 200px;
+}
+
+
+
+
+
+
+
+
+
 
 
 
