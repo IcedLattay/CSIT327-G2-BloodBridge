@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 
 class BloodType(models.Model):
@@ -64,3 +65,17 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"{self.donor.username} - {self.request.blood_type.type} on {self.date}"
+
+
+class Notification(models.Model):
+    user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='notifications')  # The user who receives the notification
+    request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='notifications')  # The emergency request linked to this notification
+    message = models.CharField(max_length=255) # Text to display in the header
+    is_read = models.BooleanField(default=False) # Whether the user has acted on it (set appointment)
+    created_at = models.DateTimeField(default=timezone.now) # When the notification was created
+
+    class Meta:
+        ordering = ['-created_at']  # Newest first
+        
+        def __str__(self):
+            return f"Notification for {self.user.profile.full_name}: {self.message}"
