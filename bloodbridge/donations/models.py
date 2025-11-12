@@ -70,8 +70,8 @@ class Appointment(models.Model):
 class Notification(models.Model):
     user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='notifications')  # The user who receives the notification
     request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='notifications')  # The emergency request linked to this notification
-    message = models.CharField(max_length=255) # Text to display in the header
     is_read = models.BooleanField(default=False) # Whether the user has acted on it (set appointment)
+    is_seen = models.BooleanField(default=False) # If the user has already seen by opening the overlay
     has_action = models.BooleanField(default=False)  # True if they already set an appointment
     created_at = models.DateTimeField(default=timezone.now) # When the notification was created
 
