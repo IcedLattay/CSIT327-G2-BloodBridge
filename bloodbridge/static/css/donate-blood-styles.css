@@ -106,6 +106,7 @@ h2.red {
 .orange.row {
     border-bottom: 1px solid #D9D9D9;
     height: 90px;
+    min-height: 90px;
     cursor: pointer;
 }
 
