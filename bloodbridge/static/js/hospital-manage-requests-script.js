@@ -346,12 +346,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function hideOverlay(modal) {
-        modal.classList.add("fade-out");
-
+        
         modal.addEventListener("transitionend", function end() {
             modal.classList.remove("show", "fade-out");
             modal.removeEventListener("transitionend", end);
         });
+
+        
+        modal.classList.add("fade-out");
+
     }
 
     window.addEventListener("click", function(event) {

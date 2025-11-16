@@ -3,9 +3,10 @@ from django.utils import timezone
 from datetime import date, timedelta
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Donation, Request, BloodType, Appointment
+from .models import Donation, Request, BloodType, Appointment, Notification
 from accounts.models import Profile, CustomUser
 from django.http import JsonResponse
+from django.db import transaction
 from django.views.decorators.http import require_POST
 from .forms import BloodRequestForm as RequestForm, DonationForm, UserBloodRequestForm as UserRequestForm
 from .forms import AppointmentForm
@@ -39,7 +40,9 @@ def request_history_view(request):
 def donate_blood_view(request):
 
     req = Request.objects.filter(
-        blood_type=request.user.profile.blood_type,status='pending'
+        blood_type=request.user.profile.blood_type,
+        status='pending',
+        requester__role='hospital'
         ).exclude(appointments_active__donor=request.user)
 
     return render (request, 'donate-blood.html', {
@@ -97,29 +100,41 @@ def set_appointment(request):
 
     if request.method == "POST":
         form = AppointmentForm(request.POST)
+        notif_id = request.GET.get("notif_id")
 
         if form.is_valid():
-            donor = request.user
-            request = Request.objects.get(id=form.cleaned_data['request'])
-            date = form.cleaned_data['date']
-            time_start = form.cleaned_data['time_start']
-            time_end = form.cleaned_data['time_end']
+            with transaction.atomic():
+                if notif_id:
+                    try:
+                        notif = Notification.objects.get(id=notif_id, user=request.user)
+                        notif.has_action = True
+                        notif.save()
+                    except Notification.DoesNotExist:
+                        pass
 
-            appointment_instance = Appointment(
-                donor=donor,
-                request=request,
-                date=date,
-                time_start=time_start,
-                time_end=time_end,
-            )
+                donor = request.user
+                req = Request.objects.get(id=form.cleaned_data['request'])
+                date = form.cleaned_data['date']
+                time_start = form.cleaned_data['time_start']
+                time_end = form.cleaned_data['time_end']
 
-            request.current_quantity += 1
+                appointment_instance = Appointment(
+                    donor=donor,
+                    request=req,
+                    date=date,
+                    time_start=time_start,
+                    time_end=time_end,
+                )
 
-            if request.current_quantity == request.quantity:
-                request.status = 'completed'
+                req.current_quantity += 1
 
-            request.save()
-            appointment_instance.save()
+                if req.current_quantity == req.quantity:
+                    req.status = 'completed'
+
+                
+
+                req.save()
+                appointment_instance.save()
 
             return JsonResponse({'success' : True})
         
@@ -170,6 +185,94 @@ def submit_request(request):
     return redirect('request_blood')
 
 
+# Get active notifications
+@login_required(login_url='/')
+def get_active_notifications(request):
+    three_days_ago = timezone.now() - timedelta(days=3)
+
+    notifications = Notification.objects.filter(
+        user=request.user,
+        has_action=False,
+        created_at__gte=three_days_ago
+    ).order_by('-created_at')
+
+    data = [
+        {
+            "id": n.id,
+            "request": {
+                "id": n.request.id,
+                "requester": {
+                    "profile": {
+                        "hospital_name": n.request.requester.profile.hospital_name
+                    }
+                },
+                "quantity": n.request.quantity  
+            },
+            "created_at": n.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "is_read": n.is_read,
+            "is_seen": n.is_seen,
+        }
+        for n in notifications
+    ]
+
+    return JsonResponse({'notifications': data})
+
+
+# Count unseen notifications
+@login_required(login_url='/')
+def get_unseen_notifications_count(request):
+
+    three_days_ago = timezone.now() - timedelta(days=3)
+    unseen_count = Notification.objects.filter(
+        user=request.user,
+        is_seen=False,
+        created_at__gte=three_days_ago
+    ).count()
+
+    return JsonResponse({'unseen_count': unseen_count})
+
+
+# Set unseen notifications to seen
+@login_required(login_url='/')
+def set_unseen_to_seen(request):
+
+
+    three_days_ago = timezone.now() - timedelta(days=3)
+
+    Notification.objects.filter(
+        user=request.user,
+        is_seen=False,
+        created_at__gte=three_days_ago
+    ).update(is_seen=True)
+
+
+    return JsonResponse({'success': True})
+
+
+# Mark notifications as read
+@login_required(login_url='/')
+def mark_read(request, notif_id):
+
+    notif = Notification.objects.get(id=notif_id)
+
+    notif.is_read = True
+
+    notif.save()
+
+    return JsonResponse({"success" : True})
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -217,6 +320,24 @@ def toggle_emergency(request, request_id):
             
             req.is_emergency = True
             req.save()
+
+
+            users_to_notify = CustomUser.objects.filter(
+                profile__blood_type=req.blood_type,
+                is_active=True,
+                role='user'
+            )
+
+            notifications = [
+                Notification(
+                    user=user,
+                    request=req,
+                    created_at=timezone.now(),
+                ) 
+                for user in users_to_notify
+            ]
+
+            Notification.objects.bulk_create(notifications, ignore_conflicts=True)
 
             return JsonResponse({"success": True})
         except Request.DoesNotExist:

@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const container = document.getElementById("time-slots-container");
     const scheduleDisplay = document.getElementById("display-schedule");
+
+    
+    const setAppointmentModal = document.getElementById("set-appointment-modal");
     
         
     requests.forEach( request => {
@@ -23,69 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(`🩸 GOT #${requestID}`);
             console.log(`🕐 GOT Time window: ${requestTimeOpen} - ${requestTimeClose}`);
             
-            
-            const setAppointmentModal = document.getElementById("set-appointment-modal");
 
-            openModal(setAppointmentModal, requestID)
-
-            
-            fetch(`/appointments/available-dates/${requestID}/`)
-            .then(res => res.json())
-            .then(data => {
-                const availableDates = data.available_dates || [];
-                console.log("✅ GOT Available dates:", availableDates);
-
-                // ✅ Step 2: Initialize flatpickr *only once per modal opening*
-                const calendarElem = document.getElementById("calendar");
-
-                // destroy previous instance if it exists (important!)
-                if (calendarElem._flatpickr) {
-                    calendarElem._flatpickr.destroy();
-                }
-
-                flatpickr(calendarElem, {
-                    inline: true,
-                    dateFormat: "Y-m-d",
-                    enable: availableDates,
-                    defaultDate: null,
-                    onChange: function(selectedDates, dateStr) {
-                        selectedDate.value = dateStr;
-                        console.log(`📅 STORED Selected Date, ${selectedDate.value}, in hidden input`);
-
-                        // 🧠 Convert the flatpickr date string ("2025-09-28") to a JS Date object
-                        const dateObj = new Date(dateStr);
-
-                        // 🪄 Format: "Wednesday, Sept 28, 2025"
-                        const options = { 
-                            weekday: "long", 
-                            year: "numeric", 
-                            month: "short", 
-                            day: "numeric" 
-                        };
-
-                        const formattedDate = dateObj.toLocaleDateString("en-US", options);
-
-                        // 🖼️ Display it
-                        scheduleDisplay.querySelector(".date .custom-error").textContent = '';
-                        scheduleDisplay.querySelector(".date .icon").classList.remove("show");
-                        scheduleDisplay.querySelector(".indigo.date").textContent = formattedDate;
-                        scheduleDisplay.querySelector(".indigo.time").textContent = '';
-
-                        // ✅ Step 3: Fetch booked slots here
-                        fetch(`/appointments/booked-slots/${requestID}?date=${dateStr}`)
-                            .then(res => res.json())
-                            .then(booked_slots => {
-                                const allSlots = generateTimeSlots(requestTimeOpen, requestTimeClose);
-                                console.log(`GOT Slots: ${allSlots}`);
-
-                                console.log(`⏰ GOT Booked Slots: ${booked_slots}`);
-                                renderTimeSlots(allSlots, booked_slots);
-                            })
-                            .catch(err => console.error("❌ Error fetching booked slots:", err));
-                    }
-                });
-            })
-            .catch(err => console.error("❌ Error fetching available dates:", err));
+            openModal(setAppointmentModal, requestID);
+            fetchAvailableDatesAndSlots(requestID, requestTimeOpen, requestTimeClose);
         })
     })
 
@@ -140,6 +83,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    const params = new URLSearchParams(window.location.search);
+    const notifId = params.get("notif_id");
+    const requestId = params.get("request_id")
+
+    if (notifId) {
+
+        
+        const requestElem = document.querySelector(`[data-request-id="${requestId}"]`);
+
+        if (requestElem) {
+            const requestTimeOpen = requestElem.getAttribute("data-open-time");
+            const requestTimeClose = requestElem.getAttribute("data-close-time");
+
+
+            openModal(setAppointmentModal, requestId);
+            fetchAvailableDatesAndSlots(requestId, requestTimeOpen, requestTimeClose);
+        }
+
+    }
+
+
     function openModal(modal, id) {
 
         modal.classList.add("show");
@@ -155,6 +119,51 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(` STORED Request #${selectedRequest.value} in hidden input`);
     }
 
+
+    function fetchAvailableDatesAndSlots(requestID, requestTimeOpen, requestTimeClose) {
+        fetch(`/appointments/available-dates/${requestID}/`)
+            .then(res => res.json())
+            .then(data => {
+                const availableDates = data.available_dates || [];
+                console.log("✅ GOT Available dates:", availableDates);
+
+                const calendarElem = document.getElementById("calendar");
+
+                if (calendarElem._flatpickr) calendarElem._flatpickr.destroy();
+
+                flatpickr(calendarElem, {
+                    inline: true,
+                    dateFormat: "Y-m-d",
+                    enable: availableDates,
+                    defaultDate: null,
+                    onChange: function(selectedDates, dateStr) {
+                        selectedDate.value = dateStr;
+                        console.log(`📅 STORED Selected Date, ${selectedDate.value}, in hidden input`);
+
+                        const dateObj = new Date(dateStr);
+                        const options = { weekday: "long", year: "numeric", month: "short", day: "numeric" };
+                        const formattedDate = dateObj.toLocaleDateString("en-US", options);
+
+                        scheduleDisplay.querySelector(".date .custom-error").textContent = '';
+                        scheduleDisplay.querySelector(".date .icon").classList.remove("show");
+                        scheduleDisplay.querySelector(".indigo.date").textContent = formattedDate;
+                        scheduleDisplay.querySelector(".indigo.time").textContent = '';
+
+                        fetch(`/appointments/booked-slots/${requestID}?date=${dateStr}`)
+                            .then(res => res.json())
+                            .then(booked_slots => {
+                                const allSlots = generateTimeSlots(requestTimeOpen, requestTimeClose);
+                                console.log(`GOT Slots: ${allSlots}`);
+                                
+                                console.log(`⏰ GOT Booked Slots: ${booked_slots}`);
+                                renderTimeSlots(allSlots, booked_slots);
+                            })
+                            .catch(err => console.error(err));
+                    }
+                });
+            })
+            .catch(err => console.error(err));
+    }
 
     function generateTimeSlots(start, end, interval = 60) {
         const slots = [];
@@ -215,7 +224,9 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             console.log("Sending fetch request...");
 
-            const res = await fetch('/set-appointment/', {
+            const notifParam = notifId ? `?notif_id=${notifId}` : "";
+
+            const res = await fetch(`/set-appointment/${notifParam}`, {
                 method: "POST",
                 headers: {
                     'X-CSRFToken' : getCSRFToken(),
@@ -347,4 +358,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+
+
+
+
+
+    
 });

@@ -51,10 +51,15 @@
                         </svg>
                         <p class="green"><span>{{ request.current_quantity }}</span>&nbsp;/ {{ request.quantity }} units</p>
                     </div>
-                    {% endfor %}
                 </div>
+                {% endfor %}
+            </div>
             {% else %}
-                <p class="orange empty-text">No requests from hospitals yet.</p>
+
+
+            <p class="orange empty-text">No requests from hospitals yet.</p>
+
+            
             {% endif %}
         </div>
 

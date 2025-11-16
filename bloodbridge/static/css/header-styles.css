@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Instrument Sans';
 }
 
 .logo {
@@ -30,19 +30,19 @@
     /*border: 1px solid rgb(230, 0, 255);*/
     border-radius: 5px;
     font-size: 16px;
-    font-family: 'Instrument Sans';
     text-decoration: none;
     color: #333;
     font-weight: 500;
 }
 
 .nav-btn:hover {
+    cursor: pointer;
     background-color: #F5E8F0;
 }
 
 .dropdown {
-    cursor: default;
-    /*border: 1px solid rgb(64, 255, 80);*/
+    cursor: pointer;
+    /* border: 1px solid rgb(64, 255, 80); */
     position: relative;
 }
 
@@ -80,7 +80,7 @@
     width: 160px;
     padding: 20px 10px;
     position: absolute;
-    top: 110%;
+    top: 115%;
     right: 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -108,13 +108,270 @@
     color: #3A3A3A;
 }
 
-/* .dropdown:hover .dropdown-content {
-        display: block;
-    }
 
-    .dropdown:hover .arrow-icon {
-        transform: rotate(180deg);
-    } */
+
+
+.notification-button {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    /* border: 1px solid #40ff50; */
+    border-radius: 100%;
+    position: relative;
+}
+
+.notification-button:has(.notification-hitbox:hover) {
+    background-color: #F5E8F0;
+}
+
+.notification-button .notification-hitbox{
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    position: absolute;
+    padding: 10px;
+    width: 25px;
+    height: 25px;
+    z-index: 3;
+    background-color: #333;
+    opacity: 0;
+}
+
+.notification-button .notification-icon {
+    z-index: 1;
+    width: 25px;
+    height: 25px;
+}
+
+.notification-button .notification-icon.focus {
+    fill: #F81A99;
+}
+
+.notification-button .badge {
+    visibility: hidden;
+    z-index: 2;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 13px;
+    margin: 0;
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    padding-top: 1px;
+    border: 2px solid #FFF8FC;
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    background-color: red;
+}
+
+.notification-button .badge.show {
+    visibility: visible;
+}
+
+.notification-button .notification-popup-overlay {
+    display: none;
+    opacity: 0;
+    top: 100%;
+    right: 0;
+    transform: translateX(6%);
+    position: absolute;
+    z-index: 10000;
+    /* border: 1px solid violet; */
+    transition: opacity 0.2s;
+}
+
+.notification-button .notification-popup-overlay.show {
+    display: flex;
+    opacity: 1;
+}
+
+.notification-button .notification-popup-overlay.fade-out {
+    display: none;
+    opacity: 0;
+}
+
+.notification-popup-overlay .popup-bg path {
+    filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.1));
+}
+
+.notification-button .popup-message {
+    top: 15%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.popup-message .icon{
+    fill: #FF0048;
+    width: 18px;
+    height: 18px;
+}
+
+.notification-button .notification-overlay {
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    top: 100%;
+    right: 0;
+    transform: translateX(17.5%);
+    background-color: #fff;
+    position: absolute;
+    width: 350px;
+    max-height: 550px;
+    height: 550px;
+    padding: 5px 8px 15px 8px;
+    box-sizing: border-box;
+    z-index: 10000;
+}
+
+.notification-button .notification-overlay.show {
+    display: flex;
+}
+
+.notification-overlay .notification-label {
+    margin-top: 15px;
+    margin-bottom: 0;
+    font-size: 20px;
+    border-bottom: 1.5px solid #E3E3E3;
+    /* border: 1px solid violet; */
+    padding: 0 12px 3px 12px;
+    z-index: 10;
+}
+
+.notification-list {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid blue; */
+    height: 100%;
+}
+
+.notification-list::-webkit-scrollbar {
+    overflow: hidden;
+    width: 10px;
+    height: 10px;
+}
+.notification-list::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+.notification-list::-webkit-scrollbar-thumb {
+    background-color: #bcbcbc;
+    border-radius: 100px;
+}
+.notification-list::-webkit-scrollbar-thumb:hover {
+    background-color: #a2a2a2;
+}
+.notification-list::-webkit-scrollbar-button:vertical:decrement {
+    height: 1px;
+}
+.notification-list::-webkit-scrollbar-button:vertical:increment {
+    height: 7px;
+}
+
+.notification-item {
+    margin-right: 8px;
+    box-sizing: border-box;
+    padding: 25px 15px 25px 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification-item.first {
+    margin-top: 15px;
+}
+
+.notification-item.last {
+    margin-bottom: 15px;
+}
+
+.notification-item:hover {
+    cursor: pointer;
+    background-color: #F9F9F9;
+}
+
+.notification-item .icon {
+    fill: #B3A3A7;
+}
+
+.notification-item p {
+    margin: 0;
+    font-size: 12px;
+    color: #B3A3A7;
+}
+
+.notification-list .item-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* border: 1px solid red; */
+}
+
+.item-header .icon {
+    fill: #FF0048;
+    width: 18px;
+    height: 18px;
+}
+
+.item-header .header-label {
+    font-size: 16px;
+    color: #3A3A3A;
+}
+
+.item-header .unread {
+    visibility: visible;
+    margin-left: auto;
+    background-color: #F81A99;
+    border-radius: 100%;
+    min-width: 1.5vw;
+    min-height: 1.5vw;
+    max-width: 1.5vw;
+    max-height: 1.5vw;
+}
+
+.item-header .read {
+    visibility: hidden;
+}
+
+.notification-list .item-hospital {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.item-hospital .icon {
+    width: 20px;
+    height: 20px;
+}
+
+.notification-list .item-units {
+    gap: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.item-units .icon {
+    width: 17px;
+    height: 17px;
+}
+
+.notification-overlay .notification-empty {
+    color: #B3A3A7;
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
 
 .profile-icon {
     border-radius: 50%;
