@@ -40,7 +40,7 @@ def request_history_view(request):
 def donate_blood_view(request):
 
     req = Request.objects.filter(
-        blood_type=request.user.profile.blood_type,
+        blood_type__compatible_with=request.user.profile.blood_type,
         status='pending',
         requester__role='hospital'
         ).exclude(appointments_active__donor=request.user)
