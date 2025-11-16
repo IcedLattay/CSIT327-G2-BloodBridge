@@ -49,6 +49,7 @@
     display: flex;
 }
 
+
 .red.h-divider{
     border-top: 2px solid #D9D9D9;
 }
@@ -249,6 +250,7 @@ p.green {
 
 
 form.red.card {
+    position: relative;
     min-height: 500px;
     height: 500px;
     max-height: 500px;
@@ -263,6 +265,14 @@ form.red.card {
 
 
 
+
+.orange.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+}
 
 .orange.label{
     margin: 30px 17px 0px 17px;
