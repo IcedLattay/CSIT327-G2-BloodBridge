@@ -8,12 +8,63 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedTimeStart = document.getElementById("selected-start-time");
     const selectedTimeEnd = document.getElementById("selected-end-time");
 
+    const calendarElem = document.getElementById("calendar");
     const container = document.getElementById("time-slots-container");
     const scheduleDisplay = document.getElementById("display-schedule");
 
     
     const setAppointmentModal = document.getElementById("set-appointment-modal");
     
+    let fetchController = null;
+
+    setAppointmentModal.querySelector("#close-button").addEventListener("click", () => {
+        setAppointmentModal.classList.remove("show");
+        if (fetchController) fetchController.abort();
+        resetForm();
+    });
+
+    function resetForm() {
+        // i reset ang input values to blank
+
+        selectedRequest.value = '';
+        selectedDate.value = '';
+        selectedTimeStart.value = '';
+        selectedTimeEnd.value = '';
+
+        // iclear ang form errors
+
+        document.querySelectorAll(".errors-container .icon").forEach( errIcon => {
+            errIcon.classList.remove("show");
+        })
+
+        document.querySelectorAll(".errors-container .custom-error").forEach( errMsg => {
+            errMsg.textContent = '';
+        })
+
+        // clear other details 
+
+        scheduleDisplay.querySelector(".indigo.date").textContent = '';
+        scheduleDisplay.querySelector(".indigo.time").textContent = '';
+
+
+        // reset calendar visually
+
+        const selectedDay = document.querySelector(".flatpickr-day.selected");
+        if (selectedDay) {
+            selectedDay.classList.remove("selected");
+        }
+
+        // clear time slots container
+        container.innerHTML = '';
+
+        // reset flatpickr instance properly
+        
+        if (calendarElem._flatpickr) {
+            calendarElem._flatpickr.clear();
+            calendarElem._flatpickr.destroy();
+        }
+
+    }
         
     requests.forEach( request => {
 
@@ -121,15 +172,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     function fetchAvailableDatesAndSlots(requestID, requestTimeOpen, requestTimeClose) {
-        fetch(`/appointments/available-dates/${requestID}/`)
+        if (!setAppointmentModal.classList.contains("show")) {
+            console.log("Modal closed → SKIPPING fetchAvailableDatesAndSlots entirely.");
+            return;
+        }
+        
+        if (fetchController) fetchController.abort();
+
+        fetchController = new AbortController();
+
+        fetch(`/appointments/available-dates/${requestID}/`, { signal: fetchController.signal })
             .then(res => res.json())
             .then(data => {
                 const availableDates = data.available_dates || [];
                 console.log("✅ GOT Available dates:", availableDates);
 
-                const calendarElem = document.getElementById("calendar");
 
-                if (calendarElem._flatpickr) calendarElem._flatpickr.destroy();
 
                 flatpickr(calendarElem, {
                     inline: true,
@@ -137,6 +195,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     enable: availableDates,
                     defaultDate: null,
                     onChange: function(selectedDates, dateStr) {
+                        
+                        if (!setAppointmentModal.classList.contains("show")) {
+                            console.log("Modal is closed — skipping onChange");
+                            return;
+                        }
+
                         selectedDate.value = dateStr;
                         console.log(`📅 STORED Selected Date, ${selectedDate.value}, in hidden input`);
 
@@ -148,6 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         scheduleDisplay.querySelector(".date .icon").classList.remove("show");
                         scheduleDisplay.querySelector(".indigo.date").textContent = formattedDate;
                         scheduleDisplay.querySelector(".indigo.time").textContent = '';
+
+                        
 
                         fetch(`/appointments/booked-slots/${requestID}?date=${dateStr}`)
                             .then(res => res.json())
@@ -224,9 +290,13 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             console.log("Sending fetch request...");
 
-            const notifParam = notifId ? `?notif_id=${notifId}` : "";
+            let url = "/set-appointment/";
 
-            const res = await fetch(`/set-appointment/${notifParam}`, {
+            if (notifId) {
+                url += `?notif_id=${notifId}`;
+            }
+
+            const res = await fetch(url, {
                 method: "POST",
                 headers: {
                     'X-CSRFToken' : getCSRFToken(),

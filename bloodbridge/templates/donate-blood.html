@@ -69,8 +69,10 @@
 
         <div class="modal" id="set-appointment-modal">
             <form class="red card" id="appointment-form">
+                
+                <span class="orange close" id="close-button">&times;</span>
+                
                 <input type="hidden" name="request" id="selected-request" value="">
-                {% csrf_token %}
                 <p class="orange label">Set an appointment</p>
                 
                 <div class="orange form">
