@@ -156,12 +156,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
           console.log("Clicked item with ID", notifId);
 
-          await fetch(`/notifications/mark-read/${notifId}/`, {
+          const res = await fetch(`/notifications/mark-read/${notifId}/`, {
             method: "POST",
             headers: {
                 "X-CSRFToken": getCSRFToken(),
             },
           });
+
+          console.log('📨 Response received, status:', res.status);
 
           window.location.href = `/donate-blood/?notif_id=${notifId}&request_id=${requestId}`;
 
