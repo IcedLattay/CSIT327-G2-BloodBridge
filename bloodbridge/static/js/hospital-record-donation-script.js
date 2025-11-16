@@ -182,6 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (data.success) {
                 console.log('✅ Success! Reloading page...');
+
+                
+                localStorage.setItem("showSuccessModal", "true");
                 window.location.reload();
             } else {
 
@@ -233,6 +236,71 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
     })
+
+
+
+    // LOGIC for Success Overlay !!!
+
+    let modalTimeout;
+    const successModal = document.getElementById("success-modal");
+    const successAnimation = document.getElementById("success-animation");
+
+    const shouldShow = localStorage.getItem("showSuccessModal");
+
+    if (shouldShow === "true") {
+        // Show your success overlay/modal
+        showSuccessModal();
+
+        // Reset the flag so it doesn’t show again on next reload
+        localStorage.removeItem("showSuccessModal");
+    }
+
+
+    function showSuccessModal() {
+
+        successModal.classList.add("show");
+
+        successAnimation.loop = false;
+
+        // Restart the animation fresh
+        successAnimation.stop();
+        successAnimation.play();
+
+        // Clear any old timer so it doesn't auto-close too soon
+        if (modalTimeout) {
+            clearTimeout(modalTimeout);
+        }
+
+        // Auto-hide after 3 seconds
+        modalTimeout = setTimeout(() => {
+            console.log("Hiding success overlay...");
+
+            hideOverlay(successModal);
+        }, 2500);
+    }
+
+    function hideOverlay(modal) {
+        modal.classList.add("fade-out");
+
+        modal.addEventListener("transitionend", function end() {
+            modal.classList.remove("show", "fade-out");
+            modal.removeEventListener("transitionend", end);
+        });
+    }
+
+    window.addEventListener("click", function(event) {
+        if (event.target === successModal) {
+            successModal.classList.remove("show");
+
+            // Also clear any pending timer when manually closed
+            if (modalTimeout) {
+                clearTimeout(modalTimeout);
+            }
+        }
+    });
+
+
+
 
 
 

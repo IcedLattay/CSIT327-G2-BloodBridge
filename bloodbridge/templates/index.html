@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="csrf-token" content="{{ csrf_token }}">
   <title>Blood Bridge</title>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 
@@ -282,10 +283,14 @@
   <div class="overlay" id="successOverlay">
     <div class="success-container">
       <span class="close-btn" id="closeSuccess">&times;</span>
-      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24">
-        <path
-          d="m16.298,8.288l1.404,1.425-5.793,5.707c-.387.387-.896.58-1.407.58s-1.025-.195-1.416-.585l-2.782-2.696,1.393-1.437,2.793,2.707,5.809-5.701Zm7.702,3.712c0,6.617-5.383,12-12,12S0,18.617,0,12,5.383,0,12,0s12,5.383,12,12Zm-2,0c0-5.514-4.486-10-10-10S2,6.486,2,12s4.486,10,10,10,10-4.486,10-10Z" />
-      </svg>
+      <lottie-player
+        id="success-animation"
+        src="{% static 'animations/success.json' %}"
+        background="transparent"
+        speed="1"
+        style="width: 250px; height: 250px;"
+        autoplay>
+      </lottie-player>
       <h2>Registration Successful!</h2>
       <p>You can now log in to your account.</p>
       <a href="#" class="btn-primary" id="goToLogin">Go to Login</a>

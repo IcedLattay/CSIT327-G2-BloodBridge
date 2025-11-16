@@ -257,5 +257,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
   })
+
+
+  // FOR Success Overlay Popup
+
+  const successAnimation = document.getElementById("success-animation");
+  
+  successAnimation.loop = false;
+  successAnimation.stop();
+  successAnimation.play(); 
   
 });
