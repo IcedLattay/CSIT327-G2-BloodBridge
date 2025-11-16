@@ -204,7 +204,7 @@ def hospital_dashboard_view(request):
     total_available_users = CustomUser.objects.filter(is_available=True).count()
 
     appointments = Appointment.objects.filter(
-        request__hospital=request.user,  # only appointments for requests directed to this hospital
+        request__requester=user,  # only appointments for requests directed to this hospital
         date__gte=date.today()           # only today or future appointments
     ).order_by('date', 'time_start')
 
