@@ -33,7 +33,7 @@
                 
                 {% for hospital in hospitals %}
                 
-                <p class="orange row">{{ hospital.profile.hospital_name }}</p>
+                <p class="orange row" data-hospitalId="{{ hospital.id }}">{{ hospital.profile.hospital_name }}</p>
                 
                 {% endfor %}
             
@@ -49,6 +49,7 @@
 
         <div class="modal" id="request-modal" >
             <form class="red card form" id="request-form">
+                <input type="hidden" name="hospital" id="selected-hospital" value="">
                 
                 <p class="red label">Blood Request Form</p>
 
