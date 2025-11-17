@@ -20,6 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
     
     document.querySelectorAll(".orange.row").forEach( row => {
         row.addEventListener('click', () => {
+            const hospitalID = row.getAttribute("data-hospitalId");
+
+            const selectedHospital = document.getElementById("selected-hospital");
+            selectedHospital.value = hospitalID;
+            
             requestFormModal.classList.add("show");
         })
     })

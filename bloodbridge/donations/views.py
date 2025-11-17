@@ -163,12 +163,14 @@ def submit_request(request):
 
         if form.is_valid():
             blood_type = BloodType.objects.get(id=form.cleaned_data['blood_type'])
+            hospital = CustomUser.objects.get(id=form.cleaned_data['hospital'])
             quantity = form.cleaned_data['quantity']
             urgency = form.cleaned_data['urgency']
             notes = form.cleaned_data['notes']
 
             request_instance = Request(
                 requester = request.user,
+                hospital = hospital,
                 blood_type = blood_type,
                 quantity = quantity,
                 urgency = urgency,

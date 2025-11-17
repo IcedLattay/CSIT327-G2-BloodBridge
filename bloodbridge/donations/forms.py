@@ -63,6 +63,10 @@ class BloodRequestForm(forms.Form):
 
 
 class UserBloodRequestForm(forms.Form):
+    hospital = forms.IntegerField(
+        required=False,
+    )
+
     blood_type = forms.IntegerField(
         required=True,
         error_messages={
