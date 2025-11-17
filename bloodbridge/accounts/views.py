@@ -9,6 +9,8 @@ from accounts.models import CustomUser
 from donations.models import BloodType, Donation, Request, Appointment
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from django.views.decorators.http import require_POST
+from .models import SupabaseHospital
 
 # Index view
 def index_view(request):
@@ -230,3 +232,29 @@ def admin_dashboard(request):
     if not request.user.is_staff:
         return redirect('login')  # block non-admin access
     return render(request, 'adminDashboard.html')
+
+# ADMIN DASHBOARD
+@login_required
+def admin_hospital_view(request):
+    if not request.user.is_staff:
+        return redirect('login')
+
+    # Query Supabase database explicitly
+    hospitals = SupabaseHospital.objects.using('supabase').all()
+
+    return render(request, 'adminHospitals.html', {
+        'hospitals': hospitals
+    })
+
+@require_POST
+@login_required
+def delete_hospital(request, user_id):
+    if not request.user.is_staff:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    try:
+        hospital = CustomUser.objects.get(id=user_id, role='hospital')
+        hospital.delete()
+        return JsonResponse({'success': True})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'Hospital not found'}, status=404)

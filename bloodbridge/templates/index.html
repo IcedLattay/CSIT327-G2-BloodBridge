@@ -7,6 +7,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blood Bridge</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 
@@ -72,7 +73,6 @@
         <form class="register-form" id="register-user-form" data-url="{% url 'register' %}" novalidate>
           {% csrf_token %}
 
-          <!-- Email Field -->
           <div class="input-group">
             <div class="input-field">
               <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24">
@@ -84,7 +84,6 @@
             <div class="error-message"><!-- field error will appear here--></div>
           </div>
 
-          <!-- Password Field -->
           <div class="input-group">
             <div class="input-field">
               <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24">
@@ -98,7 +97,6 @@
             <div class="error-message"><!-- field error ang mu gawas ari--></div>
           </div>
 
-          <!-- Confirm Password Field -->
           <div class="input-group">
             <div class="input-field">
               <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24">
@@ -187,7 +185,6 @@
         <form class="login-form" id="login-form" data-url="{% url 'login' %}" novalidate>
           {% csrf_token %}
 
-          <!-- Email Field -->
           <div class="input-group">
             <div class="input-field">
               <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24">
@@ -199,7 +196,6 @@
             <div class="error-message"><!-- field error will appear here--></div>
           </div>
 
-          <!-- Password Field -->
           <div class="input-group">
             <div class="input-field">
               <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24">
@@ -214,7 +210,6 @@
           </div>
           <button type="submit" class="submit-btn">Log in</button>
 
-          <!-- Forgot Password Link -->
           <p class="forgot-password"><a href="#">Forgot Password?</a></p>
         </form>
       </div>

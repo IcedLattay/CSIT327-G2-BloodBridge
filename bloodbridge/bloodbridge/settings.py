@@ -90,7 +90,14 @@ DATABASES = {
         default="sqlite:///db.sqlite3",
         # conn_max_age=600,
         conn_max_age=0,
+    ),
+    
+    # Supabase PostgreSQL
+    'supabase': dj_database_url.parse(
+        os.getenv('SUPABASE_DB_URL', 'postgresql://postgres.igstmkemsmpajnfkepor:icwlogZ4DpkjEvR3@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres'),
+        conn_max_age=600
     )
+    
 }
 
 

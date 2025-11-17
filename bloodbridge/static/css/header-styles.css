@@ -25,7 +25,7 @@
 }
 
 .nav-btn {
-    cursor: default;
+    cursor: pointer;
     padding: 5px;
     /*border: 1px solid rgb(230, 0, 255);*/
     border-radius: 5px;
@@ -41,7 +41,7 @@
 }
 
 .dropdown {
-    cursor: default;
+    cursor: pointer;
     /*border: 1px solid rgb(64, 255, 80);*/
     position: relative;
 }
@@ -59,6 +59,7 @@
 
 .dropbtn p {
     /*border: 1px solid saddlebrown;*/
+    cursor: pointer;
     margin: 0px;
     text-align: right;
 }
@@ -93,7 +94,7 @@
 
 
 .dropdown-content a {
-    cursor: default;
+    cursor: pointer;
     border-radius: 5px;
     font-size: 16px;
     font-family: 'Instrument Sans';

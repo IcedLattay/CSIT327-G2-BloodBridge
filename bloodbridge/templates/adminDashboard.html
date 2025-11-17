@@ -29,33 +29,24 @@
                 </tr>
             </thead>
             <tbody>
+                {% for hospital in hospitals %}
                 <tr>
-                    <td>Cebu City Medical Center</td>
-                    <td><button class="delete-btn">delete</button></td>
+                    <td>{{ hospital.profile.hospital_name }}</td>
+                    <td>
+                        <button class="delete-btn" data-user-id="{{ hospital.id }}">delete</button>
+                    </td>
                 </tr>
+                {% empty %}
                 <tr>
-                    <td>Ace Medical Hospital</td>
-                    <td><button class="delete-btn">delete</button></td>
+                    <td colspan="2">No hospitals found.</td>
                 </tr>
-                <tr>
-                    <td>Vicente Sotto Memorial Medical Center</td>
-                    <td><button class="delete-btn">delete</button></td>
-                </tr>
-                <tr>
-                    <td>Chong Hua Hospital</td>
-                    <td><button class="delete-btn">delete</button></td>
-                </tr>
-                <tr>
-                    <td>Adventist Hospital Cebu (Miller Hospital)</td>
-                    <td><button class="delete-btn">delete</button></td>
-                </tr>
-                <tr>
-                    <td>Cebu Doctors’ University Hospital</td>
-                    <td><button class="delete-btn">delete</button></td>
-                </tr>
+                {% endfor %}
             </tbody>
+
         </table>
     </div>
+
+    <script src="{% static 'js/adminDashboard.js' %}"></script>
 
 </body>
 

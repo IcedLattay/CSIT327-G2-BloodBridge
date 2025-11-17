@@ -40,5 +40,14 @@ class Profile(models.Model):
                 f"Contact Number: {self.contact_number}"
                 f"Blood Type: {self.blood_type.type}"
             )
+            
+class SupabaseHospital(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255)
+    email = models.EmailField(blank=True, null=True)
+
+    class Meta:
+        db_table = "accounts_profile"  # Make sure this matches your Supabase table
+        managed = False          # Don't let Django try to create/migrate it
 
     
