@@ -259,6 +259,7 @@ def admin_login_view(request):
 
     return render(request, 'admin/adminLogin.html', {'error': error})
 
+
 @login_required
 def admin_dashboard(request):
     """Admin dashboard view"""
