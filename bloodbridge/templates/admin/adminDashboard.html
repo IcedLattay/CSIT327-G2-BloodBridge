@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/adminDashboard.css' %}">
+</head>
+
+<body>
+
+    <!-- Hidden form so Django will set the csrftoken cookie -->
+    <form style="display:none">{% csrf_token %}</form>
+
+    {% include 'components/adminNavbar.html' %}
+
+    <div class="hospital-table-container">
+        <h2>Manage Hospitals</h2>
+        <div class="tabs">
+            <button class="tab active">Hospital accounts</button>
+            <button class="tab">Hospital account requests</button>
+        </div>
+
+        <table class="hospital-table">
+            <thead>
+                <tr>
+                    <th>Hospital Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for hospital in hospitals %}
+                <tr>
+                    <td>{{ hospital.profile.hospital_name }}</td>
+                    <td>
+                        <button class="delete-btn" data-user-id="{{ hospital.id }}">Delete</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">No hospitals found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="{% static 'js/adminDashboard.js' %}"></script>
+</body>
+
+</html>

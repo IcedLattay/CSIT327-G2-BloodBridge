@@ -9,6 +9,11 @@ from accounts.models import CustomUser
 from donations.models import BloodType, Donation, Request, Appointment
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from django.views.decorators.http import require_POST
+from .models import SupabaseHospital
+from django.contrib.auth.decorators import user_passes_test
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
 
 # Index view
 def index_view(request):
@@ -252,8 +257,7 @@ def admin_login_view(request):
         else:
             error = "Invalid credentials!"
 
-    return render(request, 'adminLogin.html', {'error': error})
-
+    return render(request, 'admin/adminLogin.html', {'error': error})
 
 
 @login_required
@@ -261,6 +265,25 @@ def admin_dashboard(request):
     """Admin dashboard view"""
     if not request.user.is_staff:
         return redirect('login')  # block non-admin access
-    return render(request, 'adminDashboard.html')
 
+    # Get all users with role='hospital'
+    hospitals = CustomUser.objects.filter(role='hospital').select_related('profile')
+
+    # Pass hospitals to template
+    return render(request, 'admin/adminDashboard.html', {'hospitals': hospitals})
+
+@login_required
+@require_POST
+def delete_hospital(request):
+    """Delete a hospital account (Admin only)"""
+    if not request.user.is_staff:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    user_id = request.POST.get('user_id')
+    try:
+        hospital = CustomUser.objects.get(id=user_id, role='hospital')
+        hospital.delete()
+        return JsonResponse({'success': True})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'Hospital not found'}, status=404)
 
