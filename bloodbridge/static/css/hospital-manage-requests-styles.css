@@ -1,0 +1,949 @@
+
+
+
+/* MAIN CONTENT */
+
+.manage-requests {
+    /* border: 1px solid saddlebrown; */
+    margin: 20px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    /* border: 1px solid violet; */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+}
+
+.red {
+    /* border: 1px solid red; */
+    display: flex;
+}
+
+.orange {
+    display: flex;
+    /* border: 1px solid orange; */
+}
+
+.yellow {
+    /* border: 1px solid gold; */
+    display: flex;
+}
+
+.green {
+    display: flex;
+    /* border: 1px solid greenyellow; */
+}
+
+.blue {
+    display: flex;
+    /* border: 1px solid #0088ff; */
+}
+
+.indigo {
+    display: flex;
+    /* border: 1px solid #5300fa; */
+}
+
+.magenta {
+    display: flex;
+    /* border: 1px solid magenta; */
+}
+
+.brown {
+    display: flex;
+    /* border: 1px solid brown; */
+}
+
+
+
+
+
+
+
+
+
+
+/* 🍒☎️💌❤️🍓 RED LEVEL ELEMENTS */
+
+
+
+
+
+
+
+
+.red.card.manage {
+    width: 80%;
+    min-height: 660px;
+    max-height: 660px;
+}
+
+
+
+
+
+
+/* 🍂🏵️🎃🍹🐯 ORANGE LEVEL ELEMENTS */
+
+
+
+
+
+
+.orange.spacing {
+    padding: 25px;
+}
+
+.orange.h-divider{
+    border-top: 2px solid #D9D9D9;
+}
+
+.orange.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90px;
+}
+
+.row {
+    border-bottom: 1px solid #D9D9D9;
+    flex-direction: row;
+    padding: 25px 0;
+}
+
+.orange.row.label {
+    padding: 15px 0;
+}
+
+.orange.empty-text {
+    padding: 33px 0px;
+    margin: 0;
+    text-align: center;
+    color: #A7A7A7;
+    font-size: 15px;
+}
+
+.orange.requests-list {
+    flex-direction: column;
+    height: 500px;
+    max-height: 100%;
+    overflow-y: auto;
+    border-radius: 0 0 25px 25px;
+}
+
+.orange.requests-list::-webkit-scrollbar {
+    overflow: hidden;
+    width: 15px;
+    height: 10px;
+}
+
+.orange.requests-list::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.orange.requests-list::-webkit-scrollbar-thumb {
+    background-color: #bcbcbc;
+    border-radius: 100px;
+}
+
+.orange.requests-list::-webkit-scrollbar-thumb:hover {
+    background-color: #a2a2a2;
+}
+
+.orange.requests-list::-webkit-scrollbar-button:vertical:decrement {
+    height: 1px;
+}
+
+.orange.requests-list::-webkit-scrollbar-button:vertical:increment {
+    height: 15px;
+}
+
+
+
+
+
+
+/* 💛✨🌟⚡️💫 YELLOW LEVEL ELEMENTS */
+
+
+
+
+
+
+.red.card.manage h2.yellow {
+    font-weight: lighter;
+    margin: 15px 0px 0px 0px;
+    font-size: 22px;  
+    color: #3A3A3A;
+}
+
+.orange.button-container button.yellow {
+    font-size: 16px;
+    padding: 15px 150px;
+}
+
+.row.label span.yellow {
+    margin-left: 27px;
+}
+
+.yellow.row.header {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+}
+
+
+
+
+
+
+/* 🍀☘️🍃🌿🥦 GREEN LEVEL ELEMENTS */
+
+
+
+
+
+
+.green.col .icon {
+    width: 20px;
+    height: 20px;
+}
+
+.green.urgency.low {
+    color: #B3A3A7;
+}
+
+.green.urgency.medium {
+    color: #FF8F0E;
+}
+
+.green.urgency.high {
+    color: #FF3870;
+}
+
+.green.urgency {
+    width: 20%;
+    margin-left: 27px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-self: center;
+}
+
+.green.units {
+    width: 30%;
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.green.donors {
+    width: 30%;
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.green.emergency {
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+
+
+
+/* 🧿🪬🫧🌀 BLUE LEVEL ELEMENTS */
+
+
+
+
+
+
+.green.urgency .blue.icon.low {
+    fill: #B3A3A7;
+}
+
+.green.urgency .blue.icon.medium {
+    fill: #FF8F0E;
+}
+
+.green.urgency .blue.icon.high {
+    fill: #FF3870;
+}
+
+.green.units .blue.icon {
+    fill: #FF0E77;
+}
+
+.green.units p.blue {
+    color: #B3A3A7;
+}
+
+.green.units span.blue {
+    color: #3A3A3A;
+}
+
+.green.donors .blue.icon {
+    fill: #B3A3A7;
+}
+
+.blue.checkbox {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    background-color: #D9D9D9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s ease-in;
+}
+
+.blue.checkbox:hover {
+    cursor: pointer;
+    background-color: #c2c2c2;
+}
+
+.blue.checkbox.checked {
+    cursor: default;
+    background-color: #F81A99;
+}
+
+.blue.checkbox.checked:hover {
+    cursor: default;
+}
+
+
+
+
+
+
+
+/* 💜👾🍇☂️ INDIGO LEVEL ELEMENTS */
+
+
+
+
+
+
+.blue.checkbox .indigo.icon {
+    transition: 0.2s ease-in;
+    visibility: hidden;
+    fill: #fff;
+    width: 15px;
+    height: 15px;
+}
+
+.blue.checkbox .indigo.icon.checked {
+    visibility: visible;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* REQUEST FORM */
+
+.modal {
+    visibility: hidden;
+    opacity: 0;
+    position: fixed;
+    box-sizing: border-box;
+    border: 1px solid rgb(255, 0, 119);
+    display: flex;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.modal.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+
+
+
+
+/* 🍒☎️💌❤️🍓 RED LEVEL ELEMENTS */
+
+
+
+
+
+
+
+.red.card.form {
+    min-width: 450px;
+    max-width: 450px;
+    min-height: 630px;
+    max-height: 630px;
+    border-radius: 25px;
+}
+
+
+
+
+
+
+
+/* 🍂🏵️🎃🍹🐯 ORANGE LEVEL ELEMENTS */
+
+
+
+
+
+
+
+.modal .orange.label{
+    margin: 30px 17px 0px 17px;
+    padding-left: 15px;
+    padding-bottom: 7px;
+    font-size: 18px;
+    border-bottom: 1.5px solid #D9D9D9;
+}
+
+.modal .orange.fields-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 16px;
+    margin: 0 17px 0 17px;
+    padding: 0 15px 0 15px;
+}
+
+.modal .orange.form-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    font-size: 16px;
+    margin: 40px 17px 0 17px;
+    padding: 0 15px 0 15px;
+}
+
+
+
+
+
+
+
+/* 💛✨🌟⚡️💫 YELLOW LEVEL ELEMENTS */
+
+
+
+
+
+
+
+.modal .yellow.section {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.yellow.section.blood {
+    gap: 15px;
+}
+
+.modal .orange.form-buttons button.yellow {
+    font-size: 16px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.modal .yellow.negative {
+    background-color: #F1F1F1;
+    color: #B3A3A7;
+    font-size: 16px;
+    padding: 13px 0 13px 0;
+}
+
+.modal .yellow.negative:hover {
+    background-color: #dfdfdf;
+}
+
+
+
+
+
+
+
+/* 🍀☘️🍃🌿🥦 GREEN LEVEL ELEMENTS */
+
+
+
+
+
+
+
+.modal .green.field {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal .green.field.bt {
+    width: 45%;
+}
+
+.modal .green.field p {
+    margin: 0;
+}
+
+.modal .green.field.quantity {
+    width: 55%;
+}
+
+.modal .green.field button {
+    width: 100%;
+    justify-content: center;
+    background-color: #F1F1F1;
+    color: #B3A3A7;
+    font-size: 16px;
+    padding: 13px 0 13px 0;
+}
+
+.green.field button:hover {
+    background-color: #dfdfdf;
+}
+
+.green.field button.low {
+    background-color: #bebebe;
+    color: #ffffff;
+}
+
+.green.field button.medium {
+    background-color: #FFD038;
+    color: #ffffff;
+}
+
+.green.field button.high {
+    background-color: #FF3870;
+    color: #ffffff;
+}
+
+
+
+
+
+
+
+
+/* 🧿🪬🫧🌀 BLUE LEVEL ELEMENTS */
+
+
+
+
+
+
+
+.modal .blue.dropdown-bt {
+    cursor: default;
+    position: relative;
+    height: 100%;
+}
+
+.modal .blue.quantity-field {
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal .blue.urgency-selection {
+    flex-direction: row;
+    gap: 10px;
+}
+
+.modal .blue.set {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.modal .blue.set.days {
+    margin-top: 20px;
+}
+
+.blue.error-container {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    align-items: center;
+}
+
+.shake {
+    animation: shake 0.2s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); } /* Start and end at original position */
+    10% { transform: translateX(-5px); } /* Move left */
+    20% { transform: translateX(5px); } /* Move right */
+}
+
+.green.field.bt .blue.error-container{
+    top: 92.5px;
+}
+
+.green.field.availability .blue.time.error-container{
+    top: 86px;
+}
+
+.green.field.availability .blue.days.error-container{
+    top: 168px;
+}
+
+
+
+
+
+
+
+/* 💜👾🍇☂️ INDIGO LEVEL ELEMENTS */
+
+
+
+
+
+
+
+.modal .indigo.dropdown-bt-btn {
+    width: 100%;
+    background-color: #F1F1F1;
+    border-radius: 5px;
+    margin: 0;
+    padding: 13px 0px 13px 10px;
+    font-size: 16px;
+    color: #333;
+    cursor: default;
+    z-index: 10px;
+}
+
+.modal .indigo.dropdown-bt-btn:hover {
+    background-color: #e5e5e5;
+}
+
+.modal .indigo.dropdown-bt-content-bg {
+    overflow: hidden;
+    width: 100%;
+    display: none;
+    background-color: #fff;
+    padding: 0px 7px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: absolute;
+    box-sizing: border-box;
+    left: 0;
+    z-index: 100;
+}
+
+.modal .indigo.dropdown-bt-content-bg.show {
+    display: block;
+}
+
+.modal .blue.quantity-field input {
+    font-size: 16px;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 13px 0px 13px 10px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-bottom: 1px solid #B3A4A7;
+}
+
+.modal .blue.quantity-field input:focus {
+    outline: none;
+    border-bottom: 2px solid #F81A99;
+}
+
+.modal .blue.quantity-field p.indigo {
+    color: #B3A3A7;
+}
+
+.modal .blue.set.hours p.indigo {
+    display: flex;
+    align-items: center;
+}
+
+.modal .blue.set.hours input {
+    user-select: none;
+    text-align: center;
+    width: 100%;
+    font-family: inherit;
+    padding: 13px 5px 13px 10px;
+    background-color: #F1F1F1;
+    border: transparent;
+    border-radius: 13px;
+}
+
+.modal .blue.set.hours input:hover {
+    background-color: #dfdfdf;
+    outline: none;
+}
+
+.modal .blue.set.days button.indigo.selected {
+    background-color: #F81E9B;
+    color: #fff;
+}
+
+.modal .blue.set.days button.indigo.selected:hover {
+    background-color: #BD1676;
+}
+
+.flatpickr-time input {
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    cursor: default !important; /* Change this from pointer to default */
+}
+
+/* But allow the wrapper to handle clicks for the arrows */
+.flatpickr-time .numInputWrapper {
+    cursor: default !important;
+    pointer-events: all !important; /* Allow wrapper to receive events */
+}
+
+.flatpickr-time .numInputWrapper span {
+    border: none !important;
+    cursor: pointer !important; /* Keep arrows clickable */
+    pointer-events: all !important; /* Ensure arrows work */
+}
+
+.modal .blue.error-container .indigo.icon {
+    fill: red;
+    width: 15px;
+    height: 15px;
+    visibility: hidden;
+}
+
+.modal .blue.error-container .indigo.icon.show {
+    visibility: visible;
+}
+
+.modal .blue.error-container .indigo.custom-error {
+    color: red;
+    top: -10px;
+    left: 0;
+    font-size: 12px;
+    margin: 0px;
+    margin-top: 5px;
+    padding: 0px;
+    z-index: 1;
+}
+
+
+
+
+
+
+
+/* 🌸🎀🦩💕🌷 MAGENTA LEVEL ELEMENTS */
+
+
+
+
+
+
+
+.modal .magenta.dropdown-bt-content {
+    max-height: 200px;
+    overflow-y: scroll;
+    flex-direction: column;
+}
+
+.modal .magenta.dropdown-bt-content::-webkit-scrollbar {
+    width: 15px;
+    height: 50px;
+    overflow-y: hidden;
+}
+
+.modal .magenta.dropdown-bt-content::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.modal .magenta.dropdown-bt-content::-webkit-scrollbar-thumb {
+    background-color: #bcbcbc;
+    border-radius: 100px;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+}
+
+.modal .magenta.dropdown-bt-content::-webkit-scrollbar-thumb:hover {
+    background-color: #a2a2a2;
+}
+
+.modal .magenta.dropdown-bt-content::-webkit-scrollbar-button {
+    display: none;
+}
+
+.modal .magenta.dropdown-bt-content.show {
+    display: block;
+}
+
+
+
+
+
+
+
+/* 🤎🪵🪐🍂🫶🏾 BROWN LEVEL ELEMENTS */
+
+
+
+
+
+
+
+.modal .brown.dropdown-bt-option {
+    margin: 0;
+    cursor: default;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    padding: 10px 15px;
+    color: #B3A3A7;
+    text-decoration: none;
+}
+
+.modal .brown.dropdown-bt-option:hover {
+    background-color: #F2F3F3;
+    color: #3A3A3A;
+}
+
+.modal .brown.dropdown-bt-option.first {
+    margin-top: 15px;
+}
+
+.modal .brown.dropdown-bt-option.last {
+    margin-bottom: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* FOR THE SUCCESS OVERLAY */
+
+.modal.fade-out {
+    visibility: hidden;
+    opacity: 0;
+}
+
+
+
+
+
+
+/* 🍒☎️💌❤️🍓 RED LEVEL ELEMENTS */
+
+
+
+
+
+
+.red.success.card {
+    position: relative;
+}
+
+
+
+
+
+
+/* 🍂🏵️🎃🍹🐯 ORANGE LEVEL ELEMENTS */
+
+
+
+
+
+
+#success-animation {
+    margin: 50px 95px 90px 95px;
+}
+
+.red.success.card p.orange {
+    font-size: 18px;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    top: 200px;
+}
+
+
+
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .donation-history {
+        margin: 20px 40px;
+    }
+
+    .card {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .donation-history {
+        margin: 20px 20px;
+    }
+}

@@ -13,6 +13,7 @@ body{
     padding: 1.5rem 7% 0px 7%;
     margin: 0px;
     height: 100%;
+    user-select: none;
 }
 
 button {

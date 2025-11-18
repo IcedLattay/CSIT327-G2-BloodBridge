@@ -11,19 +11,22 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.views.decorators.http import require_POST
 from .models import SupabaseHospital
+from django.contrib.auth.decorators import user_passes_test
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
 
 # Index view
 def index_view(request):
-    login_form = CustomAuthentication()
-    registration_form = CustomCreation()
 
     if request.user.is_authenticated:  # di na siya kabalik sa /index url if logged in
-        return redirect("home")
+        if request.user.role == 'hospital':
 
-    return render(request, "index.html", {
-        "login_form": login_form,
-        "registration_form": registration_form
-    })
+            return redirect('hospital-dashboard')
+        elif request.user.role == 'user':
+
+            return redirect('home')
+
+    return render(request, "index.html")
 
 
 # User Registration view
@@ -84,6 +87,15 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("index")
+
+
+
+
+
+
+
+
+
 
 
 # USER-ONLY VIEWS!!!
@@ -173,6 +185,16 @@ def update_profile_details(request):
     return JsonResponse({"success": False, "message": "Invalid request."})
 
 
+
+
+
+
+
+
+
+
+
+
 # HOSPITAL-ONLY VIEWS!!!
 
 from datetime import date
@@ -182,12 +204,12 @@ from datetime import date
 def hospital_dashboard_view(request):
     user = request.user
 
-    total_donations = Donation.objects.filter(hospital=user.profile.hospital_name).count()
-    total_requests = Request.objects.filter(hospital=user).count()
+    total_donations = Donation.objects.filter(hospital=user).count()
+    total_requests = Request.objects.filter(hospital=user, status='pending').count()
     total_available_users = CustomUser.objects.filter(is_available=True).count()
 
     appointments = Appointment.objects.filter(
-        request__hospital=request.user,  # only appointments for requests directed to this hospital
+        request__requester=user,  # only appointments for requests directed to this hospital
         date__gte=date.today()           # only today or future appointments
     ).order_by('date', 'time_start')
 
@@ -204,6 +226,18 @@ def hospital_dashboard_view(request):
         "requests" : requests,
         "blood_types" : blood_types,
     })
+
+
+
+
+
+
+
+
+
+
+
+# ADMIN-ONLY VIEWS!!!
 
 # Admin Login
 def admin_login_view(request):
@@ -223,38 +257,32 @@ def admin_login_view(request):
         else:
             error = "Invalid credentials!"
 
-    return render(request, 'adminLogin.html', {'error': error})
-
+    return render(request, 'admin/adminLogin.html', {'error': error})
 
 @login_required
 def admin_dashboard(request):
     """Admin dashboard view"""
     if not request.user.is_staff:
         return redirect('login')  # block non-admin access
-    return render(request, 'adminDashboard.html')
 
-# ADMIN DASHBOARD
+    # Get all users with role='hospital'
+    hospitals = CustomUser.objects.filter(role='hospital').select_related('profile')
+
+    # Pass hospitals to template
+    return render(request, 'admin/adminDashboard.html', {'hospitals': hospitals})
+
 @login_required
-def admin_hospital_view(request):
-    if not request.user.is_staff:
-        return redirect('login')
-
-    # Query Supabase database explicitly
-    hospitals = SupabaseHospital.objects.using('supabase').all()
-
-    return render(request, 'adminHospitals.html', {
-        'hospitals': hospitals
-    })
-
 @require_POST
-@login_required
-def delete_hospital(request, user_id):
+def delete_hospital(request):
+    """Delete a hospital account (Admin only)"""
     if not request.user.is_staff:
         return JsonResponse({'error': 'Unauthorized'}, status=403)
 
+    user_id = request.POST.get('user_id')
     try:
         hospital = CustomUser.objects.get(id=user_id, role='hospital')
         hospital.delete()
         return JsonResponse({'success': True})
     except CustomUser.DoesNotExist:
         return JsonResponse({'error': 'Hospital not found'}, status=404)
+

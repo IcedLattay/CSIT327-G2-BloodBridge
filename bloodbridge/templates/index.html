@@ -6,7 +6,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token }}">
   <title>Blood Bridge</title>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
@@ -71,7 +73,6 @@
       <!-- REGISTRATION FORM FOR USERRRRR -->
       <div class="register-form-container">
         <form class="register-form" id="register-user-form" data-url="{% url 'register' %}" novalidate>
-          {% csrf_token %}
 
           <div class="input-group">
             <div class="input-field">
@@ -81,7 +82,12 @@
               </svg>
               <input type="email" name="username" placeholder="email">
             </div>
-            <div class="error-message"><!-- field error will appear here--></div>
+            <div class="error-container" data-id="username-error-container">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 26 24">
+                <path d="m22.536,8.46L15.537,1.459C14.592.515,13.337-.006,12.001-.006s-2.592.521-3.536,1.465L1.466,8.46c-1.949,1.949-1.949,5.12,0,7.069l6.999,7.001c.944.944,2.2,1.465,3.536,1.465s2.591-.521,3.536-1.465l6.999-7.001c.944-.944,1.464-2.199,1.464-3.534s-.52-2.591-1.464-3.535Zm-1.414,5.655l-6.999,7.001c-1.134,1.133-3.11,1.133-4.244,0l-6.999-7.001c-1.169-1.169-1.169-3.072,0-4.241l6.999-7.001c.567-.566,1.32-.879,2.122-.879s1.555.312,2.122.879l6.999,7.001c.566.566.878,1.319.878,2.121s-.312,1.554-.878,2.12Zm-7.622,2.385c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Zm-2.5-4v-5.5c0-.553.448-1,1-1s1,.447,1,1v5.5c0,.553-.448,1-1,1s-1-.447-1-1Z"/>
+              </svg>
+              <p class="custom-error"></p>
+            </div>
           </div>
 
           <div class="input-group">
@@ -94,7 +100,12 @@
               <input type="password" name="password1" placeholder="password" id="registerUserPassword">
               <i class="bi bi-eye toggle" data-target="registerUserPassword"></i>
             </div>
-            <div class="error-message"><!-- field error ang mu gawas ari--></div>
+            <div class="error-container" data-id="password1-error-container">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 26 24">
+                <path d="m22.536,8.46L15.537,1.459C14.592.515,13.337-.006,12.001-.006s-2.592.521-3.536,1.465L1.466,8.46c-1.949,1.949-1.949,5.12,0,7.069l6.999,7.001c.944.944,2.2,1.465,3.536,1.465s2.591-.521,3.536-1.465l6.999-7.001c.944-.944,1.464-2.199,1.464-3.534s-.52-2.591-1.464-3.535Zm-1.414,5.655l-6.999,7.001c-1.134,1.133-3.11,1.133-4.244,0l-6.999-7.001c-1.169-1.169-1.169-3.072,0-4.241l6.999-7.001c.567-.566,1.32-.879,2.122-.879s1.555.312,2.122.879l6.999,7.001c.566.566.878,1.319.878,2.121s-.312,1.554-.878,2.12Zm-7.622,2.385c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Zm-2.5-4v-5.5c0-.553.448-1,1-1s1,.447,1,1v5.5c0,.553-.448,1-1,1s-1-.447-1-1Z"/>
+              </svg>
+              <p class="custom-error"></p>
+            </div>
           </div>
 
           <div class="input-group">
@@ -108,14 +119,18 @@
               <i class="bi bi-eye toggle" data-target="registerUserConfirmPassword"></i>
             </div>
 
-            <div class="error-message"><!-- field error ang mu gawas ari--></div>
+            <div class="error-container" data-id="password2-error-container">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 26 24">
+                <path d="m22.536,8.46L15.537,1.459C14.592.515,13.337-.006,12.001-.006s-2.592.521-3.536,1.465L1.466,8.46c-1.949,1.949-1.949,5.12,0,7.069l6.999,7.001c.944.944,2.2,1.465,3.536,1.465s2.591-.521,3.536-1.465l6.999-7.001c.944-.944,1.464-2.199,1.464-3.534s-.52-2.591-1.464-3.535Zm-1.414,5.655l-6.999,7.001c-1.134,1.133-3.11,1.133-4.244,0l-6.999-7.001c-1.169-1.169-1.169-3.072,0-4.241l6.999-7.001c.567-.566,1.32-.879,2.122-.879s1.555.312,2.122.879l6.999,7.001c.566.566.878,1.319.878,2.121s-.312,1.554-.878,2.12Zm-7.622,2.385c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Zm-2.5-4v-5.5c0-.553.448-1,1-1s1,.447,1,1v5.5c0,.553-.448,1-1,1s-1-.447-1-1Z"/>
+              </svg>
+              <p class="custom-error"></p>
+            </div>
           </div>
           <button type="submit" class="submit-btn">Sign up</button>
         </form>
 
         <!-- REGISTRATION FORM FOR HOSPITALL -->
         <form class="register-form" id="register-hospital-form" data-url="{% url 'register-hospital' %}" novalidate>
-          {% csrf_token %}
 
           <!-- Hospital Name Field -->
           <div class="input-group">
@@ -126,7 +141,12 @@
               </svg>
               <input type="text" name="name" placeholder="name">
             </div>
-            <div class="error-message"><!-- field error ang mu gawas ari--></div>
+            <div class="error-container" data-id="name-error-container">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 26 24">
+                <path d="m22.536,8.46L15.537,1.459C14.592.515,13.337-.006,12.001-.006s-2.592.521-3.536,1.465L1.466,8.46c-1.949,1.949-1.949,5.12,0,7.069l6.999,7.001c.944.944,2.2,1.465,3.536,1.465s2.591-.521,3.536-1.465l6.999-7.001c.944-.944,1.464-2.199,1.464-3.534s-.52-2.591-1.464-3.535Zm-1.414,5.655l-6.999,7.001c-1.134,1.133-3.11,1.133-4.244,0l-6.999-7.001c-1.169-1.169-1.169-3.072,0-4.241l6.999-7.001c.567-.566,1.32-.879,2.122-.879s1.555.312,2.122.879l6.999,7.001c.566.566.878,1.319.878,2.121s-.312,1.554-.878,2.12Zm-7.622,2.385c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Zm-2.5-4v-5.5c0-.553.448-1,1-1s1,.447,1,1v5.5c0,.553-.448,1-1,1s-1-.447-1-1Z"/>
+              </svg>
+              <p class="custom-error"></p>
+            </div>
           </div>
 
           <!-- Email Field -->
@@ -138,7 +158,12 @@
               </svg>
               <input type="email" name="username" placeholder="email">
             </div>
-            <div class="error-message"><!-- field error ang mu gawas ari--></div>
+            <div class="error-container" data-id="username-error-container">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 26 24">
+                <path d="m22.536,8.46L15.537,1.459C14.592.515,13.337-.006,12.001-.006s-2.592.521-3.536,1.465L1.466,8.46c-1.949,1.949-1.949,5.12,0,7.069l6.999,7.001c.944.944,2.2,1.465,3.536,1.465s2.591-.521,3.536-1.465l6.999-7.001c.944-.944,1.464-2.199,1.464-3.534s-.52-2.591-1.464-3.535Zm-1.414,5.655l-6.999,7.001c-1.134,1.133-3.11,1.133-4.244,0l-6.999-7.001c-1.169-1.169-1.169-3.072,0-4.241l6.999-7.001c.567-.566,1.32-.879,2.122-.879s1.555.312,2.122.879l6.999,7.001c.566.566.878,1.319.878,2.121s-.312,1.554-.878,2.12Zm-7.622,2.385c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Zm-2.5-4v-5.5c0-.553.448-1,1-1s1,.447,1,1v5.5c0,.553-.448,1-1,1s-1-.447-1-1Z"/>
+              </svg>
+              <p class="custom-error"></p>
+            </div>
           </div>
 
           <!-- Password Field -->
@@ -152,7 +177,12 @@
               <input type="password" name="password1" placeholder="password" id="registerHospitalPassword">
               <i class="bi bi-eye toggle" data-target="registerHospitalPassword"></i>
             </div>
-            <div class="error-message"><!-- field error ang mu gawas ari--></div>
+            <div class="error-container" data-id="password1-error-container">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 26 24">
+                <path d="m22.536,8.46L15.537,1.459C14.592.515,13.337-.006,12.001-.006s-2.592.521-3.536,1.465L1.466,8.46c-1.949,1.949-1.949,5.12,0,7.069l6.999,7.001c.944.944,2.2,1.465,3.536,1.465s2.591-.521,3.536-1.465l6.999-7.001c.944-.944,1.464-2.199,1.464-3.534s-.52-2.591-1.464-3.535Zm-1.414,5.655l-6.999,7.001c-1.134,1.133-3.11,1.133-4.244,0l-6.999-7.001c-1.169-1.169-1.169-3.072,0-4.241l6.999-7.001c.567-.566,1.32-.879,2.122-.879s1.555.312,2.122.879l6.999,7.001c.566.566.878,1.319.878,2.121s-.312,1.554-.878,2.12Zm-7.622,2.385c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Zm-2.5-4v-5.5c0-.553.448-1,1-1s1,.447,1,1v5.5c0,.553-.448,1-1,1s-1-.447-1-1Z"/>
+              </svg>
+              <p class="custom-error"></p>
+            </div>
           </div>
 
           <!-- Confirm Password Field -->
@@ -167,7 +197,18 @@
                 id="registerHospitalConfirmPassword">
               <i class="bi bi-eye toggle" data-target="registerHospitalConfirmPassword"></i>
             </div>
-            <div class="error-message"><!-- field error ang mu gawas ari--></div>
+            <div class="error-container" data-id="password2-error-container">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 26 24">
+                <path d="m22.536,8.46L15.537,1.459C14.592.515,13.337-.006,12.001-.006s-2.592.521-3.536,1.465L1.466,8.46c-1.949,1.949-1.949,5.12,0,7.069l6.999,7.001c.944.944,2.2,1.465,3.536,1.465s2.591-.521,3.536-1.465l6.999-7.001c.944-.944,1.464-2.199,1.464-3.534s-.52-2.591-1.464-3.535Zm-1.414,5.655l-6.999,7.001c-1.134,1.133-3.11,1.133-4.244,0l-6.999-7.001c-1.169-1.169-1.169-3.072,0-4.241l6.999-7.001c.567-.566,1.32-.879,2.122-.879s1.555.312,2.122.879l6.999,7.001c.566.566.878,1.319.878,2.121s-.312,1.554-.878,2.12Zm-7.622,2.385c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Zm-2.5-4v-5.5c0-.553.448-1,1-1s1,.447,1,1v5.5c0,.553-.448,1-1,1s-1-.447-1-1Z"/>
+              </svg>
+              <p class="custom-error"></p>
+            </div>
+            <div class="error-container non-field" data-id="__all__-error-container">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 26 24">
+                <path d="m22.536,8.46L15.537,1.459C14.592.515,13.337-.006,12.001-.006s-2.592.521-3.536,1.465L1.466,8.46c-1.949,1.949-1.949,5.12,0,7.069l6.999,7.001c.944.944,2.2,1.465,3.536,1.465s2.591-.521,3.536-1.465l6.999-7.001c.944-.944,1.464-2.199,1.464-3.534s-.52-2.591-1.464-3.535Zm-1.414,5.655l-6.999,7.001c-1.134,1.133-3.11,1.133-4.244,0l-6.999-7.001c-1.169-1.169-1.169-3.072,0-4.241l6.999-7.001c.567-.566,1.32-.879,2.122-.879s1.555.312,2.122.879l6.999,7.001c.566.566.878,1.319.878,2.121s-.312,1.554-.878,2.12Zm-7.622,2.385c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Zm-2.5-4v-5.5c0-.553.448-1,1-1s1,.447,1,1v5.5c0,.553-.448,1-1,1s-1-.447-1-1Z"/>
+              </svg>
+              <p class="custom-error"></p>
+            </div>
           </div>
           <button type="submit" class="submit-btn">Sign up</button>
         </form>
@@ -183,7 +224,7 @@
 
       <div class="login-form-container">
         <form class="login-form" id="login-form" data-url="{% url 'login' %}" novalidate>
-          {% csrf_token %}
+          
 
           <div class="input-group">
             <div class="input-field">
@@ -193,7 +234,13 @@
               </svg>
               <input type="email" name="username" placeholder="email">
             </div>
-            <div class="error-message"><!-- field error will appear here--></div>
+            <div class="error-container" data-id="username-error-container">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 26 24">
+                <path d="m22.536,8.46L15.537,1.459C14.592.515,13.337-.006,12.001-.006s-2.592.521-3.536,1.465L1.466,8.46c-1.949,1.949-1.949,5.12,0,7.069l6.999,7.001c.944.944,2.2,1.465,3.536,1.465s2.591-.521,3.536-1.465l6.999-7.001c.944-.944,1.464-2.199,1.464-3.534s-.52-2.591-1.464-3.535Zm-1.414,5.655l-6.999,7.001c-1.134,1.133-3.11,1.133-4.244,0l-6.999-7.001c-1.169-1.169-1.169-3.072,0-4.241l6.999-7.001c.567-.566,1.32-.879,2.122-.879s1.555.312,2.122.879l6.999,7.001c.566.566.878,1.319.878,2.121s-.312,1.554-.878,2.12Zm-7.622,2.385c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Zm-2.5-4v-5.5c0-.553.448-1,1-1s1,.447,1,1v5.5c0,.553-.448,1-1,1s-1-.447-1-1Z"/>
+              </svg>
+              <p class="custom-error"></p>
+            </div>
+            
           </div>
 
           <div class="input-group">
@@ -206,7 +253,18 @@
               <input type="password" name="password" placeholder="password" id="loginPassword">
               <i class="bi bi-eye toggle" data-target="loginPassword"></i>
             </div>
-            <div class="error-message"><!-- field error will appear here--></div>
+            <div class="error-container" data-id="password-error-container">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 26 24">
+                <path d="m22.536,8.46L15.537,1.459C14.592.515,13.337-.006,12.001-.006s-2.592.521-3.536,1.465L1.466,8.46c-1.949,1.949-1.949,5.12,0,7.069l6.999,7.001c.944.944,2.2,1.465,3.536,1.465s2.591-.521,3.536-1.465l6.999-7.001c.944-.944,1.464-2.199,1.464-3.534s-.52-2.591-1.464-3.535Zm-1.414,5.655l-6.999,7.001c-1.134,1.133-3.11,1.133-4.244,0l-6.999-7.001c-1.169-1.169-1.169-3.072,0-4.241l6.999-7.001c.567-.566,1.32-.879,2.122-.879s1.555.312,2.122.879l6.999,7.001c.566.566.878,1.319.878,2.121s-.312,1.554-.878,2.12Zm-7.622,2.385c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Zm-2.5-4v-5.5c0-.553.448-1,1-1s1,.447,1,1v5.5c0,.553-.448,1-1,1s-1-.447-1-1Z"/>
+              </svg>
+              <p class="custom-error"></p>
+            </div>
+            <div class="error-container non-field" data-id="__all__-error-container">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 26 24">
+                <path d="m22.536,8.46L15.537,1.459C14.592.515,13.337-.006,12.001-.006s-2.592.521-3.536,1.465L1.466,8.46c-1.949,1.949-1.949,5.12,0,7.069l6.999,7.001c.944.944,2.2,1.465,3.536,1.465s2.591-.521,3.536-1.465l6.999-7.001c.944-.944,1.464-2.199,1.464-3.534s-.52-2.591-1.464-3.535Zm-1.414,5.655l-6.999,7.001c-1.134,1.133-3.11,1.133-4.244,0l-6.999-7.001c-1.169-1.169-1.169-3.072,0-4.241l6.999-7.001c.567-.566,1.32-.879,2.122-.879s1.555.312,2.122.879l6.999,7.001c.566.566.878,1.319.878,2.121s-.312,1.554-.878,2.12Zm-7.622,2.385c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Zm-2.5-4v-5.5c0-.553.448-1,1-1s1,.447,1,1v5.5c0,.553-.448,1-1,1s-1-.447-1-1Z"/>
+              </svg>
+              <p class="custom-error"></p>
+            </div>
           </div>
           <button type="submit" class="submit-btn">Log in</button>
 
@@ -220,10 +278,14 @@
   <div class="overlay" id="successOverlay">
     <div class="success-container">
       <span class="close-btn" id="closeSuccess">&times;</span>
-      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24">
-        <path
-          d="m16.298,8.288l1.404,1.425-5.793,5.707c-.387.387-.896.58-1.407.58s-1.025-.195-1.416-.585l-2.782-2.696,1.393-1.437,2.793,2.707,5.809-5.701Zm7.702,3.712c0,6.617-5.383,12-12,12S0,18.617,0,12,5.383,0,12,0s12,5.383,12,12Zm-2,0c0-5.514-4.486-10-10-10S2,6.486,2,12s4.486,10,10,10,10-4.486,10-10Z" />
-      </svg>
+      <lottie-player
+        id="success-animation"
+        src="{% static 'animations/success.json' %}"
+        background="transparent"
+        speed="1"
+        style="width: 250px; height: 250px;"
+        autoplay>
+      </lottie-player>
       <h2>Registration Successful!</h2>
       <p>You can now log in to your account.</p>
       <a href="#" class="btn-primary" id="goToLogin">Go to Login</a>

@@ -14,4 +14,5 @@ urlpatterns = [
     path("hospital-dashboard/", views.hospital_dashboard_view, name="hospital-dashboard"),
     path('admin-login/', views.admin_login_view, name='admin_login'),
     path('admin-dashboard/', views.admin_dashboard, name='admin-dashboard'),
+    path('delete-hospital/', views.delete_hospital, name='delete_hospital'),
 ]

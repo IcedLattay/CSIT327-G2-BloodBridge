@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const openSignup = document.getElementById("openSignup");
   const closeSignup = document.getElementById("closeSignup");
 
+  const hospitalSignupForm = document.getElementById("register-hospital-form");
+  const userSignupForm = document.getElementById("register-user-form");
+  const loginForm = document.getElementById("login-form");
+
   const goToLoginBtn = document.getElementById("goToLogin");
   const overlay = document.getElementById("successOverlay"); // overlay element
   const closeSuccess = document.getElementById("closeSuccess"); // × button
@@ -14,14 +18,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleIcons = document.querySelectorAll(".toggle");
 
   // Function to clear forms when modal closes
-  function clearModalForm(modal) {
-    const inputs = modal.querySelectorAll("input");
-    inputs.forEach((input) => {
-      if (input.name !== "csrfmiddlewaretoken") {
-        input.value = "";
-      }
-    });
-    modal.querySelectorAll(".custom-error, .errorlist").forEach((e) => e.remove());
+  function clearForm(form) {
+    form.reset();
+    form.querySelectorAll(".error-container").forEach( errContainer => {
+      errContainer.querySelector(".custom-error").textContent = '';
+      errContainer.querySelector(".icon").classList.remove("show");
+    })
   }
 
   // Toggle password visibility
@@ -63,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     resetPasswordVisibility()
     loginModal.classList.remove("show");
     window.history.pushState({}, "", "/");
-    clearModalForm(loginModal);
+    clearForm(loginForm);
   });
 
   openSignup?.addEventListener("click", () => {
@@ -82,7 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
     resetPasswordVisibility()
     signupModal.classList.remove("show");
     window.history.pushState({}, "", "/");
-    clearModalForm(signupModal);
+    clearForm(hospitalSignupForm);
+    clearForm(userSignupForm);
   });
 
   // Click outside modal closes it
@@ -91,13 +94,14 @@ document.addEventListener("DOMContentLoaded", () => {
       resetPasswordVisibility()
       loginModal.classList.remove("show");
       window.history.pushState({}, "", "/");
-      clearModalForm(loginModal);
+      clearForm(loginForm);
     }
     if (e.target === signupModal) {
       resetPasswordVisibility()
       signupModal.classList.remove("show");
       window.history.pushState({}, "", "/");
-      clearModalForm(signupModal);
+      clearForm(hospitalSignupForm);
+      clearForm(userSignupForm);
     }
   });
 
@@ -112,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       loginModal.classList.add("show");
-      clearModalForm(loginModal);
 
       window.history.pushState({}, "", "/login"); // ilisan ra ang url para dle /register ghapon
     });
@@ -153,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   userBtn.addEventListener("click", () => {
-      hospitalRegistrationForm.querySelectorAll(".custom-error, .errorlist").forEach((e) => e.remove());
+      clearForm(hospitalSignupForm)
       userRegistrationForm.style.visibility = "visible";
       hospitalRegistrationForm.style.visibility = "hidden";
       hospitalBtn.classList.remove("active");
@@ -164,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   hospitalBtn.addEventListener("click", () => {
-      userRegistrationForm.querySelectorAll(".custom-error, .errorlist").forEach((e) => e.remove());
+      clearForm(userSignupForm);
       userRegistrationForm.style.visibility = "hidden";
       hospitalRegistrationForm.style.visibility = "visible";
       hospitalBtn.classList.add("active");
@@ -180,6 +183,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // submit registration form data for user
+  function getCSRFToken() {
+    return document.querySelector('meta[name="csrf-token"]').content;
+  }
+
   document.querySelectorAll('form').forEach(form => {
     form.addEventListener('submit', async (e) => {
       e.preventDefault(); // stop normal submission
@@ -196,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const response = await fetch(url, {
           method: "POST",
           headers: {
-            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            'X-CSRFToken': getCSRFToken(),
             "X-Requested-With": "XMLHttpRequest" // optional, sometimes useful
           },
           body: formData
@@ -208,38 +215,39 @@ document.addEventListener("DOMContentLoaded", () => {
           if (form.classList.contains('register-form')){
               // show overlay
             signupModal.classList.remove("show");
-            overlay.style.display = 'flex'; // or add a class to show it
-            userRegistrationForm.reset(); // optionally clear the form fields
+            overlay.style.display = 'flex'; 
+            userRegistrationForm.reset();
           } else if (form.classList.contains('login-form')) {
             window.location.href = data.redirect_url;
           }
         } else  if (data.status === "error") {
+          console.log("Errors oh: ", data.errors);
+
+          form.querySelectorAll(".error-container").forEach( errContainer => {
+            errContainer.querySelector(".custom-error").textContent = '';
+            errContainer.querySelector(".icon").classList.remove("show");
+          })
+          
           for (const field in data.errors) {
             const messages = data.errors[field];
+            
+            const card = form.parentElement.parentElement;
+            const errorContainer = form.querySelector(`[data-id="${field}-error-container"]`);
+            const errorMessage = errorContainer.querySelector(".custom-error");
+            const errorIcon = errorContainer.querySelector(".icon");
 
-            if (field === "__all__" && messages.length > 0) {
-              const p = document.createElement('p');
-              p.classList.add('non-field-error');
-              p.textContent = messages[0]; // first error only
-              nonFieldContainer.appendChild(p);
-
-
-            } else if (messages.length > 0) {
-              const inputGroup = form.querySelector(`[name="${field}"]`)?.closest('.input-group');
-              if (inputGroup) {
-
-                const errorContainer = inputGroup.querySelector('.error-message');
-                if (errorContainer) {
-                    errorContainer.innerHTML = ''; // ← THIS IS KEY
+            errorMessage.textContent = messages[0];
+            errorIcon.classList.add("show");
                     
-                    const p = document.createElement('p');
-                    p.classList.add('custom-error');
-                    p.textContent = messages[0]; // first error only
-                    errorContainer.appendChild(p);
-                }
-                
-              }
-            }
+                    
+            card.classList.remove("shake");
+            errorContainer.classList.remove("shake");
+
+            void card.offsetWidth;
+            void errorContainer.offsetWidth;
+
+            card.classList.add("shake");
+            errorContainer.classList.add("shake");
           }
         }
       } catch (err) {
@@ -249,5 +257,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
   })
+
+
+  // FOR Success Overlay Popup
+
+  const successAnimation = document.getElementById("success-animation");
+  
+  successAnimation.loop = false;
+  successAnimation.stop();
+  successAnimation.play(); 
   
 });

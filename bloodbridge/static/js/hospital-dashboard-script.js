@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // FOR REQUEST LIST
+
+    // expanding list-item
+
     const compressedDivs = document.querySelectorAll(".row .compressed");
     let openedUncompressed = null; // store currently opened .uncompressed div
 

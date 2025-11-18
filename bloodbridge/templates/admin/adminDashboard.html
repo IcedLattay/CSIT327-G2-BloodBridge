@@ -11,16 +11,19 @@
 </head>
 
 <body>
-    <!-- Header -->
+
+    <!-- Hidden form so Django will set the csrftoken cookie -->
+    <form style="display:none">{% csrf_token %}</form>
+
     {% include 'components/adminNavbar.html' %}
 
-    <!-- adminHospitals.html -->
     <div class="hospital-table-container">
         <h2>Manage Hospitals</h2>
         <div class="tabs">
             <button class="tab active">Hospital accounts</button>
             <button class="tab">Hospital account requests</button>
         </div>
+
         <table class="hospital-table">
             <thead>
                 <tr>
@@ -28,12 +31,13 @@
                     <th>Action</th>
                 </tr>
             </thead>
+
             <tbody>
                 {% for hospital in hospitals %}
                 <tr>
                     <td>{{ hospital.profile.hospital_name }}</td>
                     <td>
-                        <button class="delete-btn" data-user-id="{{ hospital.id }}">delete</button>
+                        <button class="delete-btn" data-user-id="{{ hospital.id }}">Delete</button>
                     </td>
                 </tr>
                 {% empty %}
@@ -42,12 +46,10 @@
                 </tr>
                 {% endfor %}
             </tbody>
-
         </table>
     </div>
 
     <script src="{% static 'js/adminDashboard.js' %}"></script>
-
 </body>
 
 </html>

@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 
 class BloodType(models.Model):
@@ -12,7 +13,9 @@ class BloodType(models.Model):
 class Donation(models.Model):
     donor = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='donations_made')
     date = models.DateField()
-    hospital = models.CharField(max_length=100, null=True)
+    hospital = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='donations_received', null=True)
+    blood_type = models.ForeignKey(BloodType, on_delete=models.CASCADE, related_name="donations_present_in", null=True)
+    notes = models.TextField(blank=True, null=True)
     
     class Meta:
         ordering = ['-date']
@@ -29,8 +32,9 @@ class Request(models.Model):
     ]
 
     requester = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, blank=True, null=True, related_name="requests_made")
-    blood_type = models.ForeignKey(BloodType, on_delete=models.CASCADE, related_name="requests_present_in")
+    blood_type = models.ForeignKey(BloodType, on_delete=models.CASCADE, related_name="requests_present_in", null=True)
     quantity = models.PositiveIntegerField(blank=True, null=True)
+    current_quantity = models.PositiveIntegerField(default=0)
     urgency = models.CharField(max_length=10, null=True)
     date_requested = models.DateField(null=True)
     status = models.CharField(max_length=25, default='pending')
@@ -40,6 +44,7 @@ class Request(models.Model):
     time_open = models.TimeField(null=True)
     time_close = models.TimeField(null=True)
     days_open = models.CharField(max_length=255, blank=True, null=True)  # Could store as comma-separated, e.g. "Mon,Tue,Wed"
+    is_emergency = models.BooleanField(default=False)
 
     # for users to fill up
 
@@ -60,3 +65,19 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"{self.donor.username} - {self.request.blood_type.type} on {self.date}"
+
+
+class Notification(models.Model):
+    user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='notifications')  # The user who receives the notification
+    request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='notifications')  # The emergency request linked to this notification
+    is_read = models.BooleanField(default=False) # Whether the user has clicked it
+    is_seen = models.BooleanField(default=False) # If the user has already seen by opening the overlay
+    has_action = models.BooleanField(default=False)  # True if they already set an appointment
+    created_at = models.DateTimeField(default=timezone.now) # When the notification was created
+
+    class Meta:
+        ordering = ['-created_at']  # Newest first
+        unique_together = ('user', 'request')
+        
+        def __str__(self):
+            return f"Notification for {self.user.profile.full_name}: {self.message}"
