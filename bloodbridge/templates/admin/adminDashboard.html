@@ -12,7 +12,6 @@
 
 <body>
 
-    <!-- Hidden form so Django will set the csrftoken cookie -->
     <form style="display:none">{% csrf_token %}</form>
 
     {% include 'components/adminNavbar.html' %}
@@ -20,33 +19,92 @@
     <div class="hospital-table-container">
         <h2>Manage Hospitals</h2>
         <div class="tabs">
-            <button class="tab active">Hospital accounts</button>
-            <button class="tab">Hospital account requests</button>
+            <button class="tab active" data-tab="accounts">Hospital accounts</button>
+            <button class="tab" data-tab="requests">Account requests</button>
         </div>
 
-        <table class="hospital-table">
-            <thead>
-                <tr>
-                    <th>Hospital Name</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
+        <!-- Hospital Accounts -->
+        <div id="accounts" class="tab-content">
+            <table class="hospital-table">
+                <thead>
+                    <tr>
+                        <th>Hospital Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for hospital in hospitals %}
+                    <tr>
+                        <td>{{ hospital.profile.hospital_name }}</td>
+                        <td>
+                            <button class="delete-btn" data-user-id="{{ hospital.id }}">Delete</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2">No hospitals found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-            <tbody>
-                {% for hospital in hospitals %}
-                <tr>
-                    <td>{{ hospital.profile.hospital_name }}</td>
-                    <td>
-                        <button class="delete-btn" data-user-id="{{ hospital.id }}">Delete</button>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="2">No hospitals found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <!-- Account Requests -->
+        <div id="requests" class="tab-content" style="display:none;">
+            <table class="hospital-table">
+                <thead>
+                    <tr>
+                        <th>Hospital Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in requests %}
+                    <tr>
+                        <td>{{ request.profile.hospital_name }}</td>
+                        <td>
+                            <button class="approve-btn" data-user-id="{{ request.id }}">Approve</button>
+                            <button class="decline-btn" data-user-id="{{ request.id }}">Decline</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2">No requests found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <h3>Delete account permanently?</h3>
+            <p>This action cannot be undone.</p>
+
+            <div class="modal-actions">
+                <button id="cancelDeleteBtn" class="cancel-btn">Cancel</button>
+                <button id="confirmDeleteBtn" class="confirm-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Info Toast Modal -->
+    <div id="actionToast" class="toast-overlay" style="display:none;">
+        <div class="toast-box" id="toastMessage"></div>
+    </div>
+
+    <div id="actionModal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <h3 id="actionModalTitle"></h3>
+            <p id="actionModalMessage"></p>
+            <div class="modal-actions">
+                <button id="actionCancelBtn" class="cancel-btn">Cancel</button>
+                <button id="actionConfirmBtn" class="confirm-btn">Confirm</button>
+            </div>
+        </div>
     </div>
 
     <script src="{% static 'js/adminDashboard.js' %}"></script>

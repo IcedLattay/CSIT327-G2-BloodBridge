@@ -44,6 +44,7 @@ class CustomUserCreationForm(UserCreationForm):
         return user
 
 
+# forms.py
 class HospitalCreationForm(CustomUserCreationForm):
     name = forms.CharField(
         max_length=255,
@@ -53,20 +54,17 @@ class HospitalCreationForm(CustomUserCreationForm):
     class Meta(CustomUserCreationForm.Meta):
         fields = CustomUserCreationForm.Meta.fields + ['name']
 
-
     def save(self, commit=True):
         user = super().save(commit=False)
         user.role = 'hospital'
-        user.save()
-
+        user.is_approved = False    # mark as pending
+        user.is_active = False      # prevent login until approved
         if commit:
             user.save()
-            # ✅ Update the profile that was auto-created by the signal
-            profile = user.profile  # thanks to OneToOne relation
-            profile.hospital_name = self.cleaned_data['name']
-            profile.save()
-
-
+            if hasattr(user, 'profile'):
+                profile = user.profile
+                profile.hospital_name = self.cleaned_data['name']
+                profile.save()
         return user
 
 

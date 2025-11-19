@@ -10,6 +10,7 @@ class CustomUser(AbstractUser):
     ]
 
     is_available = models.BooleanField(default=False)
+    is_hospital_approved = models.BooleanField(default=False)
     role = models.CharField(max_length=20, default='user')
 
     def __str__(self):
@@ -49,5 +50,3 @@ class SupabaseHospital(models.Model):
     class Meta:
         db_table = "accounts_profile"  # Make sure this matches your Supabase table
         managed = False          # Don't let Django try to create/migrate it
-
-    
