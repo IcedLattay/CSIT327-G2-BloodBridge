@@ -15,4 +15,6 @@ urlpatterns = [
     path('admin-login/', views.admin_login_view, name='admin_login'),
     path('admin-dashboard/', views.admin_dashboard, name='admin-dashboard'),
     path('delete-hospital/', views.delete_hospital, name='delete_hospital'),
+    path('approve-hospital/', views.approve_hospital, name='approve_hospital'),
+    path('decline-hospital/', views.decline_hospital, name='decline_hospital'),
 ]
