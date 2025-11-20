@@ -331,3 +331,8 @@ def decline_hospital(request):
     user.delete()
 
     return JsonResponse({"success": True})
+
+@login_required
+def admin_userDashboard(request):
+    users = CustomUser.objects.all()  # <-- get ALL users
+    return render(request, 'admin/userDashboard.html', {'users': users})
