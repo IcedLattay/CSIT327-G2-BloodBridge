@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentAction = null;
     let currentUserId = null;
 
+    /** SHOW MODAL **/
     function showModal(action, userId) {
         currentAction = action;
         currentUserId = userId;
@@ -32,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         actionModal.style.display = "flex";
     }
 
+    /** HIDE MODAL **/
     function hideModal() {
         actionModal.style.display = "none";
         currentAction = null;
@@ -40,55 +42,81 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cancelBtn.onclick = hideModal;
 
+    /** SHOW TOAST **/
     function showToast(message) {
         toastMessage.textContent = message;
         toast.style.display = "flex";
 
-        // Hide after 3 seconds like hospital dashboard
         setTimeout(() => {
             toast.style.display = "none";
         }, 3000);
     }
 
+    /** CONFIRM ACTION **/
     confirmBtn.onclick = () => {
         if (!currentAction || !currentUserId) return;
 
-        let url = "/delete-user/";
-        if (currentAction === "approve") url = "/approve-user/";
-        if (currentAction === "decline") url = "/decline-user/";
+        const action = currentAction; // ← store local copy
+        const userId = currentUserId;
 
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": currentAction === "delete" ? "application/x-www-form-urlencoded" : "application/json",
-                "X-CSRFToken": csrfToken
-            },
-            body: currentAction === "delete"
-                ? new URLSearchParams({ user_id: currentUserId })
-                : JSON.stringify({ user_id: currentUserId })
-        })
-            .then(res => res.json())
+        let url = "/delete-user/";
+        let options = {};
+
+        if (action === "delete") {
+            options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": csrfToken
+                },
+                body: `user_id=${userId}`
+            };
+        } else {
+            url = action === "approve" ? "/approve-user/" : "/decline-user/";
+            options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify({ user_id: userId })
+            };
+        }
+
+        fetch(url, options)
+            .then(async res => {
+                const raw = await res.text();
+                try {
+                    return JSON.parse(raw);
+                } catch {
+                    console.error("Backend returned NON-JSON:", raw);
+                    throw new Error("Invalid JSON response");
+                }
+            })
             .then(data => {
                 hideModal();
+
                 if (data.success) {
                     let msg = "";
-                    if (currentAction === "delete") msg = "User deleted!";
-                    if (currentAction === "approve") msg = "User approved!";
-                    if (currentAction === "decline") msg = "User declined!";
-                    showToast(msg);
+                    if (action === "delete") msg = "User deleted!";
+                    else if (action === "approve") msg = "User approved!";
+                    else if (action === "decline") msg = "User declined!";
 
+                    showToast(msg);
                     setTimeout(() => location.reload(), 1000);
                 } else {
                     showToast(data.error || "Something went wrong!");
                 }
             })
             .catch(err => {
-                console.error(err);
+                console.error("Request Error:", err);
                 hideModal();
                 showToast("Something went wrong!");
             });
     };
 
+
+    /** ATTACH BUTTON EVENTS **/
     function attachButtons(selector, action) {
         document.querySelectorAll(selector).forEach(btn => {
             btn.addEventListener("click", () => showModal(action, btn.dataset.userId));
@@ -99,11 +127,11 @@ document.addEventListener("DOMContentLoaded", () => {
     attachButtons(".approve-btn", "approve");
     attachButtons(".decline-btn", "decline");
 
-    // Tabs
+    /** TAB SYSTEM **/
     document.querySelectorAll(".tab").forEach(tab => {
         tab.addEventListener("click", () => {
             document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-            document.querySelectorAll(".tab-content").forEach(c => c.style.display = "none");
+            document.querySelectorAll(".tab-content").forEach(c => (c.style.display = "none"));
             tab.classList.add("active");
             document.getElementById(tab.dataset.tab).style.display = "block";
         });

@@ -1,205 +1,145 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // -------- Tabs --------
-    const tabs = document.querySelectorAll('.tab');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabs.forEach((tab, index) => {
-        tab.addEventListener('click', () => {
-            tabContents.forEach(c => c.style.display = 'none');
-            tabs.forEach(t => t.classList.remove('active'));
-
-            tabContents[index].style.display = 'block';
-            tab.classList.add('active');
-        });
-    });
-
-    // ---------------------
-    // Show Approve/Decline Confirmation Modal
-    // ---------------------
-    function showActionModal(title, message, callback) {
-        const modal = document.getElementById("actionModal");
-        const titleEl = document.getElementById("actionModalTitle");
-        const msgEl = document.getElementById("actionModalMessage");
-        const cancelBtn = document.getElementById("actionCancelBtn");
-        const confirmBtn = document.getElementById("actionConfirmBtn");
-
-        if (!modal || !titleEl || !msgEl || !cancelBtn || !confirmBtn) {
-            console.error("Action modal elements missing in HTML!");
-            return;
-        }
-
-        titleEl.textContent = title;
-        msgEl.textContent = message || "";
-
-        modal.style.display = "flex";
-
-        // Remove old listeners (prevent duplicates)
-        const newCancelBtn = cancelBtn.cloneNode(true);
-        const newConfirmBtn = confirmBtn.cloneNode(true);
-        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
-        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
-
-        // Cancel button closes modal
-        newCancelBtn.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
-
-        // Confirm button executes callback
-        newConfirmBtn.addEventListener("click", () => {
-            modal.style.display = "none";
-            callback(); // Run approve/decline fetch
-        });
-    }
-
-
-    // -------- Delete Hospital --------
-    function attachDeleteButtons() {
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const userId = button.dataset.userId;
-
-                // Open modal
-                const modal = document.getElementById("deleteModal");
-                modal.style.display = "flex";
-
-                const cancelBtn = document.getElementById("cancelDeleteBtn");
-                const confirmBtn = document.getElementById("confirmDeleteBtn");
-
-                // Clear old listeners (prevent duplicate triggers)
-                const newCancelBtn = cancelBtn.cloneNode(true);
-                const newConfirmBtn = confirmBtn.cloneNode(true);
-                cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
-                confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
-
-                // Close modal
-                newCancelBtn.addEventListener("click", () => {
-                    modal.style.display = "none";
-                });
-
-                // Confirm delete
-                newConfirmBtn.addEventListener("click", () => {
-
-                    fetch('/delete-hospital/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'X-CSRFToken': getCookie('csrftoken')
-                        },
-                        body: `user_id=${userId}`
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                button.closest('tr').remove();
-                                alert("Hospital deleted successfully.");
-                            } else {
-                                alert(data.error || 'Something went wrong.');
-                            }
-                        })
-                        .catch(err => console.error(err));
-
-                    modal.style.display = "none";
-                });
-            });
-        });
-    }
-
-    // -------- Approve Hospital --------
-    function attachApproveButtons() {
-        document.querySelectorAll(".approve-btn").forEach(button => {
-            button.addEventListener("click", () => {
-                const userId = button.dataset.userId;
-
-                showActionModal("Approve Hospital?", "Are you sure you want to approve this hospital?", () => {
-                    fetch('/approve-hospital/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'X-CSRFToken': getCookie('csrftoken')
-                        },
-                        body: `user_id=${userId}`
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                showToast("Hospital account has been approved.");
-                                button.closest('tr').remove(); // remove from requests table
-                            } else {
-                                showToast(data.error || "Something went wrong.");
-                            }
-                        })
-                        .catch(err => console.error(err));
-                });
-            });
-        });
-    }
-
-
-    // -------- Decline Hospital --------
-    function attachDeclineButtons() {
-        document.querySelectorAll(".decline-btn").forEach(button => {
-            button.addEventListener("click", () => {
-                const userId = button.dataset.userId;
-
-                showActionModal("Decline Hospital?", "Are you sure you want to decline this hospital request?", () => {
-                    fetch('/decline-hospital/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'X-CSRFToken': getCookie('csrftoken')
-                        },
-                        body: `user_id=${userId}`
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                showToast("Hospital account has been declined.");
-                                button.closest('tr').remove(); // remove from requests table
-                            } else {
-                                showToast(data.error || "Something went wrong.");
-                            }
-                        })
-                        .catch(err => console.error(err));
-                });
-            });
-        });
-    }
-
-
-
-
-    // Attach all button events
-    attachDeleteButtons();
-    attachApproveButtons();
-    attachDeclineButtons();
-});
-
-
-// -------- CSRF Helper --------
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie) {
-        document.cookie.split(';').forEach(cookie => {
-            cookie = cookie.trim();
-            if (cookie.startsWith(name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-            }
-        });
-    }
-    return cookieValue;
-}
-
-function showToast(message) {
+    const actionModal = document.getElementById("actionModal");
+    const confirmBtn = document.getElementById("actionConfirmBtn");
+    const cancelBtn = document.getElementById("actionCancelBtn");
     const toast = document.getElementById("actionToast");
     const toastMessage = document.getElementById("toastMessage");
 
-    toastMessage.textContent = message;
-    toast.style.display = "flex";
+    let currentAction = null;
+    let currentUserId = null;
 
-    // Hide after 3 seconds
-    setTimeout(() => {
-        toast.style.display = "none";
-    }, 3000);
-}
+    /** SHOW MODAL **/
+    function showModal(action, userId) {
+        currentAction = action;
+        currentUserId = userId;
 
+        const titleMap = {
+            delete: "Delete hospital permanently?",
+            approve: "Approve hospital account?",
+            decline: "Decline hospital account?"
+        };
+
+        const msgMap = {
+            delete: "This action cannot be undone.",
+            approve: "The hospital will be able to access the system.",
+            decline: "This will remove the hospital from the system."
+        };
+
+        document.getElementById("actionModalTitle").textContent = titleMap[action];
+        document.getElementById("actionModalMessage").textContent = msgMap[action];
+
+        actionModal.style.display = "flex";
+    }
+
+    /** HIDE MODAL **/
+    function hideModal() {
+        actionModal.style.display = "none";
+        currentAction = null;
+        currentUserId = null;
+    }
+
+    cancelBtn.onclick = hideModal;
+
+    /** SHOW TOAST **/
+    function showToast(message) {
+        toastMessage.textContent = message;
+        toast.style.display = "flex";
+        setTimeout(() => toast.style.display = "none", 3000);
+    }
+
+    /** SWITCH TAB **/
+    function switchToTab(tabId) {
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => (c.style.display = "none"));
+        const tabButton = document.querySelector(`.tab[data-tab="${tabId}"]`);
+        const tabContent = document.getElementById(tabId);
+        if (tabButton && tabContent) {
+            tabButton.classList.add("active");
+            tabContent.style.display = "block";
+        }
+    }
+
+    /** CONFIRM ACTION **/
+    confirmBtn.onclick = () => {
+        if (!currentAction || !currentUserId) return;
+
+        const action = currentAction;
+        const userId = currentUserId;
+
+        let url = DELETE_HOSPITAL_URL;
+        let options = {};
+
+        if (currentAction === "delete") {
+            url = DELETE_HOSPITAL_URL;
+            options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify({ user_id: currentUserId })
+            };
+        } else {
+            url = action === "approve" ? APPROVE_HOSPITAL_URL : DECLINE_HOSPITAL_URL;
+            options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify({ user_id: userId })
+            };
+        }
+
+        fetch(url, options)
+            .then(async res => {
+                const raw = await res.text();
+                try {
+                    return JSON.parse(raw);
+                } catch {
+                    console.error("Backend returned NON-JSON:", raw);
+                    throw new Error("Invalid JSON response");
+                }
+            })
+            .then(data => {
+                hideModal();
+
+                if (data.success) {
+                    let msg = "";
+                    if (action === "delete") msg = "Hospital deleted!";
+                    else if (action === "approve") msg = "Hospital approved!";
+                    else if (action === "decline") msg = "Hospital declined!";
+
+                    showToast(msg);
+
+                    // Refresh page for all actions so the accounts list updates automatically
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    showToast(data.error || "Something went wrong!");
+                }
+            })
+            .catch(err => {
+                console.error("Request Error:", err);
+                hideModal();
+                showToast("Something went wrong!");
+            });
+    };
+
+    /** ATTACH BUTTON EVENTS **/
+    function attachButtons(selector, action) {
+        document.querySelectorAll(selector).forEach(btn => {
+            btn.addEventListener("click", () => showModal(action, btn.dataset.userId));
+        });
+    }
+
+    attachButtons(".delete-btn", "delete");
+    attachButtons(".approve-btn", "approve");
+    attachButtons(".decline-btn", "decline");
+
+    /** TAB SYSTEM **/
+    document.querySelectorAll(".tab").forEach(tab => {
+        tab.addEventListener("click", () => switchToTab(tab.dataset.tab));
+    });
+});
