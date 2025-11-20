@@ -252,7 +252,7 @@ def admin_login_view(request):
         if user is not None:
             if user.is_staff:  # check if admin
                 login(request, user)
-                return redirect('admin-dashboard')
+                return redirect('adminHospitalDashboard')
             else:
                 error = "You are not an admin!"
         else:
