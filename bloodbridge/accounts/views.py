@@ -266,15 +266,20 @@ def admin_dashboard(request):
     if not request.user.is_staff:
         return redirect('login')  # block non-admin access
     
-    # Approved hospitals
-    hospitals = CustomUser.objects.filter(role='hospital', is_active=True).select_related('profile')
+    # Approved hospitals, latest first
+    hospitals = CustomUser.objects.filter(role='hospital', is_active=True) \
+        .select_related('profile') \
+        .order_by('-date_joined')
 
-    # Pending requests
-    requests = CustomUser.objects.filter(role='hospital', is_active=False).select_related('profile')
-
+    # Pending requests, latest first
+    requests = CustomUser.objects.filter(role='hospital', is_active=False) \
+        .select_related('profile') \
+        .order_by('-date_joined')
 
     # Pass hospitals to template
     return render(request, 'admin/adminDashboard.html', {'hospitals': hospitals, 'requests': requests})
+
+
 
 @login_required
 @require_POST
@@ -283,20 +288,32 @@ def delete_hospital(request):
     if not request.user.is_staff:
         return JsonResponse({'error': 'Unauthorized'}, status=403)
 
-    user_id = request.POST.get('user_id')
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+    user_id = data.get('user_id')
+    if not user_id:
+        return JsonResponse({'error': 'No user_id provided'}, status=400)
+
     try:
         hospital = CustomUser.objects.get(id=user_id, role='hospital')
         hospital.delete()
         return JsonResponse({'success': True})
     except CustomUser.DoesNotExist:
         return JsonResponse({'error': 'Hospital not found'}, status=404)
- 
-@login_required
-def approve_hospital(request):
-    if request.method != "POST":
-        return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
 
-    user_id = request.POST.get("user_id")
+
+@login_required
+@require_POST
+def approve_hospital(request):
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"success": False, "error": "Invalid JSON"}, status=400)
+
+    user_id = data.get("user_id")
     if not user_id:
         return JsonResponse({"success": False, "error": "No user_id provided"}, status=400)
 
@@ -305,31 +322,33 @@ def approve_hospital(request):
     except CustomUser.DoesNotExist:
         return JsonResponse({"success": False, "error": "User not found"}, status=404)
 
-    # ACTUAL APPROVAL
     user.is_hospital_approved = True
     user.is_active = True
     user.save()
 
     return JsonResponse({"success": True})
 
-@login_required
-def decline_hospital(request):
-    if request.method != "POST":
-        return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
 
-    user_id = request.POST.get("user_id")
+@login_required
+@require_POST
+def decline_hospital(request):
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"success": False, "error": "Invalid JSON"}, status=400)
+
+    user_id = data.get("user_id")
     if not user_id:
-        return JsonResponse({"success": False, "error": "Missing user_id"}, status=400)
+        return JsonResponse({"success": False, "error": "No user_id provided"}, status=400)
 
     try:
         user = CustomUser.objects.get(id=user_id)
     except CustomUser.DoesNotExist:
         return JsonResponse({"success": False, "error": "User not found"}, status=404)
 
-    # DELETE OR MARK AS DECLINED (depending on your logic)
     user.delete()
-
     return JsonResponse({"success": True})
+
 
 @login_required
 def admin_userDashboard(request):
@@ -343,15 +362,15 @@ def admin_userDashboard(request):
         'users': users,
         'pending_users': pending_users
     })
+    
 
 @login_required
 @require_POST
 def delete_user(request):
-    """Delete any user (Admin only)"""
     if not request.user.is_staff:
         return JsonResponse({'error': 'Unauthorized'}, status=403)
 
-    user_id = request.POST.get('user_id')
+    user_id = request.POST.get('user_id')  # use POST instead of JSON
     if not user_id:
         return JsonResponse({'error': 'Missing user_id'}, status=400)
 
@@ -361,6 +380,7 @@ def delete_user(request):
         return JsonResponse({'success': True})
     except CustomUser.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
+
 
 @login_required
 @require_POST
