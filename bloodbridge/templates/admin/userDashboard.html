@@ -1,0 +1,95 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - admin</title>
+    <link rel="stylesheet" href="{% static 'css/adminUserDashboard.css' %}">
+</head>
+
+<body>
+
+    {% include 'components/adminNavbar.html' %}
+
+    <div class="hospital-table-container">
+        <h2>Manage Users</h2>
+        <div class="tabs">
+            <button class="tab active" data-tab="accounts">User accounts</button>
+            <button class="tab" data-tab="requests">Account requests</button>
+        </div>
+
+        <!-- User Accounts -->
+        <div id="accounts" class="tab-content">
+            <table class="hospital-table">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>
+                            <button class="delete-btn" data-user-id="{{ user.id }}">Delete</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2">No users found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Account Requests -->
+        <div id="requests" class="tab-content" style="display:none;">
+            <table class="hospital-table">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in requests %}
+                    <tr>
+                        <td>{{ request.profile.hospital_name }}</td>
+                        <td>
+                            <button class="approve-btn" data-user-id="{{ request.id }}">Approve</button>
+                            <button class="decline-btn" data-user-id="{{ request.id }}">Decline</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2">No requests found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <h3>Delete account permanently?</h3>
+            <p>This action cannot be undone.</p>
+
+            <div class="modal-actions">
+                <button id="cancelDeleteBtn" class="cancel-btn">Cancel</button>
+                <button id="confirmDeleteBtn" class="confirm-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
