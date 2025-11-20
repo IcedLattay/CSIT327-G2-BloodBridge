@@ -13,6 +13,7 @@ from django.views.decorators.http import require_POST
 from .models import SupabaseHospital
 from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
+import json
 
 # Index view
 def index_view(request):
@@ -32,16 +33,14 @@ def index_view(request):
 def register_view(request):
     if request.method == 'POST':
         form = CustomCreation(request.POST, request.FILES)
-
         if form.is_valid():
-            form.save()
+            user = form.save(commit=False)
+            user.is_active = False  # pending approval
+            user.save()
             return JsonResponse({"status": "success","registration_state": "pending"})
         else:
-            # Return errors as JSON
-            return JsonResponse({
-                'status': 'error', 'errors': form.errors}, status=400)
+            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
     return redirect('index')
-
 
 # Hospital Registration view
 def register_hospital_view(request):
@@ -334,5 +333,68 @@ def decline_hospital(request):
 
 @login_required
 def admin_userDashboard(request):
-    users = CustomUser.objects.all()  # <-- get ALL users
-    return render(request, 'admin/userDashboard.html', {'users': users})
+    # Approved users, latest first
+    users = CustomUser.objects.filter(role='user', is_active=True).order_by('-date_joined')
+
+    # Pending approval users, latest first
+    pending_users = CustomUser.objects.filter(role='user', is_active=False).order_by('-date_joined')
+
+    return render(request, 'admin/userDashboard.html', {
+        'users': users,
+        'pending_users': pending_users
+    })
+
+@login_required
+@require_POST
+def delete_user(request):
+    """Delete any user (Admin only)"""
+    if not request.user.is_staff:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    user_id = request.POST.get('user_id')
+    if not user_id:
+        return JsonResponse({'error': 'Missing user_id'}, status=400)
+
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        user.delete()
+        return JsonResponse({'success': True})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+@login_required
+@require_POST
+def approve_user(request):
+    if not request.user.is_staff:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    try:
+        data = json.loads(request.body)
+        user_id = data.get('user_id')
+        user = CustomUser.objects.get(id=user_id, role='user')
+        user.is_active = True
+        user.save()
+        return JsonResponse({'success': True})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+@login_required
+@require_POST
+def decline_user(request):
+    if not request.user.is_staff:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    try:
+        data = json.loads(request.body)
+        user_id = data.get('user_id')
+        user = CustomUser.objects.get(id=user_id, role='user')
+        user.delete()
+        return JsonResponse({'success': True})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+
