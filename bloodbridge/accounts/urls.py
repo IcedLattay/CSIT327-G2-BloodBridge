@@ -18,4 +18,7 @@ urlpatterns = [
     path('approve-hospital/', views.approve_hospital, name='approve_hospital'),
     path('decline-hospital/', views.decline_hospital, name='decline_hospital'),
     path('user-dashboard/', views.admin_userDashboard, name='adminUserDashboard'),
+    path('delete-user/', views.delete_user, name='delete_user'),
+    path('approve-user/', views.approve_user, name='approve_user'),
+    path('decline-user/', views.decline_user, name='decline_user'),
 ]
