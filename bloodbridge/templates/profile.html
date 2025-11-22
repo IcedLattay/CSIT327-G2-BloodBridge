@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>{% block title %}Blood Bridge{% endblock %}</title>
     <meta name="csrf-token" content="{{ csrf_token }}">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/profile-styles.css' %}">
     <link href='https://fonts.googleapis.com/css?family=Instrument Sans' rel='stylesheet'>
 </head>
+
 <body>
     {% include 'header.html' %}
 
@@ -20,17 +22,18 @@
                 <div class="profile-name">
                     <div class="profile-pic" id="edit-pfp-btn">
                         <img src="{% static user.profile.profile_picture %}" alt="profile-pic">
-                        <span>
-                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24">
-                                <path d="M22.987,5.451c-.028-.177-.312-1.767-1.464-2.928-1.157-1.132-2.753-1.412-2.931-1.44-.237-.039-.479,.011-.682,.137-.118,.073-2.954,1.849-8.712,7.566C3.135,14.807,1.545,17.213,1.48,17.312c-.091,.14-.146,.301-.159,.467l-.319,4.071c-.022,.292,.083,.578,.29,.785,.188,.188,.443,.293,.708,.293,.025,0,.051,0,.077-.003l4.101-.316c.165-.013,.324-.066,.463-.155,.1-.064,2.523-1.643,8.585-7.662,5.759-5.718,7.548-8.535,7.622-8.652,.128-.205,.178-.45,.14-.689Zm-9.17,7.922c-4.93,4.895-7.394,6.78-8.064,7.263l-2.665,.206,.206-2.632c.492-.672,2.393-3.119,7.312-8.004,1.523-1.512,2.836-2.741,3.942-3.729,.01,.002,.02,.004,.031,.006,.012,.002,1.237,.214,2.021,.98,.772,.755,.989,1.93,.995,1.959,0,.004,.002,.007,.002,.011-.999,1.103-2.245,2.416-3.78,3.94Zm5.309-5.684c-.239-.534-.597-1.138-1.127-1.656-.524-.513-1.134-.861-1.674-1.093,1.139-.95,1.908-1.516,2.309-1.797,.419,.124,1.049,.377,1.481,.8,.453,.456,.695,1.081,.81,1.469-.285,.4-.851,1.159-1.798,2.278Z"/>
-                            </svg>
-                        </span>
+                        <!-- icon svg -->
                     </div>
                     <div class="username">
                         <h2>{{ user.profile.full_name }}</h2>
                         <h3>{{ user.get_role_display }}</h3>
                     </div>
-                    <button id="edit-profile-btn">Edit Profile</button>
+                    <div class="profile-actions">
+                        <button id="edit-profile-btn">Edit Profile</button>
+                        <a href="{% url 'logout' %}">
+                            <button id="logout-btn">Logout</button>
+                        </a>
+                    </div>
                 </div>
             </section>
             <section class="h-divider"></section>
@@ -60,16 +63,19 @@
                         <section class="edit-name-section">
                             <div class="input-field">
                                 <p>First Name</p>
-                                <input type="text" name="first-name" placeholder="first name" value="{{ user.profile.first_name|default:'' }}">
+                                <input type="text" name="first-name" placeholder="first name"
+                                    value="{{ user.profile.first_name|default:'' }}">
                             </div>
                             <div class="input-field">
                                 <p>Last Name</p>
-                                <input type="text" name="last-name" placeholder="last name" value="{{ user.profile.last_name|default:'' }}">
+                                <input type="text" name="last-name" placeholder="last name"
+                                    value="{{ user.profile.last_name|default:'' }}">
                             </div>
                         </section>
                         <div class="input-field">
                             <p>Contact Number</p>
-                            <input type="text" name="contact-number" placeholder="(+63) xxx xxx xxxx" value="{{ user.profile.contact_number|default:'' }}">
+                            <input type="text" name="contact-number" placeholder="(+63) xxx xxx xxxx"
+                                value="{{ user.profile.contact_number|default:'' }}">
                         </div>
                         <div class="input-field">
                             <p>Blood Type</p>
@@ -81,12 +87,11 @@
                                 <div class="dropdown-bt-content-bg">
                                     <div class="dropdown-bt-content" id="dropdown-bt-content">
                                         {% for bt in blood_types %}
-                                            <p class="dropdown-bt-option
+                                        <p class="dropdown-bt-option
                                                 {% if forloop.first %}first{% endif %}
-                                                {% if forloop.last %}last{% endif %}"
-                                            data-value="{{ bt.id }}">
-                                                {{ bt.type }}
-                                            </p>
+                                                {% if forloop.last %}last{% endif %}" data-value="{{ bt.id }}">
+                                            {{ bt.type }}
+                                        </p>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -98,12 +103,12 @@
             </form>
         </div>
 
-        <div class="modal" id="edit-pfp-modal" >
+        <div class="modal" id="edit-pfp-modal">
             <form class="card edit-pfp" id="edit-pfp-form">
                 {% csrf_token %}
-                
+
                 <input type="hidden" name="selected-pfp" id="selected-pfp">
-                
+
                 <div class="spacing">
                     <section class="preview-pfp">
                         <img src="{% static user.profile.profile_picture %}" id="pfp-preview" alt="profile-preview">
@@ -123,12 +128,13 @@
                             <img src="{% static 'images/dune.png' %}" class="pfp">
                         </div>
                     </section>
-                    </div>
+                </div>
             </form>
         </div>
     </main>
 
     <script src="{% static 'js/profile-script.js' %}"></script>
-    
+
 </body>
+
 </html>
