@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Instrument Sans", sans-serif;
+}
+
+/* Body */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F81A99;
+    min-height: 100vh;
+}
+
+
+
+.container {
+    width: 90%;
+    max-width: 900px;
+}
+
+.card {
+    background: white;
+    border-radius: 22px;
+    padding: 30px 35px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+}
+
+.title {
+    margin: 0 0 20px 0;
+    font-weight: 600;
+}
+
+.filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    background: #f5f5f5;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.filter-btn.active {
+    background: #dfeeff;
+    color: #4682ff;
+}
+
+.logs {
+    margin-top: 10px;
+}
+
+.log-row {
+    display: grid;
+    grid-template-columns: 100px 90px 1fr 220px;
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.log-row:last-child {
+    border-bottom: none;
+}
+
+.log-by {
+    text-align: right;
+    color: #777;
+}
