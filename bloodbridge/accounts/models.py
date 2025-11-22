@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 # Create your models here.
 
@@ -51,3 +52,23 @@ class SupabaseHospital(models.Model):
     class Meta:
         db_table = "accounts_profile"  # Make sure this matches your Supabase table
         managed = False          # Don't let Django try to create/migrate it
+        
+        
+class AdminLog(models.Model):
+    ACTIONS = [
+        ("approved", "Approved Account"),
+        ("deleted", "Deleted Account"),
+        ("declined", "Declined Account"),
+    ]
+
+    action_type = models.CharField(max_length=20, choices=ACTIONS)
+    description = models.CharField(max_length=255)
+    admin = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-timestamp"]
+
+    def __str__(self):
+        admin_name = self.admin.get_full_name() if self.admin else "Unknown"
+        return f"{self.get_action_type_display()} by {admin_name} at {self.timestamp}"

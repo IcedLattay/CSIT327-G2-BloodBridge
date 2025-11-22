@@ -1,0 +1,45 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Logs</title>
+    <link rel="stylesheet" href="{% static 'css/adminLogs.css' %}">
+</head>
+
+<body>
+    <form style="display:none">{% csrf_token %}</form>
+    {% include 'components/adminNavbar.html' %}
+
+    <div class="container">
+        <div class="card">
+            <h2 class="title">Admin Logs</h2>
+
+            <div class="filters">
+                <button class="filter-btn">Filter by</button>
+                <button class="filter-btn active">Deletions</button>
+                <button class="filter-btn">Date | oldest to newest</button>
+            </div>
+
+            <div class="logs">
+
+                {% for log in logs %}
+                <div class="log-row">
+                    <div class="log-date">{{ log.timestamp|date:"m/d/Y" }}</div>
+                    <div class="log-time">{{ log.timestamp|time:"g:i A" }}</div>
+                    <div class="log-action">{{ log.description }}</div>
+                    <div class="log-by">action by {{ log.admin.get_full_name|default:log.admin.username }}</div>
+                </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

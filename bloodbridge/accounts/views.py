@@ -10,10 +10,11 @@ from donations.models import BloodType, Donation, Request, Appointment
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.views.decorators.http import require_POST
-from .models import SupabaseHospital
+from .models import AdminLog, SupabaseHospital
 from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
 import json
+from .utils import create_admin_log
 
 # Index view
 def index_view(request):
@@ -284,25 +285,32 @@ def admin_dashboard(request):
 @login_required
 @require_POST
 def delete_hospital(request):
-    """Delete a hospital account (Admin only)"""
     if not request.user.is_staff:
         return JsonResponse({'error': 'Unauthorized'}, status=403)
 
     try:
         data = json.loads(request.body)
-    except json.JSONDecodeError:
+        user_id = data.get('user_id')
+    except:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
-
-    user_id = data.get('user_id')
-    if not user_id:
-        return JsonResponse({'error': 'No user_id provided'}, status=400)
 
     try:
         hospital = CustomUser.objects.get(id=user_id, role='hospital')
+        email = hospital.username  # save before delete
         hospital.delete()
+
+        # ⭐ LOG
+        create_admin_log(
+            request.user,
+            "deleted",
+            f"Deleted hospital account ({email})"
+        )
+
         return JsonResponse({'success': True})
+
     except CustomUser.DoesNotExist:
         return JsonResponse({'error': 'Hospital not found'}, status=404)
+
 
 
 @login_required
@@ -326,7 +334,15 @@ def approve_hospital(request):
     user.is_active = True
     user.save()
 
+    # ⭐ CREATE LOG
+    create_admin_log(
+        request.user,
+        "approved",
+        f"Approved hospital account ({user.username})"
+    )
+
     return JsonResponse({"success": True})
+
 
 
 @login_required
@@ -334,20 +350,26 @@ def approve_hospital(request):
 def decline_hospital(request):
     try:
         data = json.loads(request.body)
-    except json.JSONDecodeError:
+        user_id = data.get("user_id")
+    except:
         return JsonResponse({"success": False, "error": "Invalid JSON"}, status=400)
-
-    user_id = data.get("user_id")
-    if not user_id:
-        return JsonResponse({"success": False, "error": "No user_id provided"}, status=400)
 
     try:
         user = CustomUser.objects.get(id=user_id)
+        email = user.username
+        user.delete()
+
+        # ⭐ LOG
+        create_admin_log(
+            request.user,
+            "declined",
+            f"Declined hospital registration ({email})"
+        )
+
+        return JsonResponse({"success": True})
     except CustomUser.DoesNotExist:
         return JsonResponse({"success": False, "error": "User not found"}, status=404)
 
-    user.delete()
-    return JsonResponse({"success": True})
 
 
 @login_required
@@ -376,10 +398,17 @@ def delete_user(request):
 
     try:
         user = CustomUser.objects.get(id=user_id)
+        username_or_email = user.username or user.email  # save value before deletion
         user.delete()
+
+        # ⭐ Create admin log
+        log_message = f"Deleted user account ({username_or_email})" if username_or_email else "Deleted user account"
+        create_admin_log(request.user, "deleted", log_message)
+
         return JsonResponse({'success': True})
     except CustomUser.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
+
 
 
 @login_required
@@ -392,13 +421,20 @@ def approve_user(request):
         data = json.loads(request.body)
         user_id = data.get('user_id')
         user = CustomUser.objects.get(id=user_id, role='user')
+
         user.is_active = True
         user.save()
+
+        create_admin_log(
+            request.user,
+            "approved",
+            f"Approved user account ({user.username})"
+        )
+
         return JsonResponse({'success': True})
     except CustomUser.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=400)
+
 
 @login_required
 @require_POST
@@ -410,11 +446,29 @@ def decline_user(request):
         data = json.loads(request.body)
         user_id = data.get('user_id')
         user = CustomUser.objects.get(id=user_id, role='user')
+
+        email = user.username
         user.delete()
+
+        create_admin_log(
+            request.user,
+            "declined",
+            f"Declined user registration ({email})"
+        )
+
         return JsonResponse({'success': True})
     except CustomUser.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=400)
+
+    
+def admin_logs_view(request):
+    if not request.user.is_staff:
+        return redirect('login')
+
+    logs = AdminLog.objects.all()
+
+    return render(request, 'admin/adminLogs.html', {
+        "logs": logs
+    })
 
 
