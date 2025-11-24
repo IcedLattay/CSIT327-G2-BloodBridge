@@ -332,7 +332,7 @@ def toggle_emergency(request, request_id):
 
 
             users_to_notify = CustomUser.objects.filter(
-                profile__blood_type=req.blood_type,
+                profile__blood_type__in=req.blood_type.compatible_with.all(),
                 is_active=True,
                 role='user'
             )

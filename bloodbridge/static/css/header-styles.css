@@ -334,10 +334,10 @@
     margin-left: auto;
     background-color: #F81A99;
     border-radius: 100%;
-    min-width: 1.5vw;
-    min-height: 1.5vw;
-    max-width: 1.5vw;
-    max-height: 1.5vw;
+    min-width: 1vw;
+    min-height: 1vw;
+    max-width: 1vw;
+    max-height: 1vw;
 }
 
 .item-header .read {
