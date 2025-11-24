@@ -43,7 +43,23 @@ class Profile(models.Model):
                 f"Contact Number: {self.contact_number}"
                 f"Blood Type: {self.blood_type.type}"
             )
+        
+
+
+class HospitalBloodStock(models.Model):
+    hospital = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='blood_stock')
+    blood_type = models.ForeignKey('donations.BloodType', on_delete=models.CASCADE, related_name='hospital_stock')
+    units_available = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = ('hospital', 'blood_type')  # one row per blood type per hospital
+
+    def __str__(self):
+        return f"{self.hospital.username} - {self.blood_type.name}: {self.units_available}"
             
+
+
+
 class SupabaseHospital(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)
