@@ -22,4 +22,6 @@ urlpatterns = [
     path('approve-user/', views.approve_user, name='approve_user'),
     path('decline-user/', views.decline_user, name='decline_user'),
     path('admin-logs/', views.admin_logs_view, name='adminLogs'),
+    path("hospital/manage-blood-inventory/", views.hospital_manage_inventory, name="hospital-manage-blood-inventory"),
+    path("hospital/update-stocks/", views.update_stocks, name="hospital-update-stocks"),
 ]

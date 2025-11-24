@@ -39,6 +39,10 @@
         font-weight: 500;
     }
 
+    .nav-btn.logout {
+        color: #FF3870;
+    }
+
     .nav-btn:hover {
         background-color: #F5E8F0;
     }
