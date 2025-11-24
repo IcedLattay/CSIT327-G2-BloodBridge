@@ -189,15 +189,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll('form').forEach(form => {
     form.addEventListener('submit', async (e) => {
-      e.preventDefault(); // stop normal submission
+      e.preventDefault();
 
       const submitButton = form.querySelector('button');
       submitButton.disabled = true;
       
-      // Create FormData (works for inputs and file uploads)
       const formData = new FormData(form);
 
       const url = form.dataset.url;
+
+      console.log(url)
 
       try {
         const response = await fetch(url, {
@@ -209,17 +210,26 @@ document.addEventListener("DOMContentLoaded", () => {
           body: formData
         });
 
+        console.log("Raw response:", response);
+        
         const data = await response.json();
 
+        console.log(data)
+
         if (data.status === "success") {
+          console.log("Successfully registered! woohoo!")
+
           if (form.classList.contains('register-form')){
               // show overlay
+            userRegistrationForm.reset();
+            hospitalRegistrationForm.reset();
             signupModal.classList.remove("show");
             overlay.style.display = 'flex'; 
-            userRegistrationForm.reset();
           } else if (form.classList.contains('login-form')) {
             window.location.href = data.redirect_url;
           }
+
+
         } else  if (data.status === "error") {
           console.log("Errors oh: ", data.errors);
 

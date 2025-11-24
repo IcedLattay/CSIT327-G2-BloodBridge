@@ -1,4 +1,5 @@
 {% load static %}
+{% load blood_extras %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,9 +32,30 @@
             {% if hospitals %}
             <div class="red hospital-available-list">
                 
+
                 {% for hospital in hospitals %}
                 
-                <p class="orange row" data-hospitalId="{{ hospital.id }}">{{ hospital.profile.hospital_name }}</p>
+                
+                {% if hospital.blood_stock.all %}
+
+                <div class="orange row" data-hospitalId="{{ hospital.id }}">
+                    <p class="yellow hospital-name">{{ hospital.profile.hospital_name }}</p>
+
+                    <div class="yellow blood-stocks">
+                        <p class="green">Available Blood Stock:</p>
+                        <div class="green stocks">
+
+                            {% for stock in hospital.blood_stock.all %}
+
+                            <p class="blue">{{ stock.blood_type.type }} : {{ stock.units_available|humanize_units }} units</p>
+
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+
+                {% endif %}
                 
                 {% endfor %}
             

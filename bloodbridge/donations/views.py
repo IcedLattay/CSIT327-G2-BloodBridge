@@ -1,10 +1,11 @@
 
 from django.utils import timezone
+from django.db.models import Prefetch
 from datetime import date, timedelta
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Donation, Request, BloodType, Appointment, Notification
-from accounts.models import Profile, CustomUser
+from accounts.models import HospitalBloodStock, Profile, CustomUser
 from django.http import JsonResponse
 from django.db import transaction
 from django.views.decorators.http import require_POST
@@ -147,7 +148,13 @@ def set_appointment(request):
 def request_blood_view(request):
 
     blood_types = BloodType.objects.all()
-    hospitals = CustomUser.objects.filter(role='hospital')
+    
+    hospitals = CustomUser.objects.filter(role='hospital').prefetch_related(
+        Prefetch(
+            'blood_stock',
+            queryset=HospitalBloodStock.objects.select_related('blood_type').filter(units_available__gt=0)
+        )
+    )
 
     return render (request, 'request-blood.html', {
         "blood_types" : blood_types,

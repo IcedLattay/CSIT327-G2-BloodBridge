@@ -35,23 +35,21 @@ def register_view(request):
     if request.method == 'POST':
         form = CustomCreation(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False  # pending approval
-            user.save()
-            return JsonResponse({"status": "success","registration_state": "pending"})
+            form.save()
+            return JsonResponse({"status": "success"})
         else:
             return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
     return redirect('index')
+
 
 # Hospital Registration view
 def register_hospital_view(request):
     if request.method == 'POST':
         form = HospitalCreationForm(request.POST, request.FILES)
         if form.is_valid():
-            hospital = form.save(commit=True)  # already sets is_active=False, is_approved=False
+            form.save()  # already sets is_active=False, is_approved=False
             return JsonResponse({
-                'status': 'success',
-                'message': 'Your hospital registration is pending admin approval.'
+                'status': 'success', 'message': 'Your hospital registration is pending admin approval.'
             })
         else:
             return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
