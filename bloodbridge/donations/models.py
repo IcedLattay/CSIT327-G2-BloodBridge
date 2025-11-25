@@ -68,8 +68,17 @@ class Appointment(models.Model):
 
 
 class Notification(models.Model):
-    user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='notifications')  # The user who receives the notification
-    request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='notifications')  # The emergency request linked to this notification
+    user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='notifications_owned')  # The user who receives the notification
+    type = models.CharField(max_length=20, null=True) # 'appointment reminder' / 'request status' / 'emergency alert'
+
+    # for type='appointment reminder'
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, related_name='appointment_reminders_linked', null=True) 
+    time_left = models.IntegerField(null=True)
+    # for type='request status'
+    user_request = models.OneToOneField(Request, on_delete=models.CASCADE, related_name='status_notifications_linked', null=True)
+    # for type='emergency alert'
+    hospital_request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='emergency_alerts_linked', null=True)  # The emergency request linked to this notification
+
     is_read = models.BooleanField(default=False) # Whether the user has clicked it
     is_seen = models.BooleanField(default=False) # If the user has already seen by opening the overlay
     has_action = models.BooleanField(default=False)  # True if they already set an appointment
@@ -77,7 +86,6 @@ class Notification(models.Model):
 
     class Meta:
         ordering = ['-created_at']  # Newest first
-        unique_together = ('user', 'request')
         
         def __str__(self):
-            return f"Notification for {self.user.profile.full_name}: {self.message}"
+            return f"{self.type} notification for {self.user.profile.full_name}"
