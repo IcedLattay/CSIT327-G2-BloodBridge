@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to clear forms when modal closes
   function clearForm(form) {
     form.reset();
-    form.querySelectorAll(".error-container").forEach( errContainer => {
+    form.querySelectorAll(".error-container").forEach(errContainer => {
       errContainer.querySelector(".custom-error").textContent = '';
       errContainer.querySelector(".icon").classList.remove("show");
     })
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Toggle password visibility
   toggleIcons.forEach((icon) => {
     icon.addEventListener("click", () => {
-      const targetId = icon.getAttribute("data-target"); 
+      const targetId = icon.getAttribute("data-target");
       const passwordInput = document.getElementById(targetId);
 
       if (passwordInput.type === "password") {
@@ -54,13 +54,13 @@ document.addEventListener("DOMContentLoaded", () => {
       icon.classList.add("bi-eye");
     });
   }
-    
+
   // Open / Close modals
   openLogin?.addEventListener("click", () => {
     loginModal.classList.add("show");
     window.history.pushState({}, "", "/login");
   });
-  
+
   closeLogin?.addEventListener("click", () => {
     resetPasswordVisibility()
     loginModal.classList.remove("show");
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  
+
   // SHIFT/TOGGLE between user and hospital registration
 
   const userBtn = document.getElementById("userBtn")
@@ -141,61 +141,56 @@ document.addEventListener("DOMContentLoaded", () => {
   const slider = document.querySelector(".slider")
   const toggleContainer = document.querySelector(".toggle-container")
   const userRegistrationForm = document.getElementById("register-user-form")
-  const hospitalRegistrationForm = document.getElementById("register-hospital-form") 
+  const hospitalRegistrationForm = document.getElementById("register-hospital-form")
 
   function moveSlider(button) {
-      const containerRect = toggleContainer.getBoundingClientRect();
-      const buttonRect = button.getBoundingClientRect();
+    const containerRect = toggleContainer.getBoundingClientRect();
+    const buttonRect = button.getBoundingClientRect();
 
-      // Calculate left position only
-      const leftPos = buttonRect.left - containerRect.left - 1; 
+    // Calculate left position only
+    const leftPos = buttonRect.left - containerRect.left - 1;
 
-      // Apply styles
-      slider.style.left = `${leftPos}px`;
+    // Apply styles
+    slider.style.left = `${leftPos}px`;
   }
 
 
   userBtn.addEventListener("click", () => {
-      clearForm(hospitalSignupForm)
-      userRegistrationForm.style.visibility = "visible";
-      hospitalRegistrationForm.style.visibility = "hidden";
-      hospitalBtn.classList.remove("active");
-      hospitalBtnIcon.classList.remove("active");
-      userBtn.classList.add("active");
-      userBtnIcon.classList.add("active");
-      moveSlider(userBtn);
+    clearForm(hospitalSignupForm)
+    userRegistrationForm.style.visibility = "visible";
+    hospitalRegistrationForm.style.visibility = "hidden";
+    hospitalBtn.classList.remove("active");
+    hospitalBtnIcon.classList.remove("active");
+    userBtn.classList.add("active");
+    userBtnIcon.classList.add("active");
+    moveSlider(userBtn);
   });
 
   hospitalBtn.addEventListener("click", () => {
-      clearForm(userSignupForm);
-      userRegistrationForm.style.visibility = "hidden";
-      hospitalRegistrationForm.style.visibility = "visible";
-      hospitalBtn.classList.add("active");
-      hospitalBtnIcon.classList.add("active");
-      userBtn.classList.remove("active");
-      userBtnIcon.classList.remove("active");
-      moveSlider(hospitalBtn);
+    clearForm(userSignupForm);
+    userRegistrationForm.style.visibility = "hidden";
+    hospitalRegistrationForm.style.visibility = "visible";
+    hospitalBtn.classList.add("active");
+    hospitalBtnIcon.classList.add("active");
+    userBtn.classList.remove("active");
+    userBtnIcon.classList.remove("active");
+    moveSlider(hospitalBtn);
   });
-
-
-
-
-
 
   // submit registration form data for user
   function getCSRFToken() {
     return document.querySelector('meta[name="csrf-token"]').content;
   }
 
+  // submit registration and login form data
   document.querySelectorAll('form').forEach(form => {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const submitButton = form.querySelector('button');
       submitButton.disabled = true;
-      
-      const formData = new FormData(form);
 
+      const formData = new FormData(form);
       const url = form.dataset.url;
 
       console.log(url)
@@ -205,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
           method: "POST",
           headers: {
             'X-CSRFToken': getCSRFToken(),
-            "X-Requested-With": "XMLHttpRequest" // optional, sometimes useful
+            "X-Requested-With": "XMLHttpRequest"
           },
           body: formData
         });
@@ -217,64 +212,66 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(data)
 
         if (data.status === "success") {
-          console.log("Successfully registered! woohoo!")
-
-          if (form.classList.contains('register-form')){
-              // show overlay
-            userRegistrationForm.reset();
-            hospitalRegistrationForm.reset();
-            signupModal.classList.remove("show");
-            overlay.style.display = 'flex'; 
-          } else if (form.classList.contains('login-form')) {
+          // Login success
+          if (form.classList.contains('login-form')) {
             window.location.href = data.redirect_url;
+          } else if (form.classList.contains('register-form')) {
+            signupModal.classList.remove("show");
+            overlay.style.display = 'flex';
+            form.reset();
           }
+        } else if (data.status === "error") {
+          // Clear all previous errors
+          form.querySelectorAll(".error-container").forEach(errContainer => {
+            const errorMessage = errContainer.querySelector(".custom-error");
+            const errorIcon = errContainer.querySelector(".icon");
+            if (errorMessage) errorMessage.textContent = '';
+            if (errorIcon) errorIcon.classList.remove("show");
+          });
 
-
-        } else  if (data.status === "error") {
-          console.log("Errors oh: ", data.errors);
-
-          form.querySelectorAll(".error-container").forEach( errContainer => {
-            errContainer.querySelector(".custom-error").textContent = '';
-            errContainer.querySelector(".icon").classList.remove("show");
-          })
-          
           for (const field in data.errors) {
             const messages = data.errors[field];
-            
-            const card = form.parentElement.parentElement;
-            const errorContainer = form.querySelector(`[data-id="${field}-error-container"]`);
-            const errorMessage = errorContainer.querySelector(".custom-error");
-            const errorIcon = errorContainer.querySelector(".icon");
 
-            errorMessage.textContent = messages[0];
-            errorIcon.classList.add("show");
-                    
-                    
-            card.classList.remove("shake");
-            errorContainer.classList.remove("shake");
+            let errorContainer;
+            if (field === "__all__") {
+              errorContainer = form.querySelector('[data-id="__all__-error-container"]');
+            } else {
+              errorContainer = form.querySelector(`[data-id="${field}-error-container"]`);
+            }
 
-            void card.offsetWidth;
-            void errorContainer.offsetWidth;
+            if (errorContainer) {
+              const errorMessage = errorContainer.querySelector(".custom-error");
+              const errorIcon = errorContainer.querySelector(".icon");
 
-            card.classList.add("shake");
-            errorContainer.classList.add("shake");
+              if (errorMessage) errorMessage.textContent = messages[0];
+              if (errorIcon) errorIcon.classList.add("show");
+
+              // optional shake effect
+              const card = form.closest(".modal-content") || form;
+              card.classList.remove("shake");
+              void card.offsetWidth;
+              card.classList.add("shake");
+            } else {
+              alert(messages[0]); // fallback
+            }
           }
         }
+
       } catch (err) {
-      console.error("Error submitting form:", err);
+        console.error("Error submitting form:", err);
+        alert("Something went wrong. Please try again.");
       } finally {
         submitButton.disabled = false;
       }
-    })
-  })
-
+    });
+  });
 
   // FOR Success Overlay Popup
 
   const successAnimation = document.getElementById("success-animation");
-  
+
   successAnimation.loop = false;
   successAnimation.stop();
-  successAnimation.play(); 
-  
+  successAnimation.play();
+
 });

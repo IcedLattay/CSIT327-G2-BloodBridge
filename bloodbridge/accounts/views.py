@@ -35,8 +35,9 @@ def register_view(request):
     if request.method == 'POST':
         form = CustomCreation(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return JsonResponse({"status": "success"})
+            user = form.save(commit=False)
+            user.save()
+            return JsonResponse({"status": "success", "message": "Registration successful. You can now log in."})
         else:
             return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
     return redirect('index')
@@ -58,27 +59,34 @@ def register_hospital_view(request):
 
 # Login view
 def login_view(request):
-    if request.user.is_authenticated:  # di na siya kabalik sa /login url if logged in
+    if request.user.is_authenticated:  # redirect if already logged in
         if request.user.role == 'user':
             return redirect('home')
         elif request.user.role == 'hospital':
             return redirect('hospital-dashboard')
-        
     
     if request.method == "POST":
         form = CustomAuthentication(request, data=request.POST)  # bind submitted data
-        
+
         if form.is_valid():
             user = form.get_user()
-            login(request, user)  # log in user
 
-            # ✅ Return JSON instead of redirect
+            if user.role == 'hospital':
+                return JsonResponse({
+                    'status': 'error',
+                    'errors': {'__all__': ['Your hospital account is pending admin approval.']}
+                })
+
+            # If active, log in normally
+            login(request, user)
+
             if user.role == 'user':
                 return JsonResponse({'status': 'success', 'redirect_url': '/home/'})
             elif user.role == 'hospital':
                 return JsonResponse({'status': 'success', 'redirect_url': '/hospital-dashboard/'})
         else:
             return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+    
     return redirect("index")
 
 
@@ -420,7 +428,6 @@ def admin_userDashboard(request):
 
     return render(request, 'admin/userDashboard.html', {
         'users': users,
-        'pending_users': pending_users
     })
     
 
@@ -442,57 +449,6 @@ def delete_user(request):
         # ⭐ Create admin log
         log_message = f"Deleted user account ({username_or_email})" if username_or_email else "Deleted user account"
         create_admin_log(request.user, "deleted", log_message)
-
-        return JsonResponse({'success': True})
-    except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'User not found'}, status=404)
-
-
-
-@login_required
-@require_POST
-def approve_user(request):
-    if not request.user.is_staff:
-        return JsonResponse({'error': 'Unauthorized'}, status=403)
-
-    try:
-        data = json.loads(request.body)
-        user_id = data.get('user_id')
-        user = CustomUser.objects.get(id=user_id, role='user')
-
-        user.is_active = True
-        user.save()
-
-        create_admin_log(
-            request.user,
-            "approved",
-            f"Approved user account ({user.username})"
-        )
-
-        return JsonResponse({'success': True})
-    except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'User not found'}, status=404)
-
-
-@login_required
-@require_POST
-def decline_user(request):
-    if not request.user.is_staff:
-        return JsonResponse({'error': 'Unauthorized'}, status=403)
-
-    try:
-        data = json.loads(request.body)
-        user_id = data.get('user_id')
-        user = CustomUser.objects.get(id=user_id, role='user')
-
-        email = user.username
-        user.delete()
-
-        create_admin_log(
-            request.user,
-            "declined",
-            f"Declined user registration ({email})"
-        )
 
         return JsonResponse({'success': True})
     except CustomUser.DoesNotExist:

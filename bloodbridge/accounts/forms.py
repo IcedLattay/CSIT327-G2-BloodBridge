@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 from django.contrib.auth.forms import AuthenticationForm
+from django.core.exceptions import ValidationError
 
 
 
@@ -76,10 +77,33 @@ class CustomAuthenticationForm(AuthenticationForm):
             'invalid': "Please enter a valid email address.",
         }
     )
-
     password = forms.CharField(
         error_messages={
             'required': "Password is required.",
             'invalid': "Incorrect password.",
         }
     )
+
+    def confirm_login_allowed(self, user):
+        """
+        Called after username/password are correct.
+        Raise ValidationError if the user is not allowed to log in.
+        """
+        # Hospital account pending
+        if user.role == 'hospital' and not getattr(user, 'is_hospital_approved', False):
+            raise ValidationError(
+                "Your hospital account is still waiting for admin approval.",
+                code='inactive',
+            )
+        # Any user account pending approval
+        if user.role == 'user' and not user.is_active:
+            raise ValidationError(
+                "Your account has not been verified by the admin or has been declined.",
+                code='inactive',
+            )
+        # Inactive accounts in general
+        if not user.is_active:
+            raise ValidationError(
+                "Your account is inactive.",
+                code='inactive',
+            )

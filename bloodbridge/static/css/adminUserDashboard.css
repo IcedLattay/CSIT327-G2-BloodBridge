@@ -56,11 +56,6 @@ body {
     color: white;
 }
 
-.tab:hover {
-    background-color: #ff4db8;
-    color: white;
-}
-
 /* Table */
 .hospital-table {
     width: 100%;

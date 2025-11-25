@@ -20,7 +20,6 @@
         <h2>Manage Users</h2>
         <div class="tabs">
             <button class="tab active" data-tab="accounts">User accounts</button>
-            <button class="tab" data-tab="requests">Account requests</button>
         </div>
 
         <!-- User Accounts -->
@@ -43,33 +42,6 @@
                     {% empty %}
                     <tr>
                         <td colspan="2">No users found.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Account Requests -->
-        <div id="requests" class="tab-content" style="display:none;">
-            <table class="hospital-table">
-                <thead>
-                    <tr>
-                        <th>User Name</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in pending_users %}
-                    <tr>
-                        <td>{{ user.username }}</td>
-                        <td>
-                            <button class="approve-btn" data-user-id="{{ user.id }}">Approve</button>
-                            <button class="decline-btn" data-user-id="{{ user.id }}">Decline</button>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="2">No requests found.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
