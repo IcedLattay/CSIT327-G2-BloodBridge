@@ -17,13 +17,22 @@ def notifications_processor(request):
         created_at__gte=three_days_ago # Not older than 3 days
     ).order_by('-created_at')
 
+    for notif in notifications:
+        if notif.type == "appointment reminder" and notif.appointment:
+            notif.days_left = (
+                notif.appointment.date
+                - timezone.now().date()
+            ).days
+        else:
+            notif.days_left = None  # ensure attribute exists to avoid errors
+
     unseen_count = Notification.objects.filter(
         user=request.user,
         is_seen=False,
         created_at__gte=three_days_ago
     ).count()
 
-    return ({ 
-        "notifications" : notifications,
-        "initial_unseen_count" : unseen_count,     
-    })
+    return {
+        "notifications": notifications,
+        "initial_unseen_count": unseen_count,
+    }
