@@ -11,10 +11,11 @@ def create_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=CustomUser)
 def create_hospital_stock(sender, instance, created, **kwargs):
-    if created and instance.role == 'hospital':
+    if created and instance.role == "hospital":
+        
         blood_types = BloodType.objects.all()
         for bt in blood_types:
-            HospitalBloodStock.objects.create(
+            HospitalBloodStock.objects.get_or_create(
                 hospital=instance,
                 blood_type=bt,
                 units_available=0

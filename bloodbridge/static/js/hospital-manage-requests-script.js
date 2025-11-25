@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
+            console.log("Raw data:", response)
+
             const result = await response.json();
 
             if (result.success) {

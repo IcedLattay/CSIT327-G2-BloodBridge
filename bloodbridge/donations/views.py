@@ -1,10 +1,11 @@
 
 from django.utils import timezone
+from django.db.models import Prefetch
 from datetime import date, timedelta
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Donation, Request, BloodType, Appointment, Notification
-from accounts.models import Profile, CustomUser
+from accounts.models import HospitalBloodStock, Profile, CustomUser
 from django.http import JsonResponse
 from django.db import transaction
 from django.views.decorators.http import require_POST
@@ -147,7 +148,13 @@ def set_appointment(request):
 def request_blood_view(request):
 
     blood_types = BloodType.objects.all()
-    hospitals = CustomUser.objects.filter(role='hospital')
+    
+    hospitals = CustomUser.objects.filter(role='hospital').prefetch_related(
+        Prefetch(
+            'blood_stock',
+            queryset=HospitalBloodStock.objects.select_related('blood_type').filter(units_available__gt=0)
+        )
+    )
 
     return render (request, 'request-blood.html', {
         "blood_types" : blood_types,
@@ -198,24 +205,61 @@ def get_active_notifications(request):
         created_at__gte=three_days_ago
     ).order_by('-created_at')
 
-    data = [
-        {
-            "id": n.id,
-            "request": {
-                "id": n.request.id,
-                "requester": {
-                    "profile": {
-                        "hospital_name": n.request.requester.profile.hospital_name
+    data = []
+    
+    for n in notifications:
+        notif_data = {
+            "id" : n.id,
+            "type" : n.type,
+            "created_at" : n.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "is_read" : n.is_read,
+            "is_seen" : n.is_seen,
+        }
+
+        if n.type == "request status" and n.user_request:
+            req = n.user_request
+            notif_data["user_request"] = {
+                "id" : req.id,
+                "hospital" : {
+                    "profile" : {
+                        "hospital_name" : req.hospital.profile.hospital_name,
                     }
                 },
-                "quantity": n.request.quantity  
-            },
-            "created_at": n.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "is_read": n.is_read,
-            "is_seen": n.is_seen,
-        }
-        for n in notifications
-    ]
+                "status" : req.status,
+                "quantity" : req.quantity,
+            }
+        
+        elif n.type == "appointment reminder" and n.appointment:
+            days_left = (n.appointment.date - date.today()).days
+
+            appointment = n.appointment
+            notif_data["appointment"] = {
+                "id" : appointment.id,
+                "request" : {
+                    "requester" : {
+                        "profile" : {
+                            "hospital_name" : appointment.request.requester.profile.hospital_name
+                        }
+                    }
+                }
+            }
+            notif_data["days_left"] = days_left
+
+        elif n.type == "emergency alert" and n.hospital_request:
+            req = n.hospital_request
+
+            notif_data["hospital_request"] = {
+                "id": req.id, 
+                "requester": { 
+                    "profile": { 
+                        "hospital_name": req.requester.profile.hospital_name 
+                        } 
+                    }, 
+                "quantity": req.quantity
+            }
+
+        data.append(notif_data)
+
 
     return JsonResponse({'notifications': data})
 
@@ -287,17 +331,35 @@ def mark_read(request, notif_id):
 # FOR HOSPITALS END
 
 @require_POST
-def cancel_appointment(request, request_id):
+def cancel_user_request(request, request_id):
     req = Request.objects.get(id=request_id)
     req.status = "cancelled"
     req.save()
+
+    user_to_notify = req.requester
+
+    Notification.objects.create(
+        user=user_to_notify,
+        type='request status',
+        user_request=req,
+    )
+
     return JsonResponse({"success": True})
 
 @require_POST
-def approve_appointment(request, request_id):
+def approve_user_request(request, request_id):
     req = Request.objects.get(id=request_id)
     req.status = "confirmed"
     req.save()
+
+    user_to_notify = req.requester
+
+    Notification.objects.create(
+        user=user_to_notify,
+        type='request status',
+        user_request=req,
+    )
+
     return JsonResponse({"success": True})
 
 # Hospital Manage Requests view
@@ -325,15 +387,16 @@ def toggle_emergency(request, request_id):
 
 
             users_to_notify = CustomUser.objects.filter(
-                profile__blood_type=req.blood_type,
+                profile__blood_type__in=req.blood_type.compatible_with.all(),
                 is_active=True,
                 role='user'
-            )
+            ).exclude(appointments_made__request=req)
 
             notifications = [
                 Notification(
                     user=user,
-                    request=req,
+                    type='emergency alert',
+                    hospital_request=req,
                     created_at=timezone.now(),
                 ) 
                 for user in users_to_notify

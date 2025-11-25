@@ -301,7 +301,7 @@
     background-color: #F9F9F9;
 }
 
-.notification-item .icon {
+.notification-item svg {
     fill: #B3A3A7;
 }
 
@@ -318,12 +318,6 @@
     /* border: 1px solid red; */
 }
 
-.item-header .icon {
-    fill: #FF0048;
-    width: 18px;
-    height: 18px;
-}
-
 .item-header .header-label {
     font-size: 16px;
     color: #3A3A3A;
@@ -334,10 +328,10 @@
     margin-left: auto;
     background-color: #F81A99;
     border-radius: 100%;
-    min-width: 1.5vw;
-    min-height: 1.5vw;
-    max-width: 1.5vw;
-    max-height: 1.5vw;
+    min-width: 1vw;
+    min-height: 1vw;
+    max-width: 1vw;
+    max-height: 1vw;
 }
 
 .item-header .read {
@@ -347,23 +341,19 @@
 .notification-list .item-hospital {
     display: flex;
     align-items: center;
-    gap: 10px;
-}
-
-.item-hospital .icon {
-    width: 20px;
-    height: 20px;
+    gap: 0.8rem;
 }
 
 .notification-list .item-units {
-    gap: 14px;
+    gap: 1.1rem;
     display: flex;
     align-items: center;
 }
 
-.item-units .icon {
-    width: 17px;
-    height: 17px;
+.notification-list .item-days-left {
+    gap: 1rem;
+    display: flex;
+    align-items: center;
 }
 
 .notification-overlay .notification-empty {

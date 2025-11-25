@@ -185,13 +185,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // submit registration and login form data
   document.querySelectorAll('form').forEach(form => {
     form.addEventListener('submit', async (e) => {
-      e.preventDefault(); // stop normal submission
+      e.preventDefault();
 
       const submitButton = form.querySelector('button');
       submitButton.disabled = true;
 
       const formData = new FormData(form);
       const url = form.dataset.url;
+
+      console.log(url)
 
       try {
         const response = await fetch(url, {
@@ -203,7 +205,11 @@ document.addEventListener("DOMContentLoaded", () => {
           body: formData
         });
 
+        console.log("Raw response:", response);
+        
         const data = await response.json();
+
+        console.log(data)
 
         if (data.status === "success") {
           // Login success
