@@ -12,7 +12,6 @@ class CustomUser(AbstractUser):
 
     is_available = models.BooleanField(default=False)
     is_hospital_approved = models.BooleanField(default=False)
-    is_user_approved = models.BooleanField(default=False)
     role = models.CharField(max_length=20, default='user')
 
     def __str__(self):
