@@ -20,4 +20,6 @@ urlpatterns = [
     path('user-dashboard/', views.admin_userDashboard, name='adminUserDashboard'),
     path('delete-user/', views.delete_user, name='delete_user'),
     path('admin-logs/', views.admin_logs_view, name='adminLogs'),
+    path("hospital/manage-blood-inventory/", views.hospital_manage_inventory, name="hospital-manage-blood-inventory"),
+    path("hospital/update-stocks/", views.update_stocks, name="hospital-update-stocks"),
 ]

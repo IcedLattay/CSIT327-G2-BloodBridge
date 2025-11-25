@@ -10,7 +10,7 @@ from donations.models import BloodType, Donation, Request, Appointment
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.views.decorators.http import require_POST
-from .models import AdminLog, SupabaseHospital
+from .models import AdminLog, SupabaseHospital, HospitalBloodStock
 from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
 import json
@@ -233,6 +233,46 @@ def hospital_dashboard_view(request):
         "requests" : requests,
         "blood_types" : blood_types,
     })
+
+# Hospital Manage Inventory view
+@login_required(login_url='/')
+def hospital_manage_inventory(request):
+    user = request.user
+
+    stocks = HospitalBloodStock.objects.filter(hospital = user)
+
+    return render(request, 'hospital-manage-blood-inventory.html', {
+        "stocks" : stocks,
+    })
+
+# Update Stocks view
+@login_required(login_url='/')
+def update_stocks(request):
+    if request.method == "POST":
+        data = request.POST
+
+        stocks = HospitalBloodStock.objects.filter(hospital=request.user)
+
+        for stock in stocks:
+            field_name = f"stock_{stock.blood_type.id}"
+
+            if field_name in data:
+                new_units = data.get(field_name)
+
+                try:
+                    new_units = int(new_units)
+                    if new_units < 0:
+                        new_units = 0
+                except:
+                    continue
+
+                stock.units_available = new_units
+                stock.save()
+
+        return JsonResponse({'success' : True})
+    
+    return redirect('hospital-update-stocks')
+
 
 
 

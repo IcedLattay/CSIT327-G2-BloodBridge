@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Manage Inventory</title>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="{% static 'css/hospital-header-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/global-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hospital-manage-blood-inventory-styles.css' %}">
+</head>
+
+<body>
+    {% include 'hospital-header.html' %}
+
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <div class="card inventory">
+            <h2 class="red">Manage Blood Inventory</h2>
+            
+            <!-- Blood Inventory -->
+
+            <form class="red" id="blood-inventory-form">
+                
+                <div class="orange blood-inventory">
+
+                    {% for stock in stocks %}
+                    <div class="yellow blood-type">
+                        <div class="green label">
+                            <p class="blue">{{ stock.blood_type.type }}</p>
+                        </div>
+                        <div class="green field">
+                            <input 
+                                class="blue bt-input"    
+                                type="number"   
+                                min="0"     
+                                step="1"    
+                                oninput="if(this.value < 1) this.value = 0;"    
+                                value="{{ stock.units_available }}"     
+                                data-original="{{ stock.units_available }}"
+                                name="stock_{{ stock.blood_type.id }}" 
+                                id="">
+                            <p class="blue">units</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+                <div class="orange button-container">
+                    <button type="submit" class="yellow disabled" id="save-btn">Save</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="actionToast" class="toast-overlay">
+            <svg style="fill: #3A3A3A;" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="1rem" height="1rem">
+                <path d="m18.214,9.098c.387.394.381,1.027-.014,1.414l-4.426,4.345c-.783.768-1.791,1.151-2.8,1.151-.998,0-1.996-.376-2.776-1.129l-1.899-1.867c-.394-.387-.399-1.02-.012-1.414.386-.395,1.021-.4,1.414-.012l1.893,1.861c.776.75,2.001.746,2.781-.018l4.425-4.344c.393-.388,1.024-.381,1.414.013Zm5.786,2.902c0,6.617-5.383,12-12,12S0,18.617,0,12,5.383,0,12,0s12,5.383,12,12Zm-2,0c0-5.514-4.486-10-10-10S2,6.486,2,12s4.486,10,10,10,10-4.486,10-10Z"/>
+            </svg>
+            <p class="toast-message" id="toastMessage">Inventory updated successfully!</p>
+        </div>
+
+    </main>
+
+    <script src="{% static 'js/hospital-manage-blood-inventory-script.js' %}"></script>
+</body>
+
+</html>

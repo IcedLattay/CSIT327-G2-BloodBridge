@@ -171,7 +171,45 @@
     /* align buttons to right edge */
 }
 
+.profile-actions a {
+    background-color: #F1F1F1;
+    text-decoration: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    /* border: 1px solid red; */
+    width: 100%;
+}
+
+.profile-actions a:hover {
+    background-color: #e6e5e5;
+}
+
+.profile-actions .icon {
+    fill: #B3A3A7;
+    width: 1rem;
+    height: 1rem;
+}
+
+.profile-actions a:hover .icon {
+    fill: #cf0c30;
+}
+
+.profile-actions p {
+    color: #B3A3A7;
+    font-size: 14px;
+    margin: 0;
+    padding: 10px 0px;
+}
+
+.profile-actions a:hover p {
+    color: #cf0c30;
+}
+
 .profile-actions button {
+    min-width: 10rem;
     margin-left: 0;
     /* override previous button styles */
     padding: 13px 30px;
