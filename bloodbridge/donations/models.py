@@ -73,7 +73,6 @@ class Notification(models.Model):
 
     # for type='appointment reminder'
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, related_name='appointment_reminders_linked', null=True) 
-    time_left = models.IntegerField(null=True)
     # for type='request status'
     user_request = models.OneToOneField(Request, on_delete=models.CASCADE, related_name='status_notifications_linked', null=True)
     # for type='emergency alert'
