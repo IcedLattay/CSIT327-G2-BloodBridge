@@ -124,7 +124,9 @@
 .orange.empty-text {
     padding: 33px 0px;
     margin: 0;
-    text-align: center;
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: center;
     color: #A7A7A7;
     font-size: 15px;
 }

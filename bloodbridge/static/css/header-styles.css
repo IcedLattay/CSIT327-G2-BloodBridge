@@ -17,6 +17,11 @@
     height: 70px;
 }
 
+.logo p {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
 .nav-links {
     /*border: 1px solid blue;*/
     display: flex;
@@ -38,6 +43,10 @@
 .nav-btn:hover {
     cursor: pointer;
     background-color: #F5E8F0;
+}
+
+.nav-btn:active {
+    background-color: #e9d1df;
 }
 
 .dropdown {
@@ -119,10 +128,23 @@
     /* border: 1px solid #40ff50; */
     border-radius: 100%;
     position: relative;
+    transition: background-color 0.1s;
 }
 
 .notification-button:has(.notification-hitbox:hover) {
     background-color: #F5E8F0;
+}
+
+.notification-button:has(.notification-hitbox:active) {
+    background-color: #e9d1df;
+}
+
+.notification-button:has(.notification-icon.focus) {
+    background-color: #ffe7f5;
+}
+
+.notification-button:has(.notification-icon.focus):has(.notification-hitbox:hover) {
+    background-color: #ffd9ef;
 }
 
 .notification-button .notification-hitbox{
