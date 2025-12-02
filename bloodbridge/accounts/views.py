@@ -72,10 +72,11 @@ def login_view(request):
             user = form.get_user()
 
             if user.role == 'hospital':
-                return JsonResponse({
-                    'status': 'error',
-                    'errors': {'__all__': ['Your hospital account is pending admin approval.']}
-                })
+                if not user.is_hospital_approved:
+                    return JsonResponse({
+                        'status': 'error',
+                        'errors': {'__all__': ['Your hospital account is pending admin approval.']}
+                    })
 
             # If active, log in normally
             login(request, user)
