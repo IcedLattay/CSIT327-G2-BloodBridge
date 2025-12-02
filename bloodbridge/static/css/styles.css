@@ -82,7 +82,7 @@ body {
   text-align: center;
   font-size: 36px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin: 3rem 0 1.2rem 0;
 }
 
 .hero div {
@@ -92,7 +92,7 @@ body {
 }
 
 .hero p {
-  margin: 0;
+  margin: 1rem 0;
   text-align: center;
   max-width: 40rem;
   line-height: 1.6;
