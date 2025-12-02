@@ -21,7 +21,7 @@
 /* CARDS */
 .cards {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 40px;
     /* border: 1px solid violet; */
 }
