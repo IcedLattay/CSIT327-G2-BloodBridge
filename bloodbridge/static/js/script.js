@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     closeSuccess.addEventListener("click", () => {
       if (overlay) {
         overlay.classList.add("fade-out");
-        setTimeout(() => (overlay.style.display = "none"), 0);
+        setTimeout(() => (overlay.style.display = "none"), 400);
       }
     });
   }
